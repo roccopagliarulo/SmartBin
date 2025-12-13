@@ -1,0 +1,1893 @@
+[
+    {
+        "id": "0ebc9fe30e2af211",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "e196b19e598c60ff",
+        "type": "tab",
+        "label": "Flow 2",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "24c0b9e5da4bd92d",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "localhost",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": 4,
+        "keepalive": 60,
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "26b3815d27b3140c",
+        "type": "telegrambot-config",
+        "botname": "SmartBinBot",
+        "usernames": "Rocco Pagliarulo",
+        "chatIds": "219634800",
+        "pollInterval": 300
+    },
+    {
+        "id": "b8f4a9791328f42c",
+        "type": "ui-base",
+        "name": "My Dashboard",
+        "path": "/dashboard",
+        "appIcon": "",
+        "includeClientData": true,
+        "acceptsClientConfig": [
+            "ui-notification",
+            "ui-control"
+        ],
+        "showPathInSidebar": false,
+        "headerContent": "page",
+        "navigationStyle": "default",
+        "titleBarStyle": "default",
+        "showReconnectNotification": true,
+        "notificationDisplayTime": 1,
+        "showDisconnectNotification": true,
+        "allowInstall": false
+    },
+    {
+        "id": "3879e91f08d0fed4",
+        "type": "ui-theme",
+        "name": "Default Theme",
+        "colors": {
+            "surface": "#ffffff",
+            "primary": "#0094CE",
+            "bgPage": "#eeeeee",
+            "groupBg": "#ffffff",
+            "groupOutline": "#cccccc"
+        },
+        "sizes": {
+            "density": "default",
+            "pagePadding": "12px",
+            "groupGap": "12px",
+            "groupBorderRadius": "4px",
+            "widgetGap": "12px"
+        }
+    },
+    {
+        "id": "c858a3399cfe614c",
+        "type": "ui-page",
+        "name": "Reportistica",
+        "ui": "b8f4a9791328f42c",
+        "path": "/page1",
+        "icon": "home",
+        "layout": "grid",
+        "theme": "3879e91f08d0fed4",
+        "breakpoints": [
+            {
+                "name": "Default",
+                "px": "0",
+                "cols": "3"
+            },
+            {
+                "name": "Tablet",
+                "px": "576",
+                "cols": "6"
+            },
+            {
+                "name": "Small Desktop",
+                "px": "768",
+                "cols": "9"
+            },
+            {
+                "name": "Desktop",
+                "px": "1024",
+                "cols": "12"
+            }
+        ],
+        "order": 1,
+        "className": "",
+        "visible": "true",
+        "disabled": "false"
+    },
+    {
+        "id": "1e3f39414a332229",
+        "type": "ui-group",
+        "name": "Quantità rifiuti",
+        "page": "c858a3399cfe614c",
+        "width": 6,
+        "height": 1,
+        "order": 1,
+        "showTitle": true,
+        "className": "",
+        "visible": "true",
+        "disabled": "false",
+        "groupType": "default"
+    },
+    {
+        "id": "27ab425e58dcba17",
+        "type": "ui-page",
+        "name": "Page 2",
+        "ui": "b8f4a9791328f42c",
+        "path": "/page2",
+        "icon": "home",
+        "layout": "grid",
+        "theme": "3879e91f08d0fed4",
+        "breakpoints": [
+            {
+                "name": "Default",
+                "px": 0,
+                "cols": 3
+            },
+            {
+                "name": "Tablet",
+                "px": 576,
+                "cols": 6
+            },
+            {
+                "name": "Small Desktop",
+                "px": 768,
+                "cols": 9
+            },
+            {
+                "name": "Desktop",
+                "px": 1024,
+                "cols": 12
+            }
+        ],
+        "order": 2,
+        "className": "",
+        "visible": true,
+        "disabled": false
+    },
+    {
+        "id": "96be9823ce5b595f",
+        "type": "ui-group",
+        "name": "Efficency",
+        "page": "c858a3399cfe614c",
+        "width": 6,
+        "height": 1,
+        "order": 2,
+        "showTitle": true,
+        "className": "",
+        "visible": "true",
+        "disabled": "false",
+        "groupType": "default"
+    },
+    {
+        "id": "e875dd427cdd28ab",
+        "type": "mqtt in",
+        "z": "0ebc9fe30e2af211",
+        "name": "ESP32: Proximity Event",
+        "topic": "smartbin/mouth/+/event/proximity",
+        "qos": "2",
+        "datatype": "json",
+        "broker": "24c0b9e5da4bd92d",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 1780,
+        "y": 580,
+        "wires": [
+            [
+                "af5e27da4267a0eb"
+            ]
+        ]
+    },
+    {
+        "id": "8fe53e2b9c97ddfe",
+        "type": "change",
+        "z": "0ebc9fe30e2af211",
+        "name": "CMD: Take Photo",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "{\"action\": \"take_photo\"}",
+                "tot": "json"
+            },
+            {
+                "t": "set",
+                "p": "payload.waste_id",
+                "pt": "msg",
+                "to": "waste_id",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "topic",
+                "pt": "msg",
+                "to": "\"smartbin/mouth/\" & msg.mouth_id & \"/command\"",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 2490,
+        "y": 580,
+        "wires": [
+            [
+                "ed591e3599a58756",
+                "9e35c62c1e6a9835"
+            ]
+        ]
+    },
+    {
+        "id": "ed591e3599a58756",
+        "type": "mqtt out",
+        "z": "0ebc9fe30e2af211",
+        "name": "Send Command to ESP32",
+        "topic": "",
+        "qos": "2",
+        "retain": "false",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "24c0b9e5da4bd92d",
+        "x": 2920,
+        "y": 580,
+        "wires": []
+    },
+    {
+        "id": "3a61ea4f3cbd4c54",
+        "type": "comment",
+        "z": "0ebc9fe30e2af211",
+        "name": "Info su mqtt out",
+        "info": "Useremo questo mqtt out per tutti i command (verso esp32)",
+        "x": 2880,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "ba66671fb2538c7f",
+        "type": "mqtt in",
+        "z": "0ebc9fe30e2af211",
+        "name": "ESP32: Classification Result",
+        "topic": "smartbin/mouth/+/state/classification",
+        "qos": "2",
+        "datatype": "json",
+        "broker": "24c0b9e5da4bd92d",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 1020,
+        "y": 1240,
+        "wires": [
+            [
+                "ce79c4573f883019",
+                "c46993174b5d7697"
+            ]
+        ]
+    },
+    {
+        "id": "29cac946e28e9376",
+        "type": "switch",
+        "z": "0ebc9fe30e2af211",
+        "name": "Which Waste?",
+        "property": "payload.class",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "plastic_metal",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "paper_cardboard",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "glass",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "Undifferentiated",
+                "vt": "str"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "false",
+        "repair": false,
+        "outputs": 5,
+        "x": 1840,
+        "y": 1440,
+        "wires": [
+            [
+                "82153f20bf0def85"
+            ],
+            [
+                "bd0dc1cdda63f001"
+            ],
+            [
+                "0714dd4773268030"
+            ],
+            [],
+            [
+                "d0428c32df4daa9c"
+            ]
+        ]
+    },
+    {
+        "id": "82153f20bf0def85",
+        "type": "change",
+        "z": "0ebc9fe30e2af211",
+        "name": "CMD: Open Plastic",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "{\"action\": \"open_gate\", \"target\": \"plastic\"}",
+                "tot": "json"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 2150,
+        "y": 1420,
+        "wires": [
+            [
+                "99fa5cf42ad50d89"
+            ]
+        ]
+    },
+    {
+        "id": "bd0dc1cdda63f001",
+        "type": "change",
+        "z": "0ebc9fe30e2af211",
+        "name": "CMD: Open Paper",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "{\"action\": \"open_gate\", \"target\": \"paper\"}",
+                "tot": "json"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 2150,
+        "y": 1480,
+        "wires": [
+            [
+                "99fa5cf42ad50d89"
+            ]
+        ]
+    },
+    {
+        "id": "0714dd4773268030",
+        "type": "change",
+        "z": "0ebc9fe30e2af211",
+        "name": "CMD: Open Glass",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "{\"action\": \"open_gate\", \"target\": \"glass\"}",
+                "tot": "json"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 2150,
+        "y": 1540,
+        "wires": [
+            [
+                "99fa5cf42ad50d89"
+            ]
+        ]
+    },
+    {
+        "id": "845360a3c703fac6",
+        "type": "mqtt in",
+        "z": "0ebc9fe30e2af211",
+        "name": "ESP32: User Correction",
+        "topic": "smartbin/mouth/+/event/correction",
+        "qos": "2",
+        "datatype": "json",
+        "broker": "24c0b9e5da4bd92d",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 1020,
+        "y": 1660,
+        "wires": [
+            [
+                "aa7bc76605df7819"
+            ]
+        ]
+    },
+    {
+        "id": "78ab28e72c844e14",
+        "type": "comment",
+        "z": "0ebc9fe30e2af211",
+        "name": "Corsia 2: Correzione Manuale",
+        "info": "",
+        "x": 1000,
+        "y": 1540,
+        "wires": []
+    },
+    {
+        "id": "20e175d851de9257",
+        "type": "comment",
+        "z": "0ebc9fe30e2af211",
+        "name": "Corsia 1: Innesco e Classificazione",
+        "info": "",
+        "x": 1740,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "dfba5c86279c1d7f",
+        "type": "aedes broker",
+        "z": "0ebc9fe30e2af211",
+        "name": "Broker",
+        "mqtt_port": "1883",
+        "mqtt_ws_bind": "port",
+        "mqtt_ws_port": "",
+        "mqtt_ws_path": "",
+        "cert": "",
+        "key": "",
+        "ca": "",
+        "certname": "",
+        "keyname": "",
+        "caname": "",
+        "persistence_bind": "memory",
+        "dburl": "",
+        "usetls": false,
+        "x": 1190,
+        "y": 640,
+        "wires": [
+            [],
+            []
+        ]
+    },
+    {
+        "id": "ce79c4573f883019",
+        "type": "change",
+        "z": "0ebc9fe30e2af211",
+        "name": "Estrai Classe per UI",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.class",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1380,
+        "y": 1240,
+        "wires": [
+            [
+                "516f611fd9bce57a",
+                "7b9373ecb1e5188a"
+            ]
+        ]
+    },
+    {
+        "id": "516f611fd9bce57a",
+        "type": "mqtt out",
+        "z": "0ebc9fe30e2af211",
+        "name": "Notifica UI Schermo",
+        "topic": "smartbin/ui/classification",
+        "qos": "2",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "24c0b9e5da4bd92d",
+        "x": 1800,
+        "y": 1240,
+        "wires": []
+    },
+    {
+        "id": "2c5a40c9e75cbdbe",
+        "type": "mqtt in",
+        "z": "0ebc9fe30e2af211",
+        "name": "ESP32: User Confirm",
+        "topic": "smartbin/mouth/+/event/confirm",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "24c0b9e5da4bd92d",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 1800,
+        "y": 1020,
+        "wires": [
+            [
+                "a0481e283d0645bc"
+            ]
+        ]
+    },
+    {
+        "id": "af5e27da4267a0eb",
+        "type": "function",
+        "z": "0ebc9fe30e2af211",
+        "name": "Allega ID",
+        "func": "// Estraiamo l'ID della bocca (es. \"1\")\nvar mouth_id = msg.topic.split('/')[2];\nvar states = flow.get(\"mouth_states\") || {};\n\n// Controlla se questa specifica bocca è già occupata\nif (states[mouth_id] && states[mouth_id].status === \"busy\") {\n    node.warn(\"Bocca \" + mouth_id + \" è BUSY. Evento di prossimità ignorato.\");\n    return null; // Ferma il flusso qui\n}\n\n// Watchdog timer (invariato)\nvar watchdogTimer = setTimeout(function () {\n    var current_states = flow.get(\"mouth_states\") || {};\n    if (current_states[mouth_id] && current_states[mouth_id].status === \"busy\") {\n        current_states[mouth_id].status = \"ready\";\n        current_states[mouth_id].timer = null;\n        flow.set(\"mouth_states\", current_states);\n        node.warn(\"Watchdog: Timeout per bocca \" + mouth_id + \". Reset a READY.\");\n    }\n}, 30000); // 30 secondi \n\n// Genera un waste_id\n//var new_waste_id = \"waste_\" + Date.now();\n\n// SOLO PER TEST INJECT\nvar new_waste_id = msg.payload.waste_id || msg.waste_id || (\"waste_\" + Date.now());\n\n// Salva il nuovo stato\nstates[mouth_id] = {\n    status: \"busy\",\n    timer: watchdogTimer,\n    retries: 0,            // <<< NUOVO: Inizializza contatore tentativi\n    current_waste_id: new_waste_id // <<< NUOVO: Salva il waste_id\n};\nflow.set(\"mouth_states\", states);\nnode.log(\"Bocca \" + mouth_id + \" impostata su BUSY.\");\n// --- FINE MODIFICA ---\n\nmsg.mouth_id = mouth_id;\nmsg.waste_id = new_waste_id; // Passa il nuovo waste_id\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 2180,
+        "y": 580,
+        "wires": [
+            [
+                "8fe53e2b9c97ddfe",
+                "edfeb6831cfafabd"
+            ]
+        ]
+    },
+    {
+        "id": "a0481e283d0645bc",
+        "type": "function",
+        "z": "0ebc9fe30e2af211",
+        "name": "Estrai ID",
+        "func": "// Estraiamo l'ID della bocca (es. \"1\")\nmsg.mouth_id = msg.topic.split('/')[2];\n\n// Prendiamo il waste_id che l'ESP32 ci ha rimandato\nif (msg.payload.waste_id) {\n    msg.waste_id = msg.payload.waste_id;\n}\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 2180,
+        "y": 1020,
+        "wires": [
+            [
+                "a4af529b2664c264"
+            ]
+        ]
+    },
+    {
+        "id": "c46993174b5d7697",
+        "type": "function",
+        "z": "0ebc9fe30e2af211",
+        "name": "Estrai ID",
+        "func": "var mouth_id = msg.topic.split('/')[2];\nvar waste_id = msg.payload.waste_id; // ID dal messaggio in arrivo\nvar states = flow.get(\"mouth_states\") || {};\n\n// --- MODIFICATO: Controllo di Sicurezza ---\n// Controlla se la bocca è busy E se il waste_id corrisponde\nif (!states[mouth_id] || states[mouth_id].status !== \"busy\" || states[mouth_id].current_waste_id !== waste_id) {\n    node.warn(\"Messaggio di classificazione vecchio o inatteso per bocca \" + mouth_id + \". Ignoro.\");\n    return null; // Blocca questo vecchio messaggio\n}\n\n// Se il controllo passa, è il messaggio che stavamo aspettando.\n// Cancella il Watchdog Timer\nif (states[mouth_id].timer) {\n    clearTimeout(states[mouth_id].timer);\n    states[mouth_id].timer = null;\n    flow.set(\"mouth_states\", states);\n    node.log(\"Watchdog per bocca \" + mouth_id + \" cancellato (ricevuta classificazione).\");\n}\n// --- FINE MODIFICA ---\n\nmsg.mouth_id = mouth_id; // Passa il mouth_id per i nodi successivi\n// msg.waste_id non serve più passarlo, ma non fa male\nmsg.waste_id = waste_id;\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1540,
+        "y": 1440,
+        "wires": [
+            [
+                "29cac946e28e9376"
+            ]
+        ]
+    },
+    {
+        "id": "aa7bc76605df7819",
+        "type": "function",
+        "z": "0ebc9fe30e2af211",
+        "name": "Estrai ID",
+        "func": "// Estraiamo l'ID della bocca (es. \"1\")\nmsg.mouth_id = msg.topic.split('/')[2];\n\n// Prendiamo il waste_id che l'ESP32 ci ha rimandato\nif (msg.payload.waste_id) {\n    msg.waste_id = msg.payload.waste_id;\n}\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1280,
+        "y": 1660,
+        "wires": [
+            [
+                "07d8e0f248e992f7"
+            ]
+        ]
+    },
+    {
+        "id": "99fa5cf42ad50d89",
+        "type": "function",
+        "z": "0ebc9fe30e2af211",
+        "name": "Avvia Timer 10s",
+        "func": "var sessions = flow.get(\"sessions\") || {};\nvar mouth_id = msg.mouth_id;\n\n// Dobbiamo estrarre il materiale (es. \"plastic\") dal payload\n// Il payload in arrivo è {\"action\": \"open_gate\", \"target\": \"plastic\"}\nvar material = \"sconosciuto\";\nif (msg.payload && msg.payload.target) {\n    material = msg.payload.target;\n}\n\n// Controlliamo se la correzione è stata segnalata dai nodi precedenti\n// Se msg.ai_correct non esiste (flusso normale), assumiamo sia TRUE.\n// Se esiste (viene da Gestisci Correzione), usiamo quel valore (FALSE).\nvar is_ai_correct = true;\nif (msg.hasOwnProperty(\"ai_correct\")) {\n    is_ai_correct = msg.ai_correct;\n}\n// --------------------\n\n// Memorizza TUTTI i dati che ci servono, non solo il comando\nsessions[mouth_id] = {\n    command: msg.payload,\n    topic: \"smartbin/mouth/\" + mouth_id + \"/command\",\n    waste_id: msg.waste_id, // <-- ECCO I DATI AGGIUNTI\n    material: material,      // <-- ECCO I DATI AGGIUNTI\n    ai_correct: is_ai_correct\n};\n\n// Funzione che invierà il comando\nvar sendCommand = function () {\n    var session = flow.get(\"sessions\")[mouth_id];\n    if (session) {\n\n        // NON inviare. Costruisci un \"lavoro\" (job) completo\n        var job = {\n            mqtt_payload: session.command,\n            mqtt_topic: session.topic,\n            belt_payload: {\n                info: \"Richiesta rilascio rifiuto (da Timer)\",\n                mouth_id: mouth_id,\n                waste_id: session.waste_id,\n                material: session.material,\n                ai_correct: is_ai_correct\n            }\n        };\n\n        // Invia il \"job\" all'unica uscita\n        node.send(job);\n\n        // Pulisci la sessione\n        delete flow.get(\"sessions\")[mouth_id];\n    }\n};\n\n// Avvia il timer (questo non cambia)\nsessions[mouth_id].timerId = setTimeout(sendCommand, 10000);\n\nflow.set(\"sessions\", sessions);\n\n// Non inviare nulla ora, aspetta il timer\nreturn null;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 2500,
+        "y": 1500,
+        "wires": [
+            [
+                "1ba717a825d0c3f6",
+                "e3bb7f57a288293c"
+            ]
+        ]
+    },
+    {
+        "id": "a4af529b2664c264",
+        "type": "function",
+        "z": "0ebc9fe30e2af211",
+        "name": "Gestisci Conferma",
+        "func": "var mouth_id = msg.mouth_id;\nvar sessions = flow.get(\"sessions\") || {};\nvar session = sessions[mouth_id];\n\n// Scenario A: Conferma durante il timer di 10 secondi (logica originale)\nif (session && session.timerId) {\n    node.log(\"Gestisci Conferma (Scenario A): Conferma durante il timer.\");\n\n    clearTimeout(session.timerId);\n\n    // Costruisci il \"lavoro\" (job) completo\n    var job = {\n        mqtt_payload: session.command,\n        mqtt_topic: session.topic,\n        belt_payload: {\n            info: \"Richiesta rilascio rifiuto (Confermato)\",\n            mouth_id: mouth_id,\n            waste_id: session.waste_id,\n            material: session.material,\n            ai_correct: session.ai_correct\n        }\n    };\n\n    delete sessions[mouth_id];\n    flow.set(\"sessions\", sessions);\n    return job; // Invia direttamente al \"Set Mouth Ready\"\n}\n\n// Scenario B: Conferma DOPO i 5 tentativi falliti\nvar states = flow.get(\"mouth_states\") || {};\nif (states[mouth_id] && states[mouth_id].status === \"busy\") {\n    node.log(\"Gestisci Conferma (Scenario B): Conferma dopo 5 fallimenti (caso 'unknown').\");\n\n    var waste_id = states[mouth_id].current_waste_id;\n    if (!waste_id) {\n        node.error(\"Stato 'busy' senza 'current_waste_id' per bocca \" + mouth_id);\n        return null;\n    }\n\n    // Costruisci un \"lavoro\" (job) per il materiale \"unknown\"\n    var job = {\n        mqtt_payload: { action: \"open_gate\", target: \"unknown\" },\n        mqtt_topic: \"smartbin/mouth/\" + mouth_id + \"/command\",\n        belt_payload: {\n            info: \"Richiesta rilascio rifiuto (Confermato come Unknown)\",\n            mouth_id: mouth_id,\n            waste_id: waste_id,\n            material: \"unknown\", // Il materiale è \"sconosciuto\"\n            ai_correct: session.ai_correct\n        }\n    };\n\n    // Invia al \"Set Mouth Ready\" per sbloccare la bocca\n    return job;\n}\n\n// Scenario C: Conferma fantasma\nnode.warn(\"Ricevuta conferma per bocca \" + mouth_id + \" senza sessione attiva o stato busy. Ignoro.\");\nreturn null;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 1,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 2490,
+        "y": 1020,
+        "wires": [
+            [
+                "25b5ab87189484a1",
+                "e3bb7f57a288293c"
+            ]
+        ]
+    },
+    {
+        "id": "07d8e0f248e992f7",
+        "type": "function",
+        "z": "0ebc9fe30e2af211",
+        "name": "Gestisci Correzione",
+        "func": "var mouth_id = msg.mouth_id;\nvar sessions = flow.get(\"sessions\") || {};\nvar session = sessions[mouth_id];\nvar states = flow.get(\"mouth_states\") || {};\nvar state = states[mouth_id];\n\n// Scenario A: Correzione durante il timer di 10 secondi\nif (session && session.timerId) {\n    node.log(\"Gestisci Correzione (Scenario A): Cancellazione timer precedente.\");\n    clearTimeout(session.timerId);\n    delete sessions[mouth_id];\n    flow.set(\"sessions\", sessions);\n}\n// Scenario B: Correzione DOPO i fallimenti (stato busy)\nelse if (state && state.status === \"busy\") {\n    node.log(\"Gestisci Correzione (Scenario B): Recupero waste_id.\");\n    msg.waste_id = state.current_waste_id;\n}\nelse {\n    node.warn(\"Ricevuta correzione senza stato valido. Ignoro.\");\n    return null;\n}\n\n// --- MAPPATURA INTELLIGENTE (Fix per lo Switch) ---\nvar input_class = msg.payload.corrected_class;\nvar mapped_class = input_class;\n\n// Mappa i nomi brevi (della UI/Inject) nei nomi tecnici (dello Switch)\nif (input_class === \"paper\") { mapped_class = \"paper_cardboard\"; }\nelse if (input_class === \"plastic\") { mapped_class = \"plastic_metal\"; }\nelse if (input_class === \"metal\") { mapped_class = \"plastic_metal\"; }\n// Aggiungi altri se necessario\n\nmsg.payload.class = mapped_class;\n// --------------------------------------------------\n\n// Segnaliamo esplicitamente che è una correzione umana\nmsg.ai_correct = false;\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1550,
+        "y": 1920,
+        "wires": [
+            [
+                "29cac946e28e9376",
+                "1abb47c764ed6944"
+            ]
+        ]
+    },
+    {
+        "id": "edfeb6831cfafabd",
+        "type": "debug",
+        "z": "0ebc9fe30e2af211",
+        "name": "debug_ID",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 2460,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "9e35c62c1e6a9835",
+        "type": "debug",
+        "z": "0ebc9fe30e2af211",
+        "name": "Send_Command",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 2890,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "7b9373ecb1e5188a",
+        "type": "debug",
+        "z": "0ebc9fe30e2af211",
+        "name": "debug_monitor",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1800,
+        "y": 1200,
+        "wires": []
+    },
+    {
+        "id": "1abb47c764ed6944",
+        "type": "debug",
+        "z": "0ebc9fe30e2af211",
+        "name": "debug_Correzione",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1990,
+        "y": 1920,
+        "wires": []
+    },
+    {
+        "id": "TEST_INJECT_1",
+        "type": "inject",
+        "z": "0ebc9fe30e2af211",
+        "name": "Simula: Proximity Bocca 1",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            },
+            {
+                "p": "testID",
+                "v": "1",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": "",
+        "topic": "smartbin/mouth/1/event/proximity",
+        "payload": "{\"user\":\"detected\"}",
+        "payloadType": "json",
+        "x": 1770,
+        "y": 640,
+        "wires": [
+            [
+                "af5e27da4267a0eb"
+            ]
+        ]
+    },
+    {
+        "id": "TEST_INJECT_3",
+        "type": "inject",
+        "z": "0ebc9fe30e2af211",
+        "name": "Simula: Conferma (Bocca 1)",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": "",
+        "topic": "smartbin/mouth/1/event/confirm",
+        "payload": "{\"confirm\":true,\"waste_id\":\"test_waste_123\"}",
+        "payloadType": "json",
+        "x": 1780,
+        "y": 960,
+        "wires": [
+            [
+                "a0481e283d0645bc"
+            ]
+        ]
+    },
+    {
+        "id": "TEST_INJECT_4",
+        "type": "inject",
+        "z": "0ebc9fe30e2af211",
+        "name": "Simula: Correzione -> Carta (Bocca 1)",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": "",
+        "topic": "smartbin/mouth/1/event/correction",
+        "payload": "{\"corrected_class\":\"paper\",\"waste_id\":\"test_waste_123\"}",
+        "payloadType": "json",
+        "x": 970,
+        "y": 1720,
+        "wires": [
+            [
+                "aa7bc76605df7819"
+            ]
+        ]
+    },
+    {
+        "id": "TEST_M2_PROXIMITY",
+        "type": "inject",
+        "z": "0ebc9fe30e2af211",
+        "name": "Simula: Proximity (Bocca 2)",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "smartbin/mouth/2/event/proximity",
+        "payload": "{\"user\":\"detected\",\"waste_id\":\"test_waste_123\"}",
+        "payloadType": "json",
+        "x": 1760,
+        "y": 520,
+        "wires": [
+            [
+                "af5e27da4267a0eb"
+            ]
+        ]
+    },
+    {
+        "id": "TEST_M2_CLASSIFY",
+        "type": "inject",
+        "z": "0ebc9fe30e2af211",
+        "name": "Simula: Class. VETRO (Bocca 2)",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": "",
+        "topic": "smartbin/mouth/2/state/classification",
+        "payload": "{\"class\":\"glass\",\"waste_id\":\"test_waste_123\"}",
+        "payloadType": "json",
+        "x": 1010,
+        "y": 1300,
+        "wires": [
+            [
+                "ce79c4573f883019",
+                "c46993174b5d7697"
+            ]
+        ]
+    },
+    {
+        "id": "TEST_M2_CONFIRM",
+        "type": "inject",
+        "z": "0ebc9fe30e2af211",
+        "name": "Simula: Conferma (Bocca 2)",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": "",
+        "topic": "smartbin/mouth/2/event/confirm",
+        "payload": "{\"confirm\":true,\"waste_id\":\"test_waste_123\"}",
+        "payloadType": "json",
+        "x": 1780,
+        "y": 1080,
+        "wires": [
+            [
+                "a0481e283d0645bc"
+            ]
+        ]
+    },
+    {
+        "id": "TEST_M2_CORRECT",
+        "type": "inject",
+        "z": "0ebc9fe30e2af211",
+        "name": "Simula: Correzione -> CARTA (Bocca 2)",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": "",
+        "topic": "smartbin/mouth/2/event/correction",
+        "payload": "{\"corrected_class\":\"paper_cardboard\",\"waste_id\":\"test_waste_123\"}",
+        "payloadType": "json",
+        "x": 970,
+        "y": 1600,
+        "wires": [
+            [
+                "aa7bc76605df7819"
+            ]
+        ]
+    },
+    {
+        "id": "681d291e531b6ecb",
+        "type": "link out",
+        "z": "0ebc9fe30e2af211",
+        "name": "link out 1",
+        "mode": "link",
+        "links": [
+            "FLOW2_LINK_IN"
+        ],
+        "x": 3165,
+        "y": 1300,
+        "wires": []
+    },
+    {
+        "id": "1ba717a825d0c3f6",
+        "type": "debug",
+        "z": "0ebc9fe30e2af211",
+        "name": "debug_TIMER_INVIO",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 3260,
+        "y": 1600,
+        "wires": []
+    },
+    {
+        "id": "25b5ab87189484a1",
+        "type": "debug",
+        "z": "0ebc9fe30e2af211",
+        "name": "debug_CONFERMA",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 2960,
+        "y": 1020,
+        "wires": []
+    },
+    {
+        "id": "af721c0cc903d6b0",
+        "type": "inject",
+        "z": "0ebc9fe30e2af211",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 1330,
+        "y": 220,
+        "wires": [
+            [
+                "4fe3c14ccb82e970"
+            ]
+        ]
+    },
+    {
+        "id": "4fe3c14ccb82e970",
+        "type": "change",
+        "z": "0ebc9fe30e2af211",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "mouth_states",
+                "pt": "flow",
+                "to": "null",
+                "tot": "json"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1580,
+        "y": 220,
+        "wires": [
+            [
+                "c5f0e46d7148096a"
+            ]
+        ]
+    },
+    {
+        "id": "e3bb7f57a288293c",
+        "type": "function",
+        "z": "0ebc9fe30e2af211",
+        "name": "Set Mouth Ready",
+        "func": "// Il payload in arrivo è il \"job\" per il Flusso 2\nvar mouth_id = msg.belt_payload.mouth_id;\n\nif (mouth_id) {\n    var states = flow.get(\"mouth_states\") || {};\n\n    // Reimposta lo stato della bocca\n    states[mouth_id] = {\n        status: \"ready\",\n        timer: null\n    };\n    flow.set(\"mouth_states\", states);\n    node.log(\"Bocca -\" + mouth_id + \" reimpostata su READY (lavoro inviato alla coda).\");\n\n} else {\n    node.error(\"Impossibile sbloccare la bocca: mouth_id non trovato!\", msg);\n}\n\n// Passa il messaggio originale al link out\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 2930,
+        "y": 1480,
+        "wires": [
+            [
+                "681d291e531b6ecb",
+                "1ba717a825d0c3f6"
+            ]
+        ]
+    },
+    {
+        "id": "d0428c32df4daa9c",
+        "type": "function",
+        "z": "0ebc9fe30e2af211",
+        "name": "Gestisci Tentativo",
+        "func": "var mouth_id = msg.mouth_id;\nvar states = flow.get(\"mouth_states\") || {};\n\n// Lo stato è già stato verificato, ma un doppio controllo non fa male\nif (!states[mouth_id] || states[mouth_id].status !== \"busy\") {\n    return null;\n}\n\n// Incrementa il contatore dei tentativi\nstates[mouth_id].retries += 1;\nnode.log(\"Bocca \" + mouth_id + \": Tentativo \" + states[mouth_id].retries + \" di 5.\");\nflow.set(\"mouth_states\", states);\n\nif (states[mouth_id].retries >= 5) {\n    // --- 5 TENTATIVI FALLITI ---\n    node.warn(\"Bocca \" + mouth_id + \": 5 tentativi falliti. In attesa di correzione manuale.\");\n\n    // Prepara messaggio per UI\n    var ui_msg = {\n        payload: \"Sconosciuto\",\n        topic: \"smartbin/ui/classification\"\n    };\n\n    // Uscita 1 (Retry): null\n    // Uscita 2 (UI Fail): ui_msg\n    return [null, ui_msg];\n\n} else {\n    // --- PROVA ANCORA ---\n\n    // Prepara messaggio di retry (comando \"take_photo\")\n    var retry_msg = {\n        payload: {\n            action: \"take_photo\",\n            waste_id: states[mouth_id].current_waste_id // Usa lo STESSO waste_id\n        },\n        topic: \"smartbin/mouth/\" + mouth_id + \"/command\"\n    };\n\n    // Uscita 1 (Retry): retry_msg\n    // Uscita 2 (UI Fail): null\n    return [retry_msg, null];\n}",
+        "outputs": 2,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 2150,
+        "y": 1340,
+        "wires": [
+            [
+                "d4701d56e29d9e58"
+            ],
+            [
+                "516f611fd9bce57a"
+            ]
+        ]
+    },
+    {
+        "id": "d4701d56e29d9e58",
+        "type": "delay",
+        "z": "0ebc9fe30e2af211",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "1",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 2460,
+        "y": 820,
+        "wires": [
+            [
+                "ed591e3599a58756"
+            ]
+        ]
+    },
+    {
+        "id": "a2ae74a404c55192",
+        "type": "mqtt in",
+        "z": "0ebc9fe30e2af211",
+        "name": "Ricevi Annulla",
+        "topic": "smartbin/mouth/+/event/cancel",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "24c0b9e5da4bd92d",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 850,
+        "y": 960,
+        "wires": [
+            [
+                "8abe8a5b0f495dfd"
+            ]
+        ]
+    },
+    {
+        "id": "8abe8a5b0f495dfd",
+        "type": "function",
+        "z": "0ebc9fe30e2af211",
+        "name": "Gestisci Annulla",
+        "func": "var mouth_id = msg.topic.split('/')[2];\nvar sessions = flow.get(\"sessions\") || {};\nvar states = flow.get(\"mouth_states\") || {};\n\n// 1. Gestione SESSIONE (Timer 10s)\nif (sessions[mouth_id]) {\n    if (sessions[mouth_id].timerId) {\n        clearTimeout(sessions[mouth_id].timerId);\n    }\n    delete sessions[mouth_id];\n    flow.set(\"sessions\", sessions);\n    node.log(\"Annulla: Sessione/Timer cancellati per bocca \" + mouth_id);\n}\n\n// 2. Gestione STATO (Busy -> Ready)\nif (states[mouth_id]) {\n    // Se c'è un watchdog timer (quello dello stato busy), cancellalo\n    if (states[mouth_id].timer) {\n        clearTimeout(states[mouth_id].timer);\n    }\n\n    // Forza lo stato a READY\n    states[mouth_id] = {\n        status: \"ready\",\n        timer: null\n    };\n    flow.set(\"mouth_states\", states);\n    node.log(\"Annulla: Stato forzato a READY per bocca \" + mouth_id);\n}\n\n// 3. Feedback per l'UI\nmsg.payload = \"Annullato\";\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1040,
+        "y": 860,
+        "wires": [
+            [
+                "516f611fd9bce57a"
+            ]
+        ]
+    },
+    {
+        "id": "c5f0e46d7148096a",
+        "type": "debug",
+        "z": "0ebc9fe30e2af211",
+        "name": "annulla",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1830,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "4e11d9bff69153f6",
+        "type": "ui-chart",
+        "z": "0ebc9fe30e2af211",
+        "group": "1e3f39414a332229",
+        "name": "Rifiuti Oggi",
+        "label": "chart",
+        "order": 1,
+        "chartType": "pie",
+        "category": "label",
+        "categoryType": "property",
+        "xAxisLabel": "",
+        "xAxisProperty": "",
+        "xAxisPropertyType": "timestamp",
+        "xAxisType": "radial",
+        "xAxisFormat": "",
+        "xAxisFormatType": "auto",
+        "xmin": "",
+        "xmax": "",
+        "yAxisLabel": "",
+        "yAxisProperty": "value",
+        "yAxisPropertyType": "property",
+        "ymin": "",
+        "ymax": "",
+        "bins": 10,
+        "action": "replace",
+        "stackSeries": false,
+        "pointShape": "circle",
+        "pointRadius": 4,
+        "showLegend": true,
+        "removeOlder": 1,
+        "removeOlderUnit": "3600",
+        "removeOlderPoints": "",
+        "colors": [
+            "#0095ff",
+            "#ff0000",
+            "#ff7f0e",
+            "#2ca02c",
+            "#a347e1",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "textColor": [
+            "#666666"
+        ],
+        "textColorDefault": true,
+        "gridColor": [
+            "#e5e5e5"
+        ],
+        "gridColorDefault": true,
+        "width": 6,
+        "height": 8,
+        "className": "",
+        "interpolation": "linear",
+        "x": 910,
+        "y": 2160,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "1ed7c51712df3bab",
+        "type": "ui-chart",
+        "z": "0ebc9fe30e2af211",
+        "group": "96be9823ce5b595f",
+        "name": "Performance AI",
+        "label": "chart",
+        "order": 1,
+        "chartType": "bar",
+        "category": "series",
+        "categoryType": "property",
+        "xAxisLabel": "",
+        "xAxisProperty": "x",
+        "xAxisPropertyType": "property",
+        "xAxisType": "category",
+        "xAxisFormat": "",
+        "xAxisFormatType": "auto",
+        "xmin": "",
+        "xmax": "",
+        "yAxisLabel": "",
+        "yAxisProperty": "y",
+        "yAxisPropertyType": "property",
+        "ymin": "",
+        "ymax": "",
+        "bins": 10,
+        "action": "replace",
+        "stackSeries": false,
+        "pointShape": "circle",
+        "pointRadius": 4,
+        "showLegend": true,
+        "removeOlder": 1,
+        "removeOlderUnit": "3600",
+        "removeOlderPoints": "",
+        "colors": [
+            "#0095ff",
+            "#ff0000",
+            "#ff7f0e",
+            "#2ca02c",
+            "#a347e1",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "textColor": [
+            "#666666"
+        ],
+        "textColorDefault": true,
+        "gridColor": [
+            "#e5e5e5"
+        ],
+        "gridColorDefault": true,
+        "width": 6,
+        "height": 8,
+        "className": "",
+        "interpolation": "linear",
+        "x": 920,
+        "y": 2180,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "9e04fd4558b2de01",
+        "type": "comment",
+        "z": "e196b19e598c60ff",
+        "name": "Corsia 3: Allarme Cestino Pieno",
+        "info": "",
+        "x": 730,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "7725588c4738cce2",
+        "type": "mqtt in",
+        "z": "e196b19e598c60ff",
+        "name": "ESP32: Bin State",
+        "topic": "smartbin/+/state/bin",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "24c0b9e5da4bd92d",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 680,
+        "y": 260,
+        "wires": [
+            [
+                "2c85b58fd3544ea4"
+            ]
+        ]
+    },
+    {
+        "id": "71f94a6d57cf5742",
+        "type": "switch",
+        "z": "e196b19e598c60ff",
+        "name": "Is it full?",
+        "property": "payload.status",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "full",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 1140,
+        "y": 260,
+        "wires": [
+            [
+                "5e7e163a0aba93d3"
+            ]
+        ]
+    },
+    {
+        "id": "25541cd51ddf623d",
+        "type": "telegrambot-notify",
+        "z": "e196b19e598c60ff",
+        "name": "SmartBin-TG",
+        "bot": "26b3815d27b3140c",
+        "chatId": "219634800",
+        "message": "",
+        "parseMode": "",
+        "x": 1930,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "2c85b58fd3544ea4",
+        "type": "function",
+        "z": "e196b19e598c60ff",
+        "name": "function 2",
+        "func": "// Il topic in arrivo è qualcosa come \"smartbin/plastica/stato\"\n// Lo dividiamo usando il carattere '/'\nconst topicParts = msg.topic.split('/');\n\n// L'ID del cestino è il secondo elemento (l'indice è 0, 1, 2)\nconst binId = topicParts[1];\n\n// Aggiungiamo l'ID al messaggio per poterlo usare dopo\nmsg.bin_id = binId;\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 920,
+        "y": 260,
+        "wires": [
+            [
+                "71f94a6d57cf5742"
+            ]
+        ]
+    },
+    {
+        "id": "4ae29de0837a4242",
+        "type": "template",
+        "z": "e196b19e598c60ff",
+        "name": "Message",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "Cestino {{bin_id}} PIENO \nProvvedere alla sostituzione il prima possibile!",
+        "output": "str",
+        "x": 1680,
+        "y": 260,
+        "wires": [
+            [
+                "25541cd51ddf623d"
+            ]
+        ]
+    },
+    {
+        "id": "5e7e163a0aba93d3",
+        "type": "delay",
+        "z": "e196b19e598c60ff",
+        "name": "",
+        "pauseType": "timed",
+        "timeout": "5",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "10",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": true,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 1400,
+        "y": 260,
+        "wires": [
+            [
+                "4ae29de0837a4242"
+            ]
+        ]
+    },
+    {
+        "id": "FLOW2_INIT",
+        "type": "inject",
+        "z": "e196b19e598c60ff",
+        "name": "Inizializza Nastro (all'avvio)",
+        "props": [],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 720,
+        "y": 540,
+        "wires": [
+            [
+                "FLOW2_SET_READY"
+            ]
+        ]
+    },
+    {
+        "id": "FLOW2_SET_READY",
+        "type": "change",
+        "z": "e196b19e598c60ff",
+        "name": "Imposta Nastro = READY, Coda = []",
+        "rules": [
+            {
+                "t": "set",
+                "p": "belt_status",
+                "pt": "flow",
+                "to": "ready",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "belt_queue",
+                "pt": "flow",
+                "to": "[]",
+                "tot": "json"
+            }
+        ],
+        "x": 1060,
+        "y": 540,
+        "wires": [
+            [
+                "26ca1cddcd442861"
+            ]
+        ]
+    },
+    {
+        "id": "FLOW2_LINK_IN",
+        "type": "link in",
+        "z": "e196b19e598c60ff",
+        "name": "Da Flow 1: Richiesta Rilascio",
+        "links": [
+            "681d291e531b6ecb"
+        ],
+        "x": 825,
+        "y": 640,
+        "wires": [
+            [
+                "FLOW2_QUEUE_MANAGER"
+            ]
+        ]
+    },
+    {
+        "id": "FLOW2_QUEUE_MANAGER",
+        "type": "function",
+        "z": "e196b19e598c60ff",
+        "name": "Gestore Coda Nastro",
+        "func": "var belt_status = flow.get(\"belt_status\") || \"ready\";\nvar job = msg;\n\nif (belt_status === \"ready\") {\n    flow.set(\"belt_status\", \"busy\");\n\n    var mqttMsg = { payload: job.mqtt_payload, topic: job.mqtt_topic };\n    // Uscita 2 potrebbe essere per un log intermedio, o non usata\n    var logStartMsg = { payload: \"Avvio nastro per: \" + job.belt_payload.material };\n    var beltMsg = { payload: job.belt_payload }; // Info rifiuto per simulazione nastro\n\n    // mqttMsg su Uscita 1, logStartMsg su 2, beltMsg su 3\n    return [mqttMsg, null, beltMsg];\n} else {\n    var queue = flow.get(\"belt_queue\") || [];\n    queue.push(job);\n    flow.set(\"belt_queue\", queue);\n    node.warn(\"Nastro occupato, accodato: \" + job.belt_payload.material + \" da bocca \" + job.belt_payload.mouth_id);\n    return null;\n}",
+        "outputs": 3,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1020,
+        "y": 640,
+        "wires": [
+            [
+                "FLOW2_MQTT_OUT"
+            ],
+            [
+                "FLOW2_LOG_BELT"
+            ],
+            [
+                "567d7c7673949b7e"
+            ]
+        ]
+    },
+    {
+        "id": "FLOW2_MQTT_IN_CLEAR",
+        "type": "mqtt in",
+        "z": "e196b19e598c60ff",
+        "name": "Nastro: Rifiuto Smaltito",
+        "topic": "smartbin/belt/event/cleared",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "24c0b9e5da4bd92d",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 740,
+        "y": 740,
+        "wires": [
+            [
+                "FLOW2_PROCESS_QUEUE"
+            ]
+        ]
+    },
+    {
+        "id": "FLOW2_PROCESS_QUEUE",
+        "type": "function",
+        "z": "e196b19e598c60ff",
+        "name": "Processa Coda",
+        "func": "var queue = flow.get(\"belt_queue\") || [];\n\nif (queue.length > 0) {\n    var job = queue.shift();\n    flow.set(\"belt_queue\", queue);\n    // Nastro rimane \"busy\"\n\n    var mqttMsg = { payload: job.mqtt_payload, topic: job.mqtt_topic };\n    // Uscita 2 potrebbe essere per un log intermedio, o non usata\n    var logStartMsg = { payload: \"Avvio nastro (dalla coda) per: \" + job.belt_payload.material };\n    var beltMsg = { payload: job.belt_payload }; // Info rifiuto per simulazione nastro\n\n    // mqttMsg su Uscita 1, logStartMsg su 2, beltMsg su 3\n    return [mqttMsg, null, beltMsg];\n} else {\n    flow.set(\"belt_status\", \"ready\");\n    node.log(\"Coda vuota, Nastro impostato su READY.\");\n    return null;\n}",
+        "outputs": 3,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1000,
+        "y": 740,
+        "wires": [
+            [
+                "FLOW2_MQTT_OUT"
+            ],
+            [
+                "FLOW2_LOG_BELT"
+            ],
+            [
+                "567d7c7673949b7e"
+            ]
+        ]
+    },
+    {
+        "id": "FLOW2_MQTT_OUT",
+        "type": "mqtt out",
+        "z": "e196b19e598c60ff",
+        "name": "Send 'open_gate' Command (da Nastro)",
+        "topic": "",
+        "qos": "2",
+        "retain": "false",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "24c0b9e5da4bd92d",
+        "x": 1460,
+        "y": 720,
+        "wires": []
+    },
+    {
+        "id": "FLOW2_LOG_BELT",
+        "type": "debug",
+        "z": "e196b19e598c60ff",
+        "name": "LOG NASTRO",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1380,
+        "y": 620,
+        "wires": []
+    },
+    {
+        "id": "26ca1cddcd442861",
+        "type": "debug",
+        "z": "e196b19e598c60ff",
+        "name": "debug_IMPOSTA_NASTRO",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1420,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "567d7c7673949b7e",
+        "type": "link out",
+        "z": "e196b19e598c60ff",
+        "name": "Trigger Simulazione Nastro",
+        "mode": "link",
+        "links": [
+            "SIM_LINK_IN"
+        ],
+        "x": 1305,
+        "y": 820,
+        "wires": []
+    },
+    {
+        "id": "SIM_LINK_IN",
+        "type": "link in",
+        "z": "e196b19e598c60ff",
+        "name": "Avvio Simulazione Nastro",
+        "links": [
+            "567d7c7673949b7e"
+        ],
+        "x": 1525,
+        "y": 820,
+        "wires": [
+            [
+                "SIM_SAVE_INFO"
+            ]
+        ]
+    },
+    {
+        "id": "SIM_SAVE_INFO",
+        "type": "change",
+        "z": "e196b19e598c60ff",
+        "name": "Salva Info Rifiuto Corrente",
+        "rules": [
+            {
+                "t": "set",
+                "p": "current_belt_job",
+                "pt": "flow",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1800,
+        "y": 820,
+        "wires": [
+            [
+                "258343f5297c36ed"
+            ]
+        ]
+    },
+    {
+        "id": "SIM_INJECT_SENSOR",
+        "type": "inject",
+        "z": "e196b19e598c60ff",
+        "name": "Simula: Sensore Nastro Rileva Rifiuto",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 750,
+        "y": 1060,
+        "wires": [
+            [
+                "SIM_DELAY_10S"
+            ]
+        ]
+    },
+    {
+        "id": "SIM_DELAY_10S",
+        "type": "delay",
+        "z": "e196b19e598c60ff",
+        "name": "Simula: Tempo Smaltimento (10s)",
+        "pauseType": "delay",
+        "timeout": "10",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 1080,
+        "y": 1060,
+        "wires": [
+            [
+                "SIM_GET_INFO"
+            ]
+        ]
+    },
+    {
+        "id": "SIM_GET_INFO",
+        "type": "function",
+        "z": "e196b19e598c60ff",
+        "name": "Allega Info Rifiuto Smaltito",
+        "func": "// Recupera le info del rifiuto che ha appena finito\nmsg.rifiuto_smaltito = flow.get(\"current_belt_job\");\n// Opcional: pulisci la variabile se vuoi\n// flow.set(\"current_belt_job\", null); \nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1370,
+        "y": 1060,
+        "wires": [
+            [
+                "SIM_CREATE_CLEARED_MSG"
+            ]
+        ]
+    },
+    {
+        "id": "SIM_CREATE_CLEARED_MSG",
+        "type": "change",
+        "z": "e196b19e598c60ff",
+        "name": "Crea Msg: Nastro Libero",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "{\"status\":\"cleared\"}",
+                "tot": "json"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1650,
+        "y": 1060,
+        "wires": [
+            [
+                "SIM_MQTT_OUT_CLEARED",
+                "81394f7a933b62b5"
+            ]
+        ]
+    },
+    {
+        "id": "SIM_MQTT_OUT_CLEARED",
+        "type": "mqtt out",
+        "z": "e196b19e598c60ff",
+        "name": "Invia Evento: Nastro Libero",
+        "topic": "smartbin/belt/event/cleared",
+        "qos": "2",
+        "retain": "false",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "24c0b9e5da4bd92d",
+        "x": 1920,
+        "y": 1060,
+        "wires": []
+    },
+    {
+        "id": "81394f7a933b62b5",
+        "type": "debug",
+        "z": "e196b19e598c60ff",
+        "name": "debug_cleared",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1885,
+        "y": 1160,
+        "wires": []
+    },
+    {
+        "id": "258343f5297c36ed",
+        "type": "debug",
+        "z": "e196b19e598c60ff",
+        "name": "debug_RIFIUTO_CORRENTE",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 2200,
+        "y": 820,
+        "wires": []
+    },
+    {
+        "id": "c6d7df5d4fc29b55",
+        "type": "global-config",
+        "env": [],
+        "modules": {
+            "node-red-contrib-telegrambot-home": "0.8.0",
+            "@flowfuse/node-red-dashboard": "1.29.0",
+            "node-red-contrib-aedes": "0.15.0"
+        }
+    }
+]
