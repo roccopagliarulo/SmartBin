@@ -16,6 +16,131 @@
         "env": []
     },
     {
+        "id": "de99ec2141cbd81f",
+        "type": "group",
+        "z": "0ebc9fe30e2af211",
+        "name": "CREAZIONE DB (Da eseguire solo una volta)",
+        "style": {
+            "label": true
+        },
+        "nodes": [
+            "9ce4f3b67e84a1eb",
+            "3ed309125e4d5c7d"
+        ],
+        "x": 794,
+        "y": 2339,
+        "w": 992,
+        "h": 82
+    },
+    {
+        "id": "900bf7bf98ef5e48",
+        "type": "group",
+        "z": "0ebc9fe30e2af211",
+        "name": "Preparazione del Database (SQLite)",
+        "style": {
+            "label": true
+        },
+        "nodes": [
+            "21119488f0fcdc46"
+        ],
+        "x": 794,
+        "y": 2179,
+        "w": 672,
+        "h": 82
+    },
+    {
+        "id": "d5b0e68c69f5dd85",
+        "type": "group",
+        "z": "0ebc9fe30e2af211",
+        "name": "Salvare i Dati (Scrittura)",
+        "style": {
+            "label": true
+        },
+        "nodes": [
+            "9843e18731ff976b",
+            "51c95b9a03b5c860"
+        ],
+        "x": 3194,
+        "y": 1439,
+        "w": 452,
+        "h": 82
+    },
+    {
+        "id": "8d50bf9a1e710b05",
+        "type": "group",
+        "z": "0ebc9fe30e2af211",
+        "name": "Handle_View_chart",
+        "style": {
+            "label": true
+        },
+        "nodes": [
+            "4933d83c3ffd4cc2",
+            "a908c8d6422e514a",
+            "7b277b7f02e4bd26",
+            "f507250023c4bd98",
+            "1182bc5a0f716974",
+            "3d75e7fc0839c97d",
+            "32cdb335e26905da",
+            "40110bf9cd3a368b",
+            "795145e4a8e20418",
+            "b7a2c9425424a93f",
+            "b122c1e8d4d18fc9",
+            "e922a3be02896062",
+            "query_ai_stats",
+            "sqlite_ai_stats",
+            "format_ai_chart",
+            "split_ai_data",
+            "fix_ai_msg",
+            "chart_ai_accuracy",
+            "delay_node",
+            "1a5168f0038d5725",
+            "609fcb634e466613",
+            "e2d51efdc1eed115"
+        ],
+        "x": 2274,
+        "y": 1919,
+        "w": 2652,
+        "h": 522
+    },
+    {
+        "id": "ecabd79993662d15",
+        "type": "group",
+        "z": "0ebc9fe30e2af211",
+        "name": "DEBUG_SQL_INSERT",
+        "style": {
+            "label": true
+        },
+        "nodes": [
+            "inspector_inject",
+            "inspector_sqlite",
+            "inspector_debug",
+            "test_write_debug",
+            "test_write_inject",
+            "test_write_sqlite"
+        ],
+        "x": 794,
+        "y": 2619,
+        "w": 712,
+        "h": 162
+    },
+    {
+        "id": "7565126f5d2e9e7a",
+        "type": "group",
+        "z": "0ebc9fe30e2af211",
+        "name": "Catch",
+        "style": {
+            "label": true
+        },
+        "nodes": [
+            "catch_errors",
+            "debug_errors"
+        ],
+        "x": 794,
+        "y": 2479,
+        "w": 452,
+        "h": 82
+    },
+    {
         "id": "24c0b9e5da4bd92d",
         "type": "mqtt-broker",
         "name": "",
@@ -45,14 +170,6 @@
         "willMsg": {},
         "userProps": "",
         "sessionExpiry": ""
-    },
-    {
-        "id": "26b3815d27b3140c",
-        "type": "telegrambot-config",
-        "botname": "SmartBinBot",
-        "usernames": "Rocco Pagliarulo",
-        "chatIds": "219634800",
-        "pollInterval": 300
     },
     {
         "id": "b8f4a9791328f42c",
@@ -94,6 +211,20 @@
         }
     },
     {
+        "id": "26b3815d27b3140c",
+        "type": "telegrambot-config",
+        "botname": "SmartBinBot",
+        "usernames": "Rocco Pagliarulo",
+        "chatIds": "219634800",
+        "pollInterval": 300
+    },
+    {
+        "id": "e1dff9e0ae649db1",
+        "type": "sqlitedb",
+        "db": "/Users/roccopagliarulo/Documents/GitHub/SmartBin/backend/db/tmp/smartbin_test.db",
+        "mode": "RWC"
+    },
+    {
         "id": "c858a3399cfe614c",
         "type": "ui-page",
         "name": "Reportistica",
@@ -130,11 +261,11 @@
         "disabled": "false"
     },
     {
-        "id": "1e3f39414a332229",
+        "id": "dd6fab847597a4f7",
         "type": "ui-group",
-        "name": "Quantità rifiuti",
+        "name": "Gate",
         "page": "c858a3399cfe614c",
-        "width": 6,
+        "width": "12",
         "height": 1,
         "order": 1,
         "showTitle": true,
@@ -144,49 +275,27 @@
         "groupType": "default"
     },
     {
-        "id": "27ab425e58dcba17",
-        "type": "ui-page",
-        "name": "Page 2",
-        "ui": "b8f4a9791328f42c",
-        "path": "/page2",
-        "icon": "home",
-        "layout": "grid",
-        "theme": "3879e91f08d0fed4",
-        "breakpoints": [
-            {
-                "name": "Default",
-                "px": 0,
-                "cols": 3
-            },
-            {
-                "name": "Tablet",
-                "px": 576,
-                "cols": 6
-            },
-            {
-                "name": "Small Desktop",
-                "px": 768,
-                "cols": 9
-            },
-            {
-                "name": "Desktop",
-                "px": 1024,
-                "cols": 12
-            }
-        ],
-        "order": 2,
-        "className": "",
-        "visible": true,
-        "disabled": false
-    },
-    {
-        "id": "96be9823ce5b595f",
+        "id": "813651c816117ad2",
         "type": "ui-group",
-        "name": "Efficency",
+        "name": "Storico",
         "page": "c858a3399cfe614c",
-        "width": 6,
+        "width": "12",
         "height": 1,
         "order": 2,
+        "showTitle": true,
+        "className": "",
+        "visible": "true",
+        "disabled": "false",
+        "groupType": "default"
+    },
+    {
+        "id": "group_ai_perf",
+        "type": "ui-group",
+        "name": "Performance AI",
+        "page": "c858a3399cfe614c",
+        "width": "12",
+        "height": 1,
+        "order": 3,
         "showTitle": true,
         "className": "",
         "visible": "true",
@@ -369,7 +478,7 @@
                 "t": "set",
                 "p": "payload",
                 "pt": "msg",
-                "to": "{\"action\": \"open_gate\", \"target\": \"plastic\"}",
+                "to": "{\"action\": \"open_gate\", \"target\": \"plastic_metal\"}",
                 "tot": "json"
             }
         ],
@@ -396,7 +505,7 @@
                 "t": "set",
                 "p": "payload",
                 "pt": "msg",
-                "to": "{\"action\": \"open_gate\", \"target\": \"paper\"}",
+                "to": "{\"action\": \"open_gate\", \"target\": \"paper_cardboard\"}",
                 "tot": "json"
             }
         ],
@@ -482,31 +591,6 @@
         "wires": []
     },
     {
-        "id": "dfba5c86279c1d7f",
-        "type": "aedes broker",
-        "z": "0ebc9fe30e2af211",
-        "name": "Broker",
-        "mqtt_port": "1883",
-        "mqtt_ws_bind": "port",
-        "mqtt_ws_port": "",
-        "mqtt_ws_path": "",
-        "cert": "",
-        "key": "",
-        "ca": "",
-        "certname": "",
-        "keyname": "",
-        "caname": "",
-        "persistence_bind": "memory",
-        "dburl": "",
-        "usetls": false,
-        "x": 1190,
-        "y": 640,
-        "wires": [
-            [],
-            []
-        ]
-    },
-    {
         "id": "ce79c4573f883019",
         "type": "change",
         "z": "0ebc9fe30e2af211",
@@ -548,8 +632,8 @@
         "correl": "",
         "expiry": "",
         "broker": "24c0b9e5da4bd92d",
-        "x": 1800,
-        "y": 1240,
+        "x": 1940,
+        "y": 1180,
         "wires": []
     },
     {
@@ -659,7 +743,7 @@
         "type": "function",
         "z": "0ebc9fe30e2af211",
         "name": "Avvia Timer 10s",
-        "func": "var sessions = flow.get(\"sessions\") || {};\nvar mouth_id = msg.mouth_id;\n\n// Dobbiamo estrarre il materiale (es. \"plastic\") dal payload\n// Il payload in arrivo è {\"action\": \"open_gate\", \"target\": \"plastic\"}\nvar material = \"sconosciuto\";\nif (msg.payload && msg.payload.target) {\n    material = msg.payload.target;\n}\n\n// Controlliamo se la correzione è stata segnalata dai nodi precedenti\n// Se msg.ai_correct non esiste (flusso normale), assumiamo sia TRUE.\n// Se esiste (viene da Gestisci Correzione), usiamo quel valore (FALSE).\nvar is_ai_correct = true;\nif (msg.hasOwnProperty(\"ai_correct\")) {\n    is_ai_correct = msg.ai_correct;\n}\n// --------------------\n\n// Memorizza TUTTI i dati che ci servono, non solo il comando\nsessions[mouth_id] = {\n    command: msg.payload,\n    topic: \"smartbin/mouth/\" + mouth_id + \"/command\",\n    waste_id: msg.waste_id, // <-- ECCO I DATI AGGIUNTI\n    material: material,      // <-- ECCO I DATI AGGIUNTI\n    ai_correct: is_ai_correct\n};\n\n// Funzione che invierà il comando\nvar sendCommand = function () {\n    var session = flow.get(\"sessions\")[mouth_id];\n    if (session) {\n\n        // NON inviare. Costruisci un \"lavoro\" (job) completo\n        var job = {\n            mqtt_payload: session.command,\n            mqtt_topic: session.topic,\n            belt_payload: {\n                info: \"Richiesta rilascio rifiuto (da Timer)\",\n                mouth_id: mouth_id,\n                waste_id: session.waste_id,\n                material: session.material,\n                ai_correct: is_ai_correct\n            }\n        };\n\n        // Invia il \"job\" all'unica uscita\n        node.send(job);\n\n        // Pulisci la sessione\n        delete flow.get(\"sessions\")[mouth_id];\n    }\n};\n\n// Avvia il timer (questo non cambia)\nsessions[mouth_id].timerId = setTimeout(sendCommand, 10000);\n\nflow.set(\"sessions\", sessions);\n\n// Non inviare nulla ora, aspetta il timer\nreturn null;",
+        "func": "/*\nvar sessions = flow.get(\"sessions\") || {};\nvar mouth_id = msg.mouth_id;\n\n// Dobbiamo estrarre il materiale (es. \"plastic\") dal payload\n// Il payload in arrivo è {\"action\": \"open_gate\", \"target\": \"plastic\"}\nvar material = \"sconosciuto\";\nif (msg.payload && msg.payload.target) {\n    material = msg.payload.target;\n}\n\n// Controlliamo se la correzione è stata segnalata dai nodi precedenti\n// Se msg.ai_correct non esiste (flusso normale), assumiamo sia TRUE.\n// Se esiste (viene da Gestisci Correzione), usiamo quel valore (FALSE).\nvar is_ai_correct = true;\nif (msg.hasOwnProperty(\"ai_correct\")) {\n    is_ai_correct = msg.ai_correct;\n}\n// --------------------\n\n// Memorizza TUTTI i dati che ci servono, non solo il comando\nsessions[mouth_id] = {\n    command: msg.payload,\n    topic: \"smartbin/mouth/\" + mouth_id + \"/command\",\n    waste_id: msg.waste_id, // <-- ECCO I DATI AGGIUNTI\n    material: material,      // <-- ECCO I DATI AGGIUNTI\n    ai_correct: is_ai_correct\n};\n\n// Funzione che invierà il comando\nvar sendCommand = function () {\n    var session = flow.get(\"sessions\")[mouth_id];\n    if (session) {\n\n        // NON inviare. Costruisci un \"lavoro\" (job) completo\n        var job = {\n            mqtt_payload: session.command,\n            mqtt_topic: session.topic,\n            belt_payload: {\n                info: \"Richiesta rilascio rifiuto (da Timer)\",\n                mouth_id: mouth_id,\n                waste_id: session.waste_id,\n                material: session.material,\n                ai_correct: is_ai_correct\n            }\n        };\n\n        // Invia il \"job\" all'unica uscita\n        node.send(job);\n\n        // Pulisci la sessione\n        delete flow.get(\"sessions\")[mouth_id];\n    }\n};\n\n// Avvia il timer (questo non cambia)\nsessions[mouth_id].timerId = setTimeout(sendCommand, 10000);\n\nflow.set(\"sessions\", sessions);\n\n// Non inviare nulla ora, aspetta il timer\nreturn null;\n*/\n\n// NODO: Avvia Timer 10s (Fix waste_id)\n\nvar sessions = flow.get(\"sessions\") || {};\nvar mouth_id = msg.mouth_id;\n\n// Estraiamo il materiale dal payload\nvar material = \"sconosciuto\";\nif (msg.payload && msg.payload.target) {\n    material = msg.payload.target;\n}\n\n// Controlliamo se la correzione è stata segnalata\nvar is_ai_correct = true;\nif (msg.hasOwnProperty(\"ai_correct\")) {\n    is_ai_correct = msg.ai_correct;\n}\n\n// IMPORTANTE: Recupera waste_id dal messaggio\nvar waste_id = msg.waste_id;\n\n// Debug per verificare\nnode.warn(\"Avvia Timer - mouth_id: \" + mouth_id + \", waste_id: \" + waste_id + \", material: \" + material);\n\n// Memorizza TUTTI i dati necessari\nsessions[mouth_id] = {\n    command: msg.payload,\n    topic: \"smartbin/mouth/\" + mouth_id + \"/command\",\n    waste_id: waste_id,      // <<< SALVA waste_id\n    material: material,\n    ai_correct: is_ai_correct\n};\n\n// Funzione che invierà il comando\nvar sendCommand = function () {\n    var session = flow.get(\"sessions\")[mouth_id];\n    if (session) {\n        // Costruisci il \"job\" completo\n        var job = {\n            mqtt_payload: session.command,\n            mqtt_topic: session.topic,\n            belt_payload: {\n                info: \"Richiesta rilascio rifiuto (da Timer)\",\n                mouth_id: mouth_id,\n                waste_id: session.waste_id,  // <<< USA waste_id dalla sessione\n                material: session.material,\n                ai_correct: session.ai_correct\n            }\n        };\n\n        // Invia il \"job\"\n        node.send(job);\n\n        // Pulisci la sessione\n        delete flow.get(\"sessions\")[mouth_id];\n    }\n};\n\n// Avvia il timer\nsessions[mouth_id].timerId = setTimeout(sendCommand, 10000);\n\nflow.set(\"sessions\", sessions);\n\n// Non inviare nulla ora, aspetta il timer\nreturn null;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -680,7 +764,7 @@
         "type": "function",
         "z": "0ebc9fe30e2af211",
         "name": "Gestisci Conferma",
-        "func": "var mouth_id = msg.mouth_id;\nvar sessions = flow.get(\"sessions\") || {};\nvar session = sessions[mouth_id];\n\n// Scenario A: Conferma durante il timer di 10 secondi (logica originale)\nif (session && session.timerId) {\n    node.log(\"Gestisci Conferma (Scenario A): Conferma durante il timer.\");\n\n    clearTimeout(session.timerId);\n\n    // Costruisci il \"lavoro\" (job) completo\n    var job = {\n        mqtt_payload: session.command,\n        mqtt_topic: session.topic,\n        belt_payload: {\n            info: \"Richiesta rilascio rifiuto (Confermato)\",\n            mouth_id: mouth_id,\n            waste_id: session.waste_id,\n            material: session.material,\n            ai_correct: session.ai_correct\n        }\n    };\n\n    delete sessions[mouth_id];\n    flow.set(\"sessions\", sessions);\n    return job; // Invia direttamente al \"Set Mouth Ready\"\n}\n\n// Scenario B: Conferma DOPO i 5 tentativi falliti\nvar states = flow.get(\"mouth_states\") || {};\nif (states[mouth_id] && states[mouth_id].status === \"busy\") {\n    node.log(\"Gestisci Conferma (Scenario B): Conferma dopo 5 fallimenti (caso 'unknown').\");\n\n    var waste_id = states[mouth_id].current_waste_id;\n    if (!waste_id) {\n        node.error(\"Stato 'busy' senza 'current_waste_id' per bocca \" + mouth_id);\n        return null;\n    }\n\n    // Costruisci un \"lavoro\" (job) per il materiale \"unknown\"\n    var job = {\n        mqtt_payload: { action: \"open_gate\", target: \"unknown\" },\n        mqtt_topic: \"smartbin/mouth/\" + mouth_id + \"/command\",\n        belt_payload: {\n            info: \"Richiesta rilascio rifiuto (Confermato come Unknown)\",\n            mouth_id: mouth_id,\n            waste_id: waste_id,\n            material: \"unknown\", // Il materiale è \"sconosciuto\"\n            ai_correct: session.ai_correct\n        }\n    };\n\n    // Invia al \"Set Mouth Ready\" per sbloccare la bocca\n    return job;\n}\n\n// Scenario C: Conferma fantasma\nnode.warn(\"Ricevuta conferma per bocca \" + mouth_id + \" senza sessione attiva o stato busy. Ignoro.\");\nreturn null;",
+        "func": "/*\n\nvar mouth_id = msg.mouth_id;\nvar sessions = flow.get(\"sessions\") || {};\nvar session = sessions[mouth_id];\n\n// Scenario A: Conferma durante il timer di 10 secondi (logica originale)\nif (session && session.timerId) {\n    node.log(\"Gestisci Conferma (Scenario A): Conferma durante il timer.\");\n\n    clearTimeout(session.timerId);\n\n    // Costruisci il \"lavoro\" (job) completo\n    var job = {\n        mqtt_payload: session.command,\n        mqtt_topic: session.topic,\n        belt_payload: {\n            info: \"Richiesta rilascio rifiuto (Confermato)\",\n            mouth_id: mouth_id,\n            waste_id: session.waste_id,\n            material: session.material,\n            ai_correct: session.ai_correct !== undefined ? session.ai_correct : true\n        }\n    };\n\n    delete sessions[mouth_id];\n    flow.set(\"sessions\", sessions);\n    return job; // Invia direttamente al \"Set Mouth Ready\"\n}\n\n// Scenario B: Conferma DOPO i 5 tentativi falliti\nvar states = flow.get(\"mouth_states\") || {};\nif (states[mouth_id] && states[mouth_id].status === \"busy\") {\n    node.log(\"Gestisci Conferma (Scenario B): Conferma dopo 5 fallimenti (caso 'unknown').\");\n\n    var waste_id = states[mouth_id].current_waste_id;\n    if (!waste_id) {\n        node.error(\"Stato 'busy' senza 'current_waste_id' per bocca \" + mouth_id);\n        return null;\n    }\n\n    // Costruisci un \"lavoro\" (job) per il materiale \"unknown\"\n    var job = {\n        mqtt_payload: { action: \"open_gate\", target: \"unknown\" },\n        mqtt_topic: \"smartbin/mouth/\" + mouth_id + \"/command\",\n        belt_payload: {\n            info: \"Richiesta rilascio rifiuto (Confermato come Unknown)\",\n            mouth_id: mouth_id,\n            waste_id: waste_id,\n            material: \"unknown\", // Il materiale è \"sconosciuto\"\n            ai_correct: false\n        }\n    };\n\n    // Invia al \"Set Mouth Ready\" per sbloccare la bocca\n    return job;\n}\n\n// Scenario C: Conferma fantasma\nnode.warn(\"Ricevuta conferma per bocca \" + mouth_id + \" senza sessione attiva o stato busy. Ignoro.\");\nreturn null;\n\n\n*/\n// NODO: Gestisci Conferma (Fix waste_id)\n\nvar mouth_id = msg.mouth_id;\nvar sessions = flow.get(\"sessions\") || {};\nvar session = sessions[mouth_id];\n\n// Scenario A: Conferma durante il timer di 10 secondi\nif (session && session.timerId) {\n    node.log(\"Gestisci Conferma (Scenario A): Conferma durante il timer.\");\n\n    clearTimeout(session.timerId);\n\n    // RECUPERA waste_id: \n    // 1. Prova dal messaggio in arrivo (msg.waste_id)\n    // 2. Altrimenti dalla sessione (session.waste_id)\n    // 3. Fallback al payload (msg.payload.waste_id)\n    var waste_id = msg.waste_id || session.waste_id || msg.payload.waste_id;\n\n    // Debug per capire da dove viene\n    node.warn(\"waste_id recuperato: \" + waste_id + \" (da msg: \" + msg.waste_id + \", da session: \" + session.waste_id + \")\");\n\n    // Costruisci il \"lavoro\" (job) completo\n    var job = {\n        mqtt_payload: session.command,\n        mqtt_topic: session.topic,\n        belt_payload: {\n            info: \"Richiesta rilascio rifiuto (Confermato)\",\n            mouth_id: mouth_id,\n            waste_id: waste_id,\n            material: session.material,\n            ai_correct: session.ai_correct !== undefined ? session.ai_correct : true\n        }\n    };\n\n    delete sessions[mouth_id];\n    flow.set(\"sessions\", sessions);\n    return job;\n}\n\n// Scenario B: Conferma DOPO i 5 tentativi falliti\nvar states = flow.get(\"mouth_states\") || {};\nif (states[mouth_id] && states[mouth_id].status === \"busy\") {\n    node.log(\"Gestisci Conferma (Scenario B): Conferma dopo 5 fallimenti (caso 'unknown').\");\n\n    var waste_id = states[mouth_id].current_waste_id;\n    if (!waste_id) {\n        node.error(\"Stato 'busy' senza 'current_waste_id' per bocca \" + mouth_id);\n        return null;\n    }\n\n    // Costruisci un \"lavoro\" (job) per il materiale \"unknown\"\n    var job = {\n        mqtt_payload: { action: \"open_gate\", target: \"unknown\" },\n        mqtt_topic: \"smartbin/mouth/\" + mouth_id + \"/command\",\n        belt_payload: {\n            info: \"Richiesta rilascio rifiuto (Confermato come Unknown)\",\n            mouth_id: mouth_id,\n            waste_id: waste_id,\n            material: \"unknown\",\n            ai_correct: false\n        }\n    };\n\n    return job;\n}\n\n// Scenario C: Conferma fantasma\nnode.warn(\"Ricevuta conferma per bocca \" + mouth_id + \" senza sessione attiva o stato busy. Ignoro.\");\nreturn null;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 1,
@@ -701,7 +785,7 @@
         "type": "function",
         "z": "0ebc9fe30e2af211",
         "name": "Gestisci Correzione",
-        "func": "var mouth_id = msg.mouth_id;\nvar sessions = flow.get(\"sessions\") || {};\nvar session = sessions[mouth_id];\nvar states = flow.get(\"mouth_states\") || {};\nvar state = states[mouth_id];\n\n// Scenario A: Correzione durante il timer di 10 secondi\nif (session && session.timerId) {\n    node.log(\"Gestisci Correzione (Scenario A): Cancellazione timer precedente.\");\n    clearTimeout(session.timerId);\n    delete sessions[mouth_id];\n    flow.set(\"sessions\", sessions);\n}\n// Scenario B: Correzione DOPO i fallimenti (stato busy)\nelse if (state && state.status === \"busy\") {\n    node.log(\"Gestisci Correzione (Scenario B): Recupero waste_id.\");\n    msg.waste_id = state.current_waste_id;\n}\nelse {\n    node.warn(\"Ricevuta correzione senza stato valido. Ignoro.\");\n    return null;\n}\n\n// --- MAPPATURA INTELLIGENTE (Fix per lo Switch) ---\nvar input_class = msg.payload.corrected_class;\nvar mapped_class = input_class;\n\n// Mappa i nomi brevi (della UI/Inject) nei nomi tecnici (dello Switch)\nif (input_class === \"paper\") { mapped_class = \"paper_cardboard\"; }\nelse if (input_class === \"plastic\") { mapped_class = \"plastic_metal\"; }\nelse if (input_class === \"metal\") { mapped_class = \"plastic_metal\"; }\n// Aggiungi altri se necessario\n\nmsg.payload.class = mapped_class;\n// --------------------------------------------------\n\n// Segnaliamo esplicitamente che è una correzione umana\nmsg.ai_correct = false;\n\nreturn msg;",
+        "func": "var mouth_id = msg.mouth_id;\nvar sessions = flow.get(\"sessions\") || {};\nvar session = sessions[mouth_id];\nvar states = flow.get(\"mouth_states\") || {};\nvar state = states[mouth_id];\n\n// Scenario A: Correzione durante il timer di 10 secondi\nif (session && session.timerId) {\n    node.log(\"Gestisci Correzione (Scenario A): Cancellazione timer precedente.\");\n    clearTimeout(session.timerId);\n    delete sessions[mouth_id];\n    flow.set(\"sessions\", sessions);\n}\n// Scenario B: Correzione DOPO i fallimenti (stato busy)\nelse if (state && state.status === \"busy\") {\n    node.log(\"Gestisci Correzione (Scenario B): Recupero waste_id.\");\n    msg.waste_id = state.current_waste_id;\n}\nelse {\n    node.warn(\"Ricevuta correzione senza stato valido. Ignoro.\");\n    return null;\n}\n\n// --- MAPPATURA INTELLIGENTE (Fix per lo Switch) ---\nvar input_class = msg.payload.corrected_class;\n\n\nmsg.payload.class = input_class;\n// --------------------------------------------------\n\n// Segnaliamo esplicitamente che è una correzione umana\nmsg.ai_correct = false;\n\nreturn msg;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -764,7 +848,7 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1800,
+        "x": 2520,
         "y": 1200,
         "wires": []
     },
@@ -1114,7 +1198,8 @@
         "wires": [
             [
                 "681d291e531b6ecb",
-                "1ba717a825d0c3f6"
+                "1ba717a825d0c3f6",
+                "9843e18731ff976b"
             ]
         ]
     },
@@ -1131,7 +1216,7 @@
         "finalize": "",
         "libs": [],
         "x": 2150,
-        "y": 1340,
+        "y": 1300,
         "wires": [
             [
                 "d4701d56e29d9e58"
@@ -1225,16 +1310,262 @@
         "wires": []
     },
     {
-        "id": "4e11d9bff69153f6",
+        "id": "dfba5c86279c1d7f",
+        "type": "aedes broker",
+        "z": "0ebc9fe30e2af211",
+        "name": "Broker",
+        "mqtt_port": "1883",
+        "mqtt_ws_bind": "port",
+        "mqtt_ws_port": "",
+        "mqtt_ws_path": "",
+        "cert": "",
+        "key": "",
+        "ca": "",
+        "certname": "",
+        "keyname": "",
+        "caname": "",
+        "persistence_bind": "memory",
+        "dburl": "",
+        "usetls": false,
+        "x": 1190,
+        "y": 640,
+        "wires": [
+            [],
+            []
+        ]
+    },
+    {
+        "id": "21119488f0fcdc46",
+        "type": "sqlite",
+        "z": "0ebc9fe30e2af211",
+        "g": "900bf7bf98ef5e48",
+        "mydb": "e1dff9e0ae649db1",
+        "sqlquery": "msg.topic",
+        "sql": "",
+        "name": "",
+        "x": 1130,
+        "y": 2220,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "9ce4f3b67e84a1eb",
+        "type": "inject",
+        "z": "0ebc9fe30e2af211",
+        "g": "de99ec2141cbd81f",
+        "name": "Init DB Table",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 910,
+        "y": 2380,
+        "wires": [
+            [
+                "3ed309125e4d5c7d"
+            ]
+        ]
+    },
+    {
+        "id": "3ed309125e4d5c7d",
+        "type": "sqlite",
+        "z": "0ebc9fe30e2af211",
+        "g": "de99ec2141cbd81f",
+        "mydb": "e1dff9e0ae649db1",
+        "sqlquery": "fixed",
+        "sql": "CREATE TABLE IF NOT EXISTS waste_history (\n    id INTEGER PRIMARY KEY AUTOINCREMENT,\n    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,\n    mouth_id TEXT,\n    waste_id TEXT,\n    material TEXT,\n    ai_correct INTEGER\n);",
+        "name": "",
+        "x": 1450,
+        "y": 2380,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "9843e18731ff976b",
+        "type": "function",
+        "z": "0ebc9fe30e2af211",
+        "g": "d5b0e68c69f5dd85",
+        "name": "Prepara INSERT",
+        "func": "// NODO SQL : msg.topic\n/*\nvar data = msg.belt_payload;\n\n// Escape delle stringhe per sicurezza\nfunction escapeSQL(str) {\n    return str.toString().replace(/'/g, \"''\");\n}\n\n// Query diretta con valori inseriti\nmsg.topic = \"INSERT INTO waste_history (mouth_id, waste_id, material, ai_correct) VALUES ('\"\n    + escapeSQL(data.mouth_id) + \"', '\"\n    + escapeSQL(data.waste_id) + \"', '\"\n    + escapeSQL(data.material) + \"', \"\n    + (data.ai_correct ? 1 : 0) + \")\";\n\nreturn msg;\n*/\n\n\n// NODO SQL : Prepared Statement ERRORE NON FUNZIONA\n/*var data = msg.belt_payload;\n\n// Usa i placeholder con ?\nmsg.topic = \"INSERT INTO waste_history (mouth_id, waste_id, material, ai_correct) VALUES (?, ?, ?, ?)\";\n\n// I parametri come array (non oggetto!)\nmsg.payload = [\n    data.mouth_id,\n    data.waste_id,\n    data.material,\n    data.ai_correct ? 1 : 0\n];\n\nreturn msg;*/\n\n\n\n// NODO: Prepara INSERT (Corretto)\n\nvar data = msg.belt_payload;\n\n// Escape delle stringhe per sicurezza\nfunction escapeSQL(str) {\n    // Gestisce valori null/undefined\n    if (str === null || str === undefined) {\n        return '';\n    }\n    return str.toString().replace(/'/g, \"''\");\n}\n\n// Query diretta con valori inseriti\nmsg.topic = \"INSERT INTO waste_history (mouth_id, waste_id, material, ai_correct) VALUES ('\"\n    + escapeSQL(data.mouth_id) + \"', '\"\n    + escapeSQL(data.waste_id) + \"', '\"\n    + escapeSQL(data.material) + \"', \"\n    + (data.ai_correct ? 1 : 0) + \")\";\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 3300,
+        "y": 1480,
+        "wires": [
+            [
+                "51c95b9a03b5c860"
+            ]
+        ]
+    },
+    {
+        "id": "51c95b9a03b5c860",
+        "type": "sqlite",
+        "z": "0ebc9fe30e2af211",
+        "g": "d5b0e68c69f5dd85",
+        "mydb": "e1dff9e0ae649db1",
+        "sqlquery": "msg.topic",
+        "sql": "",
+        "name": "INSERT",
+        "x": 3560,
+        "y": 1480,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "4933d83c3ffd4cc2",
+        "type": "ui-button",
+        "z": "0ebc9fe30e2af211",
+        "g": "8d50bf9a1e710b05",
+        "group": "dd6fab847597a4f7",
+        "name": "Bocca 1",
+        "label": "Bocca 1 ",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "emulateClick": false,
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "iconPosition": "left",
+        "payload": "1",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "buttonColor": "",
+        "textColor": "",
+        "iconColor": "",
+        "enableClick": true,
+        "enablePointerdown": false,
+        "pointerdownPayload": "",
+        "pointerdownPayloadType": "str",
+        "enablePointerup": false,
+        "pointerupPayload": "",
+        "pointerupPayloadType": "str",
+        "x": 2360,
+        "y": 2060,
+        "wires": [
+            [
+                "7b277b7f02e4bd26",
+                "3d75e7fc0839c97d",
+                "b122c1e8d4d18fc9",
+                "query_ai_stats"
+            ]
+        ]
+    },
+    {
+        "id": "a908c8d6422e514a",
+        "type": "ui-button",
+        "z": "0ebc9fe30e2af211",
+        "g": "8d50bf9a1e710b05",
+        "group": "dd6fab847597a4f7",
+        "name": "Bocca 2",
+        "label": "Bocca 2",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "emulateClick": false,
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "iconPosition": "left",
+        "payload": "2",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "buttonColor": "",
+        "textColor": "",
+        "iconColor": "",
+        "enableClick": true,
+        "enablePointerdown": false,
+        "pointerdownPayload": "",
+        "pointerdownPayloadType": "str",
+        "enablePointerup": false,
+        "pointerupPayload": "",
+        "pointerupPayloadType": "str",
+        "x": 2360,
+        "y": 2220,
+        "wires": [
+            [
+                "7b277b7f02e4bd26",
+                "3d75e7fc0839c97d",
+                "b122c1e8d4d18fc9",
+                "query_ai_stats"
+            ]
+        ]
+    },
+    {
+        "id": "7b277b7f02e4bd26",
+        "type": "function",
+        "z": "0ebc9fe30e2af211",
+        "g": "8d50bf9a1e710b05",
+        "name": "Query Oggi",
+        "func": "/*var mouth_id = msg.payload; // L'ID arriva dal bottone (es. \"1\")\n\n// 1. La Query SQL\nmsg.topic = \"SELECT material as label, COUNT(*) as value FROM waste_history WHERE mouth_id = $mouth_id AND date(timestamp) = date('now') GROUP BY material\";\n\n// 2. I Parametri (IMPORTANTE: usa msg.params)\nmsg.params = {\n    $mouth_id: mouth_id\n};\n\nreturn msg;*/\n\nvar mouth_id = msg.payload; // \"1\" o \"2\"\n\n// Costruisci la query SQL\nmsg.topic = \"SELECT material as label, COUNT(*) as value FROM waste_history WHERE mouth_id = $mouth_id AND date(timestamp) = date('now') GROUP BY material\";\n\n// I parametri (IMPORTANTE: per query diretta, inserisci il valore direttamente)\nmsg.topic = \"SELECT material as label, COUNT(*) as value FROM waste_history WHERE mouth_id = '\" + mouth_id + \"' AND date(timestamp) = date('now') GROUP BY material\";\n\n// NON serve msg.params se usi query diretta\ndelete msg.params;\n\n// Debug\nnode.warn(\"Query Oggi per bocca \" + mouth_id + \": \" + msg.topic);\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 2870,
+        "y": 1980,
+        "wires": [
+            [
+                "f507250023c4bd98"
+            ]
+        ]
+    },
+    {
+        "id": "f507250023c4bd98",
+        "type": "sqlite",
+        "z": "0ebc9fe30e2af211",
+        "g": "8d50bf9a1e710b05",
+        "mydb": "e1dff9e0ae649db1",
+        "sqlquery": "msg.topic",
+        "sql": "",
+        "name": "read_data_today",
+        "x": 3430,
+        "y": 2000,
+        "wires": [
+            [
+                "40110bf9cd3a368b"
+            ]
+        ]
+    },
+    {
+        "id": "1182bc5a0f716974",
         "type": "ui-chart",
         "z": "0ebc9fe30e2af211",
-        "group": "1e3f39414a332229",
+        "g": "8d50bf9a1e710b05",
+        "group": "813651c816117ad2",
         "name": "Rifiuti Oggi",
-        "label": "chart",
+        "label": "Rifiuti Giornalieri",
         "order": 1,
         "chartType": "pie",
-        "category": "label",
-        "categoryType": "property",
+        "category": "topic",
+        "categoryType": "msg",
         "xAxisLabel": "",
         "xAxisProperty": "",
         "xAxisPropertyType": "timestamp",
@@ -1244,23 +1575,23 @@
         "xmin": "",
         "xmax": "",
         "yAxisLabel": "",
-        "yAxisProperty": "value",
-        "yAxisPropertyType": "property",
+        "yAxisProperty": "payload",
+        "yAxisPropertyType": "msg",
         "ymin": "",
         "ymax": "",
         "bins": 10,
-        "action": "replace",
+        "action": "append",
         "stackSeries": false,
         "pointShape": "circle",
         "pointRadius": 4,
-        "showLegend": true,
+        "showLegend": false,
         "removeOlder": 1,
         "removeOlderUnit": "3600",
         "removeOlderPoints": "",
         "colors": [
             "#0095ff",
-            "#ff0000",
-            "#ff7f0e",
+            "#77bb41",
+            "#fefcdd",
             "#2ca02c",
             "#a347e1",
             "#d62728",
@@ -1280,23 +1611,601 @@
         "height": 8,
         "className": "",
         "interpolation": "linear",
-        "x": 910,
-        "y": 2160,
+        "x": 4770,
+        "y": 1960,
         "wires": [
             []
         ]
     },
     {
-        "id": "1ed7c51712df3bab",
+        "id": "3d75e7fc0839c97d",
+        "type": "function",
+        "z": "0ebc9fe30e2af211",
+        "g": "8d50bf9a1e710b05",
+        "name": "Query Settimana",
+        "func": "/*var mouth_id = msg.payload;\n\n// 1. La Query SQL\nmsg.topic = \"SELECT date(timestamp) as x, COUNT(*) as y FROM waste_history WHERE mouth_id = $mouth_id AND timestamp >= date('now', '-6 days') GROUP BY date(timestamp) ORDER BY date(timestamp)\";\n\n// 2. I Parametri (IMPORTANTE: usa msg.params)\nmsg.params = {\n    $mouth_id: mouth_id\n};\n\nreturn msg;*/\n\nvar mouth_id = msg.payload; // \"1\" o \"2\"\n\n// Costruisci la query SQL con il valore diretto\nmsg.topic = \"SELECT date(timestamp) as x, COUNT(*) as y FROM waste_history WHERE mouth_id = '\" + mouth_id + \"' AND timestamp >= date('now', '-6 days') GROUP BY date(timestamp) ORDER BY date(timestamp)\";\n\n// NON serve msg.params\ndelete msg.params;\n\n// Debug\nnode.warn(\"Query Settimana per bocca \" + mouth_id + \": \" + msg.topic);\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 2890,
+        "y": 2060,
+        "wires": [
+            [
+                "32cdb335e26905da"
+            ]
+        ]
+    },
+    {
+        "id": "32cdb335e26905da",
+        "type": "sqlite",
+        "z": "0ebc9fe30e2af211",
+        "g": "8d50bf9a1e710b05",
+        "mydb": "e1dff9e0ae649db1",
+        "sqlquery": "msg.topic",
+        "sql": "",
+        "name": "read_data_week",
+        "x": 3420,
+        "y": 2080,
+        "wires": [
+            [
+                "d95ab210f7d7d9c6",
+                "e922a3be02896062"
+            ]
+        ]
+    },
+    {
+        "id": "inspector_inject",
+        "type": "inject",
+        "z": "0ebc9fe30e2af211",
+        "g": "ecabd79993662d15",
+        "name": "ISPEZIONE DB",
+        "props": [],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 920,
+        "y": 2740,
+        "wires": [
+            [
+                "inspector_sqlite"
+            ]
+        ]
+    },
+    {
+        "id": "inspector_sqlite",
+        "type": "sqlite",
+        "z": "0ebc9fe30e2af211",
+        "g": "ecabd79993662d15",
+        "mydb": "e1dff9e0ae649db1",
+        "sqlquery": "fixed",
+        "sql": "SELECT * FROM waste_history",
+        "name": "Leggi Tutto",
+        "x": 1120,
+        "y": 2740,
+        "wires": [
+            [
+                "inspector_debug"
+            ]
+        ]
+    },
+    {
+        "id": "inspector_debug",
+        "type": "debug",
+        "z": "0ebc9fe30e2af211",
+        "g": "ecabd79993662d15",
+        "name": "CONTENUTO DB",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1320,
+        "y": 2740,
+        "wires": []
+    },
+    {
+        "id": "catch_errors",
+        "type": "catch",
+        "z": "0ebc9fe30e2af211",
+        "g": "7565126f5d2e9e7a",
+        "name": "Cattura Errori DB",
+        "scope": [
+            "51c95b9a03b5c860",
+            "3ed309125e4d5c7d"
+        ],
+        "uncaught": false,
+        "x": 900,
+        "y": 2520,
+        "wires": [
+            [
+                "debug_errors"
+            ]
+        ]
+    },
+    {
+        "id": "debug_errors",
+        "type": "debug",
+        "z": "0ebc9fe30e2af211",
+        "g": "7565126f5d2e9e7a",
+        "name": "ERRORE TROVATO",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1110,
+        "y": 2520,
+        "wires": []
+    },
+    {
+        "id": "test_write_inject",
+        "type": "inject",
+        "z": "0ebc9fe30e2af211",
+        "g": "ecabd79993662d15",
+        "name": "SCRIVI FORZATO",
+        "props": [],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 930,
+        "y": 2660,
+        "wires": [
+            [
+                "test_write_sqlite"
+            ]
+        ]
+    },
+    {
+        "id": "test_write_sqlite",
+        "type": "sqlite",
+        "z": "0ebc9fe30e2af211",
+        "g": "ecabd79993662d15",
+        "mydb": "e1dff9e0ae649db1",
+        "sqlquery": "fixed",
+        "sql": "INSERT INTO waste_history (timestamp, mouth_id, waste_id, material, ai_correct) VALUES ('2025-12-12 14:11:43','2', 'TEST_ID', 'plastic', 1)",
+        "name": "Insert Test",
+        "x": 1130,
+        "y": 2660,
+        "wires": [
+            [
+                "test_write_debug"
+            ]
+        ]
+    },
+    {
+        "id": "test_write_debug",
+        "type": "debug",
+        "z": "0ebc9fe30e2af211",
+        "g": "ecabd79993662d15",
+        "name": "RISULTATO SCRITTURA",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1350,
+        "y": 2660,
+        "wires": []
+    },
+    {
+        "id": "40110bf9cd3a368b",
+        "type": "function",
+        "z": "0ebc9fe30e2af211",
+        "g": "8d50bf9a1e710b05",
+        "name": "handleDataChart",
+        "func": "/*if (!msg.payload || msg.payload.length === 0) {\n    node.warn(\"Nessun rifiuto trovato per oggi\");\n    return null;\n}\n\n// Trasforma i dati nel formato corretto per il chart\nvar chartData = msg.payload.map(function (row) {\n    return {\n        topic: row.label,\n        payload: row.value\n    };\n});\n\nnode.warn(\"Invio \" + chartData.length + \" categorie al pie chart\");\n\n// Invia tutto insieme\nreturn { payload: chartData };*/\n\n// Definizione dell'ordine fisso e dei nomi corretti\nvar materialsOrder = [\"plastic_metal\", \"glass\", \"paper\"];\nvar labels = {\n    \"plastic_metal\": \"Plastica e Metallo\",\n    \"glass\": \"Vetro\",\n    \"paper\": \"Carta\"\n};\n\n// Se il payload è null, creiamo un array vuoto\nvar dbRows = msg.payload || [];\n\n// Creiamo un oggetto temporaneo per cercare velocemente i valori dal DB\nvar dataMap = {};\ndbRows.forEach(function (row) {\n    dataMap[row.label] = row.value;\n});\n\n// Costruiamo l'array finale forzando l'ordine\nvar chartData = [];\n\nmaterialsOrder.forEach(function (matKey) {\n    chartData.push({\n        topic: labels[matKey],       // Nome leggibile (es. \"Vetro\")\n        payload: dataMap[matKey] || 0 // Se non c'è nel DB, metti 0\n    });\n});\n\nnode.warn(\"Dati ordinati per colori: \" + JSON.stringify(chartData));\n\n// Inviamo il nuovo array (che verrà poi splittato)\nreturn { payload: chartData };",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 3770,
+        "y": 1960,
+        "wires": [
+            [
+                "795145e4a8e20418"
+            ]
+        ]
+    },
+    {
+        "id": "d95ab210f7d7d9c6",
+        "type": "debug",
+        "z": "0ebc9fe30e2af211",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 3700,
+        "y": 1800,
+        "wires": []
+    },
+    {
+        "id": "609fcb634e466613",
+        "type": "debug",
+        "z": "0ebc9fe30e2af211",
+        "g": "8d50bf9a1e710b05",
+        "name": "debug 2",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 4200,
+        "y": 2240,
+        "wires": []
+    },
+    {
+        "id": "795145e4a8e20418",
+        "type": "split",
+        "z": "0ebc9fe30e2af211",
+        "g": "8d50bf9a1e710b05",
+        "name": "",
+        "splt": "\\n",
+        "spltType": "str",
+        "arraySplt": 1,
+        "arraySpltType": "len",
+        "stream": false,
+        "addname": "",
+        "property": "payload",
+        "x": 4010,
+        "y": 1980,
+        "wires": [
+            [
+                "b7a2c9425424a93f"
+            ]
+        ]
+    },
+    {
+        "id": "b7a2c9425424a93f",
+        "type": "change",
+        "z": "0ebc9fe30e2af211",
+        "g": "8d50bf9a1e710b05",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "topic",
+                "pt": "msg",
+                "to": "payload.topic",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 4220,
+        "y": 1960,
+        "wires": [
+            [
+                "delay_node"
+            ]
+        ]
+    },
+    {
+        "id": "b122c1e8d4d18fc9",
+        "type": "change",
+        "z": "0ebc9fe30e2af211",
+        "g": "8d50bf9a1e710b05",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "[]",
+                "tot": "json"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 3160,
+        "y": 2240,
+        "wires": [
+            [
+                "1182bc5a0f716974",
+                "chart_ai_accuracy"
+            ]
+        ]
+    },
+    {
+        "id": "e922a3be02896062",
+        "type": "function",
+        "z": "0ebc9fe30e2af211",
+        "g": "8d50bf9a1e710b05",
+        "name": "Formatta Dati Settimana",
+        "func": "/*\n\n// 1. Controllo se ci sono dati\nif (!msg.payload || msg.payload.length === 0) {\n    return { payload: [] };\n}\n\n// 2. Impostiamo il nome della serie (Legenda)\n// Questo è fondamentale per il Bar Chart\nmsg.topic = \"Rifiuti Totali\";\n\n// 3. Mappiamo i dati\n// Non serve 'series' dentro l'oggetto se impostiamo msg.topic\nmsg.payload = msg.payload.map(function (row) {\n    return {\n        x: row.x,\n        y: row.y\n    };\n});\n\nreturn msg;\n\n\n*/\n\n\n// 1. Recupera i dati dal database (o array vuoto se null)\nvar dbData = msg.payload || [];\n\n// 2. Crea una mappa (dizionario) per accesso rapido: \"2025-12-12\" -> 1\nvar dataMap = {};\ndbData.forEach(function (row) {\n    dataMap[row.x] = row.y;\n});\n\n// Funzione helper per formattare la data come YYYY-MM-DD\nfunction formatDate(dateObj) {\n    var d = new Date(dateObj),\n        month = '' + (d.getMonth() + 1),\n        day = '' + d.getDate(),\n        year = d.getFullYear();\n\n    if (month.length < 2) month = '0' + month;\n    if (day.length < 2) day = '0' + day;\n\n    return [year, month, day].join('-');\n}\n\nvar result = [];\nvar seriesName = \"Rifiuti Totali\"; // Nome per la legenda\n\n// 3. Generiamo gli ultimi 7 giorni (da oggi andando indietro di 6)\n// Nota: corrisponde alla query SQL \"date('now', '-6 days')\"\nfor (var i = 6; i >= 0; i--) {\n    var d = new Date();\n    d.setDate(d.getDate() - i); // Sottrai i giorni\n    var dateStr = formatDate(d);\n\n    // Se esiste nel DB usiamo il valore, altrimenti 0\n    var val = dataMap[dateStr] || 0;\n\n    result.push({\n        \"x\": dateStr,\n        \"y\": val\n    });\n}\n\n// 4. Impostiamo il topic per il chart (importante per il colore/legenda)\nmsg.topic = seriesName;\nmsg.payload = result;\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 3770,
+        "y": 2060,
+        "wires": [
+            [
+                "609fcb634e466613",
+                "e2d51efdc1eed115"
+            ]
+        ]
+    },
+    {
+        "id": "query_ai_stats",
+        "type": "function",
+        "z": "0ebc9fe30e2af211",
+        "g": "8d50bf9a1e710b05",
+        "name": "Query AI Performance",
+        "func": "var mouth_id = msg.payload; // \"1\" o \"2\"\n\n// Seleziona i conteggi raggruppati per correttezza (0 o 1)\n// Ordiniamo DESC (decrescente) così 1 (Corretto) arriva prima di 0 (Sbagliato)\n// Questo ci aiuta a fissare i colori (Verde = primo, Rosso = secondo)\nmsg.topic = \"SELECT ai_correct, COUNT(*) as count FROM waste_history WHERE mouth_id = '\" + mouth_id + \"' AND date(timestamp) = date('now') GROUP BY ai_correct ORDER BY ai_correct DESC\";\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 2880,
+        "y": 2360,
+        "wires": [
+            [
+                "sqlite_ai_stats"
+            ]
+        ]
+    },
+    {
+        "id": "sqlite_ai_stats",
+        "type": "sqlite",
+        "z": "0ebc9fe30e2af211",
+        "g": "8d50bf9a1e710b05",
+        "mydb": "e1dff9e0ae649db1",
+        "sqlquery": "msg.topic",
+        "sql": "",
+        "name": "read_ai_stats",
+        "x": 3330,
+        "y": 2400,
+        "wires": [
+            [
+                "format_ai_chart"
+            ]
+        ]
+    },
+    {
+        "id": "format_ai_chart",
+        "type": "function",
+        "z": "0ebc9fe30e2af211",
+        "g": "8d50bf9a1e710b05",
+        "name": "Formatta AI Chart",
+        "func": "// msg.payload = [{ai_correct: 1, count: 5}, {ai_correct: 0, count: 2}]\n\nif (!msg.payload || msg.payload.length === 0) {\n    return null;\n}\n\nvar chartData = [];\n\nmsg.payload.forEach(function(row) {\n    var label = (row.ai_correct === 1) ? \"AI Corretta\" : \"Correzione Manuale\";\n    chartData.push({\n        topic: label,\n        payload: row.count\n    });\n});\n\n// Restituiamo l'array, che verrà poi splittato\nmsg.payload = chartData;\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 3750,
+        "y": 2360,
+        "wires": [
+            [
+                "split_ai_data"
+            ]
+        ]
+    },
+    {
+        "id": "split_ai_data",
+        "type": "split",
+        "z": "0ebc9fe30e2af211",
+        "g": "8d50bf9a1e710b05",
+        "name": "",
+        "splt": "\\n",
+        "spltType": "str",
+        "arraySplt": 1,
+        "arraySpltType": "len",
+        "stream": false,
+        "addname": "",
+        "property": "payload",
+        "x": 4000,
+        "y": 2380,
+        "wires": [
+            [
+                "fix_ai_msg"
+            ]
+        ]
+    },
+    {
+        "id": "fix_ai_msg",
+        "type": "change",
+        "z": "0ebc9fe30e2af211",
+        "g": "8d50bf9a1e710b05",
+        "name": "Fix Msg",
+        "rules": [
+            {
+                "t": "set",
+                "p": "topic",
+                "pt": "msg",
+                "to": "payload.topic",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 4200,
+        "y": 2400,
+        "wires": [
+            [
+                "1a5168f0038d5725"
+            ]
+        ]
+    },
+    {
+        "id": "chart_ai_accuracy",
         "type": "ui-chart",
         "z": "0ebc9fe30e2af211",
-        "group": "96be9823ce5b595f",
-        "name": "Performance AI",
-        "label": "chart",
+        "g": "8d50bf9a1e710b05",
+        "group": "group_ai_perf",
+        "name": "Accuratezza Oggi",
+        "label": "Accuratezza Oggi",
         "order": 1,
+        "chartType": "pie",
+        "category": "topic",
+        "categoryType": "msg",
+        "xAxisLabel": "",
+        "xAxisProperty": "",
+        "xAxisPropertyType": "timestamp",
+        "xAxisType": "radial",
+        "xAxisFormat": "",
+        "xAxisFormatType": "auto",
+        "xmin": "",
+        "xmax": "",
+        "yAxisLabel": "",
+        "yAxisProperty": "payload",
+        "yAxisPropertyType": "msg",
+        "ymin": "",
+        "ymax": "",
+        "bins": 10,
+        "action": "append",
+        "stackSeries": false,
+        "pointShape": "circle",
+        "pointRadius": 4,
+        "showLegend": false,
+        "removeOlder": 1,
+        "removeOlderUnit": "3600",
+        "removeOlderPoints": "",
+        "colors": [
+            "#77bb41",
+            "#ffaa00",
+            "#ff7f0e",
+            "#2ca02c",
+            "#a347e1",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "textColor": [
+            "#666666"
+        ],
+        "textColorDefault": true,
+        "gridColor": [
+            "#e5e5e5"
+        ],
+        "gridColorDefault": true,
+        "width": "12",
+        "height": 8,
+        "className": "",
+        "interpolation": "linear",
+        "x": 4790,
+        "y": 2340,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "delay_node",
+        "type": "delay",
+        "z": "0ebc9fe30e2af211",
+        "g": "8d50bf9a1e710b05",
+        "name": "Ritardo",
+        "pauseType": "rate",
+        "timeout": "1",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "0.1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 4480,
+        "y": 1980,
+        "wires": [
+            [
+                "1182bc5a0f716974"
+            ]
+        ]
+    },
+    {
+        "id": "1a5168f0038d5725",
+        "type": "delay",
+        "z": "0ebc9fe30e2af211",
+        "g": "8d50bf9a1e710b05",
+        "name": "Ritardo",
+        "pauseType": "rate",
+        "timeout": "1",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "0.1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 4440,
+        "y": 2380,
+        "wires": [
+            [
+                "chart_ai_accuracy"
+            ]
+        ]
+    },
+    {
+        "id": "e2d51efdc1eed115",
+        "type": "ui-chart",
+        "z": "0ebc9fe30e2af211",
+        "g": "8d50bf9a1e710b05",
+        "group": "813651c816117ad2",
+        "name": "Rifiuti della settimana",
+        "label": "Rifiuti della settimana",
+        "order": 9007199254740991,
         "chartType": "bar",
-        "category": "series",
-        "categoryType": "property",
+        "category": "topic",
+        "categoryType": "msg",
         "xAxisLabel": "",
         "xAxisProperty": "x",
         "xAxisPropertyType": "property",
@@ -1308,10 +2217,10 @@
         "yAxisLabel": "",
         "yAxisProperty": "y",
         "yAxisPropertyType": "property",
-        "ymin": "",
+        "ymin": "0",
         "ymax": "",
         "bins": 10,
-        "action": "replace",
+        "action": "append",
         "stackSeries": false,
         "pointShape": "circle",
         "pointRadius": 4,
@@ -1342,8 +2251,35 @@
         "height": 8,
         "className": "",
         "interpolation": "linear",
-        "x": 920,
-        "y": 2180,
+        "x": 4800,
+        "y": 2080,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "fee5e28989a91341",
+        "type": "inject",
+        "z": "0ebc9fe30e2af211",
+        "name": "Simula: Class. Plastica (Bocca 1)",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": "",
+        "topic": "smartbin/mouth/2/state/classification",
+        "payload": "{\"class\":\"plastic_metal\",\"waste_id\":\"test_waste_123\"}",
+        "payloadType": "json",
+        "x": 1010,
+        "y": 1180,
         "wires": [
             []
         ]
@@ -1403,19 +2339,6 @@
                 "5e7e163a0aba93d3"
             ]
         ]
-    },
-    {
-        "id": "25541cd51ddf623d",
-        "type": "telegrambot-notify",
-        "z": "e196b19e598c60ff",
-        "name": "SmartBin-TG",
-        "bot": "26b3815d27b3140c",
-        "chatId": "219634800",
-        "message": "",
-        "parseMode": "",
-        "x": 1930,
-        "y": 260,
-        "wires": []
     },
     {
         "id": "2c85b58fd3544ea4",
@@ -1881,12 +2804,26 @@
         "wires": []
     },
     {
-        "id": "c6d7df5d4fc29b55",
+        "id": "25541cd51ddf623d",
+        "type": "telegrambot-notify",
+        "z": "e196b19e598c60ff",
+        "name": "SmartBin-TG",
+        "bot": "26b3815d27b3140c",
+        "chatId": "219634800",
+        "message": "",
+        "parseMode": "",
+        "x": 1930,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "e0271354c6ad30fe",
         "type": "global-config",
         "env": [],
         "modules": {
-            "node-red-contrib-telegrambot-home": "0.8.0",
             "@flowfuse/node-red-dashboard": "1.29.0",
+            "node-red-contrib-telegrambot-home": "0.8.0",
+            "node-red-node-sqlite": "1.1.1",
             "node-red-contrib-aedes": "0.15.0"
         }
     }
