@@ -1,6 +1,6 @@
 // include/ProximitySensor.h
 #pragma once
 
-// Dichiariamo le funzioni che il main.cpp potrà usare
+// Declare functions for proximity sensor
 void proximity_setup();
 int getDistance();

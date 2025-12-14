@@ -10,16 +10,16 @@
 
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
-// Stato
+// State
 RobotMood currentMood = MOOD_IDLE;
 String currentText = "Pronto"; 
 
-// --- VARIABILI PER GESTIONE TEMPORALE ---
-unsigned long messageTimer = 0;       // Quando è stato impostato il messaggio
-int messageDuration = 0;              // Quanto deve durare
-bool isMessageLocked = false;         // Se TRUE, ignora aggiornamenti meno importanti
+// Timing management variables
+unsigned long messageTimer = 0;       // When message was set
+int messageDuration = 0;              // How long it should last
+bool isMessageLocked = false;         // If TRUE, ignore less important updates
 
-// Variabili occhi
+// Eye variables
 unsigned long lastBlinkTime = 0;
 int blinkInterval = 3000;
 bool isBlinking = false;
@@ -37,7 +37,7 @@ void display_setup() {
   currentMood = MOOD_IDLE;
 }
 
-// Funzione interna per gli occhi
+// Internal function for drawing eyes
 void drawEye(int x, int y, int w, int h, bool blink, int pupilX, int pupilY) {
   if (blink) {
     display.fillRect(x, y + h/2 - 2, w, 4, SSD1306_WHITE);
@@ -51,38 +51,37 @@ void drawEye(int x, int y, int w, int h, bool blink, int pupilX, int pupilY) {
   }
 }
 
-// --- FUNZIONI MANCANTI (FIX) ---
-
+// -------------------------------
 void display_set_mood(RobotMood mood) {
-  // Cambia l'umore senza bloccare lo schermo
+  // Change mood without locking screen
   currentMood = mood;
   eyeX = 0;
   eyeY = 0;
 }
 
 void display_set_text(String text) {
-  // Cambia il testo senza bloccare lo schermo
+  // Change text without locking screen
   currentText = text;
 }
 
 // -------------------------------
 
-// 1. ALTA PRIORITÀ: Mostra un messaggio e BLOCCA lo schermo
+// 1. HIGH PRIORITY: Show message and LOCK screen
 void display_show_temporary(String text, RobotMood mood, int duration) {
   currentText = text;
   currentMood = mood;
   messageDuration = duration;
   messageTimer = millis();
-  isMessageLocked = true; // BLOCCA lo schermo
+  isMessageLocked = true; // Lock screen
   
-  // Reset occhi
+  // Reset eyes
   eyeX = 0; 
   eyeY = 0;
 }
 
-// 2. BASSA PRIORITÀ: Aggiorna lo stato solo se lo schermo NON è bloccato
+// 2. LOW PRIORITY: Update status only if screen is NOT locked
 void display_update_status(String text, RobotMood mood) {
-  // Se c'è un messaggio importante in corso, IGNORA questo aggiornamento
+  // If there's an important message displaying, IGNORE this update
   if (isMessageLocked) {
     return; 
   }
@@ -90,27 +89,27 @@ void display_update_status(String text, RobotMood mood) {
   currentMood = mood;
 }
 
-// 3. RESET FORZATO
+// 3. FORCE RESET
 void display_reset() {
   isMessageLocked = false;
-  currentText = "Pronto";
+  currentText = "Ready";
   currentMood = MOOD_IDLE;
 }
 
-// LOOP DI ANIMAZIONE
+// Animation loop
 void display_animate() {
   unsigned long now = millis();
 
   // --- CONTROLLO SCADENZA TIMER ---
   if (isMessageLocked && (now - messageTimer > messageDuration)) {
-    isMessageLocked = false; // Sblocca
-    currentMood = MOOD_IDLE; // Torna normale
-    currentText = "Pronto";
+    isMessageLocked = false; // Unlock
+    currentMood = MOOD_IDLE; // Return to default mood
+    currentText = "Ready";
   }
 
   display.clearDisplay();
 
-  // 1. TESTO (Sotto)
+  // 1. TEXT (Bottom)
   display.drawLine(0, 48, 128, 48, SSD1306_WHITE);
   display.setTextSize(1);
   display.setTextColor(SSD1306_WHITE);
@@ -119,8 +118,8 @@ void display_animate() {
   display.setCursor((SCREEN_WIDTH - w) / 2, 53);
   display.print(currentText);
 
-  // 2. OCCHI (Sopra)
-  // Logica Blink
+  // 2. EYES (Top)
+  // Blink logic
   if (currentMood == MOOD_IDLE || currentMood == MOOD_LOOKING) {
     if (!isBlinking && (now - lastBlinkTime > blinkInterval)) {
       isBlinking = true; lastBlinkTime = now;
@@ -129,7 +128,7 @@ void display_animate() {
     }
   } else { isBlinking = false; }
 
-  // Disegno Facce
+  // Draw faces
   switch (currentMood) {
     case MOOD_IDLE:
       if (!isBlinking && random(0, 100) < 5) eyeX = random(-5, 6);

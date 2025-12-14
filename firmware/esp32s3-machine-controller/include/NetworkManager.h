@@ -2,9 +2,9 @@
 #pragma once
 #include <PubSubClient.h>
 
-// Dichiariamo queste variabili come "esterne"
-// Saranno definite in NetworkManager.cpp, 
-// ma main.cpp saprà che esistono.
+// Declare these variables as "extern"
+// They will be defined in NetworkManager.cpp,
+// but main.cpp will know they exist.
 extern PubSubClient client;
 extern char MQTT_TOPIC_PROXIMITY[100];
 extern char MQTT_TOPIC_CONFIRM[100];
@@ -13,4 +13,4 @@ extern char MQTT_TOPIC_CANCEL[100];
 extern char MQTT_TOPIC_COMMAND[100];
 
 void network_setup();
-void network_loop(); // Questa funzione gestirà la riconnessione e il client.loop()
+void network_loop(); // This function will handle reconnection and client.loop()

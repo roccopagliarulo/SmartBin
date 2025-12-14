@@ -1,18 +1,18 @@
 /* Includes ---------------------------------------------------------------- */
-// <<< Includi il tuo modello Edge Impulse
+// <<< Include your Edge Impulse model
 #include <roccopagliarulo99-project-1_inferencing.h>
 #include "edge-impulse-sdk/dsp/image/image.hpp"
 
-// <<< Includi la logica della fotocamera
+// <<< Include camera logic
 #include "esp_camera.h"
 
-// <<< Includi la logica WiFi e MQTT
+// <<< Include WiFi and MQTT logic
 #include <WiFi.h>
 #include <PubSubClient.h>
 #include <ArduinoJson.h>
 
 /* -------------------------------------------------------------------------- */
-/* Configurazione WiFi e MQTT (DA CAMBIARE)               */
+/* WiFi and MQTT Configuration (TO BE CHANGED)               */
 /* -------------------------------------------------------------------------- */
 
 const char* WIFI_SSID = "WIFI_SSID";
@@ -20,16 +20,16 @@ const char* WIFI_PASS = "WIFI_PSW";
 
 const char* MQTT_BROKER_IP = "TUO_IP"; 
 const int MQTT_PORT = 1883;
-const char* MOUTH_ID = "1"; // DEVE CORRISPONDERE alla S3
+const char* MOUTH_ID = "1"; // MUST MATCH the S3 ID
 
-// <<< Soglia di confidenza per la classificazione
+// <<< Confidence threshold for classification
 const float CONFIDENCE_THRESHOLD = 0.70; // 70%
 
 /* -------------------------------------------------------------------------- */
-/* Configurazione Fotocamera (NON TOCCARE)                */
+/* Camera Configuration (DO NOT TOUCH)                */
 /* -------------------------------------------------------------------------- */
 
-// Seleziona il modello di fotocamera
+// Select camera model
 //#define CAMERA_MODEL_ESP_EYE // Has PSRAM
 #define CAMERA_MODEL_AI_THINKER // Has PSRAM
 
@@ -76,17 +76,17 @@ const float CONFIDENCE_THRESHOLD = 0.70; // 70%
 #define EI_CAMERA_RAW_FRAME_BUFFER_ROWS           240
 #define EI_CAMERA_FRAME_BYTE_SIZE                 3
 
-/* Variabili Globali ------------------------------------------------------- */
-// <<< Variabili per MQTT
+/* Global Variables ------------------------------------------------------- */
+// <<< MQTT variables
 char MQTT_TOPIC_COMMAND[100];
 char MQTT_TOPIC_CLASSIFICATION[100];
 WiFiClient espClient;
 PubSubClient client(espClient);
 
-// <<< Variabili per Edge Impulse
+// <<< Edge Impulse debug flag
 static bool debug_nn = false;
 static bool is_initialised = false;
-uint8_t *snapshot_buf; // Buffer per l'immagine
+uint8_t *snapshot_buf; // Image buffer
 
 static camera_config_t camera_config = {
     .pin_pwdn = PWDN_GPIO_NUM,
@@ -117,26 +117,26 @@ static camera_config_t camera_config = {
 };
 
 /* -------------------------------------------------------------------------- */
-/* Funzioni di Supporto (WiFi, Camera, EI)                */
+/* Support Functions (WiFi, Camera, EI)                */
 /* -------------------------------------------------------------------------- */
 
-// --- Funzioni WiFi (dal codice "dummy") ---
+// --- WiFi functions (from "dummy" code) ---
 void setup_wifi() {
   delay(10);
   Serial.println();
-  Serial.print("Connessione a ");
+  Serial.print("Connecting to ");
   Serial.println(WIFI_SSID);
   WiFi.begin(WIFI_SSID, WIFI_PASS);
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
     Serial.print(".");
   }
-  Serial.println("\nWiFi connesso");
-  Serial.print("Indirizzo IP: ");
+  Serial.println("\nWiFi connected");
+  Serial.print("IP address: ");
   Serial.println(WiFi.localIP());
 }
 
-// --- Funzioni Camera (dall'esempio EI) ---
+// --- Camera functions (from EI example) ---
 bool ei_camera_init(void) {
     if (is_initialised) return true;
 #if defined(CAMERA_MODEL_ESP_EYE)
@@ -145,7 +145,7 @@ bool ei_camera_init(void) {
 #endif
     esp_err_t err = esp_camera_init(&camera_config);
     if (err != ESP_OK) {
-      Serial.printf("Inizializzazione fotocamera fallita con errore 0x%x\n", err);
+      Serial.printf("Camera initialization failed with error 0x%x\n", err);
       return false;
     }
     sensor_t * s = esp_camera_sensor_get();
@@ -162,18 +162,18 @@ bool ei_camera_init(void) {
 bool ei_camera_capture(uint32_t img_width, uint32_t img_height, uint8_t *out_buf) {
     bool do_resize = false;
     if (!is_initialised) {
-        ei_printf("ERR: Fotocamera non inizializzata\r\n");
+        ei_printf("ERR: Camera not initialized\r\n");
         return false;
     }
     camera_fb_t *fb = esp_camera_fb_get();
     if (!fb) {
-        ei_printf("Cattura fotocamera fallita\n");
+        ei_printf("Camera capture failed\n");
         return false;
     }
    bool converted = fmt2rgb888(fb->buf, fb->len, PIXFORMAT_JPEG, snapshot_buf);
    esp_camera_fb_return(fb);
    if(!converted){
-       ei_printf("Conversione fallita\n");
+       ei_printf("Conversion failed\n");
        return false;
    }
     if ((img_width != EI_CAMERA_RAW_FRAME_BUFFER_COLS) || (img_height != EI_CAMERA_RAW_FRAME_BUFFER_ROWS)) {
@@ -202,12 +202,12 @@ static int ei_camera_get_data(size_t offset, size_t length, float *out_ptr) {
 }
 
 /* -------------------------------------------------------------------------- */
-/* LOGICA MQTT (Il Cuore del Programma)                   */
+/* MQTT LOGIC (Core of the Program)                   */
 /* -------------------------------------------------------------------------- */
 
-// <<< QUESTA FUNZIONE ORA ESEGUE L'INFERENZA! >>>
+// <<< THIS FUNCTION NOW PERFORMS INFERENCE! >>>
 void mqtt_callback(char* topic, byte* payload, unsigned int length) {
-  Serial.print("Messaggio ricevuto sul topic: ");
+  Serial.print("Message received on topic: ");
   Serial.println(topic);
 
   char message[length + 1];
@@ -218,7 +218,7 @@ void mqtt_callback(char* topic, byte* payload, unsigned int length) {
   StaticJsonDocument<256> doc;
   DeserializationError error = deserializeJson(doc, message);
   if (error) {
-    Serial.print("deserializeJson() fallito: ");
+    Serial.print("deserializeJson() failed: ");
     Serial.println(error.c_str());
     return;
   }
@@ -226,17 +226,17 @@ void mqtt_callback(char* topic, byte* payload, unsigned int length) {
   const char* action = doc["action"];
   
   if (strcmp(action, "take_photo") == 0) {
-    Serial.println("Ricevuto comando 'take_photo'. Avvio inferenza...");
+    Serial.println("Received 'take_photo' command. Starting inference...");
 
     const char* waste_id = doc["waste_id"];
     if (waste_id == NULL) {
-        Serial.println("Errore: waste_id mancante!");
+        Serial.println("Error: waste_id missing!");
         return;
     }
     Serial.print("Waste ID: ");
     Serial.println(waste_id);
 
-    // --- INIZIO LOGICA EDGE IMPULSE ---
+    // --- START EDGE IMPULSE LOGIC ---
     snapshot_buf = (uint8_t*)malloc(EI_CAMERA_RAW_FRAME_BUFFER_COLS * EI_CAMERA_RAW_FRAME_BUFFER_ROWS * EI_CAMERA_FRAME_BYTE_SIZE);
     if(snapshot_buf == nullptr) {
         Serial.println("ERR: Failed to allocate snapshot buffer!");
@@ -248,28 +248,28 @@ void mqtt_callback(char* topic, byte* payload, unsigned int length) {
     signal.get_data = &ei_camera_get_data;
 
     if (ei_camera_capture((size_t)EI_CLASSIFIER_INPUT_WIDTH, (size_t)EI_CLASSIFIER_INPUT_HEIGHT, snapshot_buf) == false) {
-        Serial.println("Fallita cattura immagine");
+        Serial.println("Image capture failed");
         free(snapshot_buf);
         return;
     }
 
-    // Esegui il classificatore
+    // Run the classifier
     ei_impulse_result_t result = { 0 };
     EI_IMPULSE_ERROR err = run_classifier(&signal, &result, debug_nn);
     
-    // <<< Libera la memoria SUBITO dopo l'inferenza
+    // <<< Free memory IMMEDIATELY after inference
     free(snapshot_buf); 
     
     if (err != EI_IMPULSE_OK) {
-        Serial.printf("ERR: Fallito run_classifier (%d)\n", err);
+        Serial.printf("ERR: run_classifier failed (%d)\n", err);
         return;
     }
 
-    // Stampa i tempi
-    Serial.printf("Inferenza completata (DSP: %d ms., Class.: %d ms., Anomalia: %d ms.): \n",
+    // Print timings
+    Serial.printf("Inference completed (DSP: %d ms., Class.: %d ms., Anomaly: %d ms.): \n",
                 result.timing.dsp, result.timing.classification, result.timing.anomaly);
 
-    // <<< Trova il risultato migliore
+    // <<< Find the best result
     String best_label = "unknown";
     float best_score = 0.0;
     for (uint16_t i = 0; i < EI_CLASSIFIER_LABEL_COUNT; i++) {
@@ -280,17 +280,17 @@ void mqtt_callback(char* topic, byte* payload, unsigned int length) {
         }
     }
     
-    // <<< Applica la soglia di confidenza
+    // <<< Apply confidence threshold
     if (best_score < CONFIDENCE_THRESHOLD) {
-        Serial.printf("Nessun risultato sopra la soglia (%.2f). Imposto 'unknown'.\n", CONFIDENCE_THRESHOLD);
+        Serial.printf("No result above threshold (%.2f). Setting 'unknown'.\n", CONFIDENCE_THRESHOLD);
         best_label = "unknown";
     }
 
-    Serial.printf("Risultato migliore: %s (Punteggio: %.5f)\n", best_label.c_str(), best_score);
+    Serial.printf("Best result: %s (Score: %.5f)\n", best_label.c_str(), best_score);
     
-    // --- FINE LOGICA EDGE IMPULSE ---
+    // --- END EDGE IMPULSE LOGIC ---
 
-    // 6. Crea il JSON di risposta
+    // 6. Create response JSON
     StaticJsonDocument<128> responseDoc;
     responseDoc["class"] = best_label; // Invia il risultato migliore
     responseDoc["waste_id"] = waste_id;
@@ -299,82 +299,82 @@ void mqtt_callback(char* topic, byte* payload, unsigned int length) {
     char responsePayload[128];
     serializeJson(responseDoc, responsePayload);
 
-    // 7. Pubblica il risultato
-    Serial.print("Pubblicazione risultato su: ");
+    // 7. Publish the result
+    Serial.print("Publishing result to: ");
     Serial.println(MQTT_TOPIC_CLASSIFICATION);
     Serial.println(responsePayload);
     client.publish(MQTT_TOPIC_CLASSIFICATION, responsePayload);
   
   } else {
-    Serial.print("Comando non riconosciuto: ");
+    Serial.print("Unrecognized command: ");
     Serial.println(action);
   }
 }
 
-// <<< Funzione di riconnessione MQTT (dal codice "dummy")
+// <<< MQTT reconnection function (from "dummy" code)
 void reconnect_mqtt() {
   while (!client.connected()) {
-    Serial.print("Tentativo di connessione MQTT...");
+    Serial.print("Attempting MQTT connection...");
     String clientId = "esp32cam-mouth-" + String(MOUTH_ID);
     
     if (client.connect(clientId.c_str())) {
-      Serial.println("connesso");
+      Serial.println("connected");
       // Sottoscriviti al topic dei comandi!
-      Serial.print("Sottoscrizione a: ");
+      Serial.print("Subscribing to: ");
       Serial.println(MQTT_TOPIC_COMMAND);
       client.subscribe(MQTT_TOPIC_COMMAND);
     } else {
-      Serial.print("fallito, rc=");
+      Serial.print("failed, rc=");
       Serial.print(client.state());
-      Serial.println(" riprovo tra 5 secondi");
+      Serial.println(" retrying in 5 seconds");
       delay(5000);
     }
   }
 }
 
 /* -------------------------------------------------------------------------- */
-/* SETUP e LOOP                                */
+/* SETUP and LOOP                                */
 /* -------------------------------------------------------------------------- */
 
 void setup()
 {
     Serial.begin(115200);
-    // <<< NON aspettare la seriale, la scheda deve partire da sola
-    // while (!Serial); 
-    Serial.println("ESP32-CAM (Edge Impulse Classifier) Avviata.");
+    // <<< DO NOT wait for serial, the board must start on its own
+    // while (!Serial);
+    Serial.println("ESP32-CAM (Edge Impulse Classifier) Started.");
     
-    // <<< Inizializza WiFi
+    // <<< Initialize WiFi
     setup_wifi();
 
-    // <<< Costruisci i topic MQTT
+    // <<< Build MQTT topics
     snprintf(MQTT_TOPIC_COMMAND, sizeof(MQTT_TOPIC_COMMAND), "smartbin/mouth/%s/command", MOUTH_ID);
     snprintf(MQTT_TOPIC_CLASSIFICATION, sizeof(MQTT_TOPIC_CLASSIFICATION), "smartbin/mouth/%s/state/classification", MOUTH_ID);
     
-    // <<< Configura MQTT
+    // <<< Configure MQTT
     client.setServer(MQTT_BROKER_IP, MQTT_PORT);
     client.setCallback(mqtt_callback); // Imposta la funzione che gestirà i messAGGI
 
-    // <<< Inizializza la Fotocamera
+    // <<< Initialize Camera
     if (ei_camera_init() == false) {
-        Serial.println("ERRORE CRITICO: Failed to initialize Camera!");
+        Serial.println("CRITICAL ERROR : Failed to initialize Camera!");
     }
     else {
-        Serial.println("Fotocamera inizializzata");
+        Serial.println("Camera initialized");
     }
 
-    ei_printf("Modello Edge Impulse caricato.\n");
+    ei_printf("Edge Impulse model loaded.\n");
 }
 
 
 void loop()
 {
-    // <<< Il loop ora gestisce SOLO la connessione MQTT
+    // <<< The loop now ONLY handles MQTT connection
     if (!client.connected()) {
       reconnect_mqtt();
     }
-    client.loop(); // Fondamentale per ricevere i messaggi
+    client.loop(); // Essential to receive messages
     
-    // Non facciamo nulla qui, aspettiamo il comando in callback
+    // Do nothing here, wait for command in callback
     delay(10); 
 }
 

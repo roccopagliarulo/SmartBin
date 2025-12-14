@@ -4,50 +4,50 @@
 #include <ESP32Servo.h>
 #include <Arduino.h>
 
-// Crea l'oggetto Servo
+// Create Servo object
 Servo gateServo;
 
 void servo_setup() {
-  // Collega il servo al pin definito nel config
+  // Connect the servo to the defined pin
   gateServo.attach(SERVO_PIN);
 }
 
 void servo_reset_position() {
-  // All'avvio, attacca il servo e digli di stare fermo.
+  // At startup, attach servo and set to STOP position
   gateServo.attach(SERVO_PIN);
   delay(50);
   
-  Serial.println("Servo: Imposto posizione STOP.");
+  Serial.println("Servo: Setting STOP position.");
   gateServo.write(SERVO_POS_STOP);
-  // Non sganciamo il pin, così mantiene il "freno"
-  // e non striscia (creeping).
-  // gateServo.detach(); // Commentato via
+   // Don't detach the pin to maintain "brake"
+  // and prevent creeping.
+  // gateServo.detach(); // Commented out
 }
 
 void servo_open_gate() {
-  // Questa funzione ora esegue una sequenza temporizzata
+  // This function now executes a timed sequence
   
-  // 1. Assicurati che il pin sia collegato
+  // 1. Make sure pin is attached
   gateServo.attach(SERVO_PIN);
   delay(50); 
 
-  Serial.println("Servo: Avvio rotazione APERTURA...");
+  Serial.println("Servo: Starting OPEN rotation...");
   
-  // 2. Gira a velocità di APERTURA per il tempo definito
+  // 2. Rotate at OPEN speed for defined time
   gateServo.write(SERVO_VEL_APERTURA);
   delay(SERVO_TEMPO_MOVIMENTO); 
 
-  // 3. FERMATI (per dare tempo al rifiuto di cadere)
-  Serial.println("Servo: STOP (attesa caduta rifiuto)...");
+  // 3. STOP (to give time for waste to fall)
+  Serial.println("Servo: STOP (waiting for waste to fall)...");
   gateServo.write(SERVO_POS_STOP);
-  delay(1500); // Pausa di 1.5 sec
+  delay(1500); // 1.5 sec pause
 
-  // 4. Gira a velocità di CHIUSURA per il tempo definito
-  Serial.println("Servo: Avvio rotazione CHIUSURA...");
+  // 4. Rotate at CLOSE speed for defined time
+  Serial.println("Servo: Starting CLOSE rotation...");
   gateServo.write(SERVO_VEL_CHIUSURA);
   delay(SERVO_TEMPO_MOVIMENTO);
   
-  // 5. FERMATI di nuovo (torna alla posizione di riposo)
-  Serial.println("Servo: STOP (riposo).");
+  // 5. STOP again (return to rest position)
+  Serial.println("Servo: STOP (rest).");
   gateServo.write(SERVO_POS_STOP);
 }

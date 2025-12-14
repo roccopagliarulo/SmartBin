@@ -1,75 +1,75 @@
 // src/BeltManager.cpp
 #include "BeltManager.h"
 #include "config.h"
-#include "NetworkManager.h" // Per inviare il messaggio "cleared"
+#include "NetworkManager.h" // For sending the "cleared" message
 #include "SorterManager.h"
 #include <Arduino.h>
 
-// Definiamo gli stati del nastro
+// Define belt states
 enum BeltState {
-  IDLE,   // 0: Fermo, ignora il sensore
-  ARMED,  // 1: In attesa che l'oggetto cada sul sensore
-  RUNNING // 2: Nastro in movimento, in attesa che l'oggetto sparisca
+  IDLE,   // 0: Stopped, ignore sensor
+  ARMED,  // 1: Waiting for object to reach sensor
+  RUNNING // 2: Belt moving, waiting for object to disappear
 };
 
-// --- Variabile per memorizzare il materiale sul nastro ---
+// Variable to store material on belt
 String currentMaterialOnBelt = "unknown";
 
 
-unsigned long beltStartTime = 0; // Variabile per memorizzare l'ora di avvio 
+unsigned long beltStartTime = 0; // Variable to store start time
 BeltState currentBeltState = IDLE;
-bool lastSensorState = false; // Per rilevare solo i cambiamenti
+bool lastSensorState = false; // For detecting changes only
 
-// Funzioni private per controllare il motore
+// Private functions to control motor
 static void motor_start() {
-  Serial.println("NASTRO: Avvio motore.");
+  Serial.println("BELT: Starting motor.");
   digitalWrite(BELT_MOTOR_IN1_PIN, HIGH);
   digitalWrite(BELT_MOTOR_IN2_PIN, LOW);
 }
 
 static void motor_stop() {
-  Serial.println("NASTRO: Arresto motore.");
+  Serial.println("BELT: Stopping motor.");
   digitalWrite(BELT_MOTOR_IN1_PIN, LOW);
   digitalWrite(BELT_MOTOR_IN2_PIN, LOW);
 }
 
-// Funzione pubblica di setup
+// Public setup function
 void belt_setup() {
   pinMode(BELT_IR_SENSOR_PIN, INPUT);
   
-  // Setup pin motore
+  // Setup motor control pins
   pinMode(BELT_MOTOR_IN1_PIN, OUTPUT);
   pinMode(BELT_MOTOR_IN2_PIN, OUTPUT);
   
-  // Assicurati che il motore sia fermo all'avvio
+  // Ensure motor is stopped at startup
   motor_stop();
   currentBeltState = IDLE;
 }
 
-// Funzione chiamata da NetworkManager quando arriva "open_gate"
+// Function called by NetworkManager when "open_gate" arrives
 void belt_arm_system(const char* material) {
   if (currentBeltState == IDLE) {
-    Serial.println("NASTRO: Sistema ARMATO. In attesa di oggetto...");
+    Serial.println("BELT: System ARMED. Waiting for object...");
     Serial.println(material);
 
     currentMaterialOnBelt = String(material);
     currentBeltState = ARMED;
-    lastSensorState = false; // Resetta lo stato del sensore
+    lastSensorState = false; // Reset sensor state
   } else {
-    Serial.println("NASTRO: Errore, tentato di armare un sistema non IDLE.");
+    Serial.println("BELT: Error, attempted to arm non-IDLE system.");
   }
 }
 
-// Funzione privata per leggere il sensore
+// private function to read IR sensor
 bool is_object_detected_on_belt() {
   return (digitalRead(BELT_IR_SENSOR_PIN) == LOW);
 }
 
-// Funzione pubblica di loop (il cuore della logica)
+// Public loop function (core logic)
 void belt_loop() {
-  // Leggi il sensore solo se ARMED o RUNNING
+   // Only read sensor if ARMED or RUNNING
   if (currentBeltState == IDLE) {
-    return; // Non fare nulla se siamo inattivi (ignora il sensore)
+    return; // Do nothing if idle (ignore sensor)
   }
   // ***************************************
 
@@ -79,9 +79,9 @@ void belt_loop() {
 
   switch (currentBeltState) {
     case ARMED:
-      // Se lo stato è ARMED, aspettiamo che l'oggetto appaia
+      // If ARMED, wait for object to appear
       if (objectDetected && stateChanged) {
-        Serial.println("NASTRO: Eseguo movimento sorter INIZIALE.");
+        Serial.println("BELT: Executing initial sorter movement.");
         sorter_activate(currentMaterialOnBelt);
         motor_start();
         beltStartTime = millis();
@@ -90,33 +90,33 @@ void belt_loop() {
       break;
 
     case RUNNING:
-      // Se lo stato è RUNNING, aspettiamo che l'oggetto SPARISCA
+      // If RUNNING, wait for object to DISAPPEAR
       if (millis() - beltStartTime >= BELT_RUN_TIME) {
         
-        Serial.println("NASTRO: Tempo scaduto! Arresto nastro.");
+        Serial.println("BELT: Timeout! Stopping belt.");
         currentBeltState = IDLE;
-        // 1. Ferma il motore
+        // 1. Stop the belt motor
         motor_stop();
 
-        // 2. Esegui "movimento di reset" (INDIETRO 50ms -> STOP)
-        Serial.println("NASTRO: Eseguo movimento sorter RESET.");
+        // 2. Execute "reset movement" (BACKWARD 50ms -> STOP)
+        Serial.println("BELT: Executing sorter RESET movement.");
         sorter_reset(currentMaterialOnBelt);
 
-        // 3. Imposta lo stato su IDLE e pulisci
+        // 3. Set state to IDLE and clean up
         currentBeltState = IDLE;
         currentMaterialOnBelt = "unknown";
         
-        // --- INVIA IL MESSAGGIO A NODE-RED ---
-        Serial.println("NASTRO: Invio 'cleared' a Node-RED.");
+        // Send message to Node-RED
+        Serial.println("BELT: Sending 'cleared' to Node-RED.");
         char payload[30];
         snprintf(payload, sizeof(payload), "{\"status\":\"cleared\"}");
-        // Usiamo il client MQTT dal NetworkManager
+        // Use MQTT client from NetworkManager
         client.publish("smartbin/belt/event/cleared", payload);
       }
       break;
     
     case IDLE:
-      // Non dovrebbe mai arrivare qui
+      // Should never get here
       break;
   }
 }

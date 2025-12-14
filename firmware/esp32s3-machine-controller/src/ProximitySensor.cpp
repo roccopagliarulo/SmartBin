@@ -1,6 +1,6 @@
 // src/ProximitySensor.cpp
 #include "ProximitySensor.h"
-#include "config.h" // Carica i nostri PIN
+#include "config.h"
 #include <Arduino.h>
 
 void proximity_setup() {

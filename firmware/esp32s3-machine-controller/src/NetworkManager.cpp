@@ -9,7 +9,7 @@
 #include "BeltManager.h"
 #include "SorterManager.h"
 
-// Definiamo le variabili globali
+// Define global variables
 WiFiClient espClient;
 PubSubClient client(espClient);
 char MQTT_TOPIC_PROXIMITY[100];
@@ -19,28 +19,28 @@ char MQTT_TOPIC_UI_CLASSIFY[100];
 char MQTT_TOPIC_COMMAND[100];
 char MQTT_TOPIC_CANCEL[100];
 
-// Funzioni "private" (static) per questo file
+// "Private" functions (static) for this file
 static void setup_wifi() {
   delay(10);
   Serial.println();
-  Serial.print("Connessione a ");
+  Serial.print("Connecting to ");
   Serial.println(WIFI_SSID);
   WiFi.begin(WIFI_SSID, WIFI_PASS);
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
     Serial.print(".");
   }
-  Serial.println("\nWiFi connesso");
-  Serial.println("Indirizzo IP: ");
+  Serial.println("\nWiFi connected");
+  Serial.println("IP address: ");
   Serial.println(WiFi.localIP());
 }
 
 void mqtt_callback(char* topic, byte* payload, unsigned int length) {
-  Serial.print("Messaggio ricevuto [");
+  Serial.print("Message received [");
   Serial.print(topic);
   Serial.print("] ");
 
-  // Converti il payload in una Stringa
+  // Convert payload to String
   char message[length + 1];
   memcpy(message, payload, length);
   message[length] = '\0';
@@ -48,82 +48,82 @@ void mqtt_callback(char* topic, byte* payload, unsigned int length) {
   
   Serial.println(messageStr);
 
-  // Controlla se è il topic della classificazione
+  // Check if classification topic
   if (strcmp(topic, MQTT_TOPIC_UI_CLASSIFY) == 0) {
     display_set_text(messageStr);
-    // Se riceviamo "unknown", faccia confusa
+    // If we receive "unknown", show confused face
     if (messageStr.indexOf("unknown") >= 0 || messageStr.indexOf("NON RICONOSCIUTO") >= 0) {
         display_set_mood(MOOD_CONFUSED);
     } 
-    // Altrimenti stiamo pensando/attendendo conferma
+    // Otherwise we're thinking/waiting for confirmation
     else {
         display_set_mood(MOOD_THINKING); 
     }
     
-    // Mostriamo anche il testo per chiarezza (opzionale)
+    // Also show text for clarity (optional)
     // display_show_text(messageStr);
   
-    // --- Controlla se è il topic dei comandi ---
+    // Check if command topic
   } else if (strcmp(topic, MQTT_TOPIC_COMMAND) == 0) {
     
-    // Analizza il JSON
+    // Parse JSON
     JsonDocument doc;
     DeserializationError error = deserializeJson(doc, messageStr);
 
     if (error) {
-      Serial.print("deserializeJson() fallito: ");
+      Serial.print("deserializeJson() failed: ");
       Serial.println(error.c_str());
       return;
     }
 
-    // Controlla quale azione eseguire
+    // Check which action to perform
     const char* action = doc["action"];
     if (strcmp(action, "open_gate") == 0) {
-      Serial.println("Ricevuto comando 'open_gate'. Avvio servo.");
+      Serial.println("Received 'open_gate' command. Starting servo.");
       display_set_mood(MOOD_HAPPY);
-      display_set_text("APERTURA...");
-      // Chiama il nostro nuovo gestore
-      // 1. Apri il cancello
+      display_set_text("OPENING...");
+      // Call our new manager
+      // 1. Open the gate
       servo_open_gate(); 
-      // 2. Arma il sistema nastro >>>
+      // 2. Arm the belt system
       const char* material = doc["target"];
       if (material == NULL) {
           material = "unknown"; // Sicurezza
       }
-      // 3. Imposta faccia Felice e Testo
-      // Usiamo una funzione diretta perché stiamo per bloccare il loop
+      // 3. Set happy face and text
+      // Use direct function as we'll block the loop
       display_set_mood(MOOD_HAPPY);
-      display_set_text("APERTURA..."); 
-      display_animate(); // <--- FORZA L'AGGIORNAMENTO GRAFICO ORA!
+      display_set_text("OPENING..."); 
+      display_animate(); // Force immediate display update
       
-      // 4. <<< Arma il nastro (passando il materiale) >>>
+      // 4. Arm the belt (passing material)
       belt_arm_system(material);
-      // 4. RESETTA IL DISPLAY ALLA FINE!
-      // Se non metti questo, rimane "APERTURA..." per sempre
+      // 4. RESET DISPLAY AT THE END!
+      // Without this, "OPENING..." stays forever
       display_reset(); 
-      display_animate(); // Aggiorna subito a "Pronto"
+      display_animate(); // Immediately update to "Ready"
     }
 
 
-    // Nota: ignorerà il comando "take_photo", che è corretto.
+    // Note: will ignore "take_photo" command, which is correct.
   }
 }
 
 
 static void reconnect_mqtt() {
   while (!client.connected()) {
-    Serial.print("Tentativo di connessione MQTT...");
+    Serial.print("Attempting MQTT connection...");
     String clientId = "esp32s3-mouth-" + String(MOUTH_ID);
     if (client.connect(clientId.c_str())) {
-      Serial.println("connesso");
+      Serial.println("connected");
 
       // --- Iscriviti al topic della UI ---
-      Serial.print("Iscrizione a: ");
+      Serial.print("Subscribing to: ");
       Serial.println(MQTT_TOPIC_UI_CLASSIFY);
       client.subscribe(MQTT_TOPIC_UI_CLASSIFY);
 
       // --- Iscrizione al topic dei comandi ---
-      Serial.print("Iscrizione a: ");
+      Serial.print("Subscribing to: ");
       Serial.println(MQTT_TOPIC_COMMAND);
       client.subscribe(MQTT_TOPIC_COMMAND);
       // ------------------------------------------
@@ -131,15 +131,15 @@ static void reconnect_mqtt() {
 
 
     } else {
-      Serial.print("fallito, rc=");
+      Serial.print("failed, rc=");
       Serial.print(client.state());
-      Serial.println(" riprovo tra 5 secondi");
+      Serial.println(" retrying in 5 seconds");
       delay(5000);
     }
   }
 }
 
-// Funzioni "pubbliche"
+// Public functions
 void network_setup() {
   setup_wifi();
 
@@ -148,7 +148,7 @@ void network_setup() {
 
   client.setServer(MQTT_BROKER_IP, MQTT_PORT);
 
-  // Costruisci i nomi dei topic
+  // Build topic names
   snprintf(MQTT_TOPIC_PROXIMITY, sizeof(MQTT_TOPIC_PROXIMITY), 
            "smartbin/mouth/%s/event/proximity", MOUTH_ID);
            

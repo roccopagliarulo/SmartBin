@@ -3,7 +3,7 @@
 #include "config.h"
 #include <Arduino.h>
 
-// Variabili statiche per il debounce (visibili solo in questo file)
+// Static variables for debouncing (visible only in this file)
 static unsigned long lastConfirmPress = 0;
 static unsigned long lastCorrectionPaperPress = 0;
 static unsigned long lastCorrectionPlasticPress = 0;
@@ -22,9 +22,9 @@ void input_setup()
 int checkButtons()
 {
   unsigned long now = millis();
-  int buttonPressed = BTN_NONE; // Nessun pulsante premuto di default
+  int buttonPressed = BTN_NONE; // Default: no button pressed
 
-  // 1. Controlla Pulsante CONFERMA
+  // 1. Check CONFIRM button
   if (digitalRead(CONFIRM_PIN) == LOW)
   {
     if (now - lastConfirmPress > DEBOUNCE_DELAY)
@@ -34,7 +34,7 @@ int checkButtons()
     }
   }
 
-  // 2. Controlla Pulsante CORREZIONE CARTA
+  // 2. Check PAPER CORRECTION button
   else if (digitalRead(CORRECTION_PIN_PAPER) == LOW)
   {
     if (now - lastCorrectionPaperPress > DEBOUNCE_DELAY)
@@ -44,7 +44,7 @@ int checkButtons()
     }
   }
 
-  // 3. <<< Controlla Pulsante CORREZIONE PLASTICA >>>
+  // 3. Check PLASTIC CORRECTION button
   else if (digitalRead(CORRECTION_PIN_PLASTIC) == LOW)
   {
     if (now - lastCorrectionPlasticPress > DEBOUNCE_DELAY)
@@ -54,7 +54,7 @@ int checkButtons()
     }
   }
 
-  // 4. <<< Controlla Pulsante CORREZIONE VETRO >>>
+  // 4. Check GLASS CORRECTION button
   else if (digitalRead(CORRECTION_PIN_GLASS) == LOW)
   {
     if (now - lastCorrectionGlassPress > DEBOUNCE_DELAY)
@@ -64,7 +64,7 @@ int checkButtons()
     }
   }
 
-  // 5. <<< Controlla Pulsante ANNULLA >>>
+  // 5. Check CANCEL button
   else if (digitalRead(CANCEL_PIN) == LOW) {
     if (now - lastCancelPress > DEBOUNCE_DELAY) {
       buttonPressed = BTN_CANCEL;

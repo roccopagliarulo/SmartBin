@@ -1,13 +1,13 @@
 // include/BeltManager.h
 #pragma once
 
-// Funzione di inizializzazione
+// Initialization function
 void belt_setup();
 
-// Funzione che controlla il sensore
+// Function to check the sensor
 bool is_object_detected_on_belt();
 
-void belt_loop(); // Questa funzione gestirà la macchina a stati
+void belt_loop(); // This function will handle the state machine
 
-// Funzione chiamata dal NetworkManager per "armare" il nastro
+// Function called by NetworkManager to "arm" the belt system
 void belt_arm_system(const char* material);
