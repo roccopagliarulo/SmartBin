@@ -19,7 +19,7 @@
         "id": "de99ec2141cbd81f",
         "type": "group",
         "z": "0ebc9fe30e2af211",
-        "name": "CREAZIONE DB (Da eseguire solo una volta)",
+        "name": "DB CREATION (To be executed only once)",
         "style": {
             "label": true
         },
@@ -36,7 +36,7 @@
         "id": "900bf7bf98ef5e48",
         "type": "group",
         "z": "0ebc9fe30e2af211",
-        "name": "Preparazione del Database (SQLite)",
+        "name": "Database Preparation (SQLite)",
         "style": {
             "label": true
         },
@@ -52,7 +52,7 @@
         "id": "d5b0e68c69f5dd85",
         "type": "group",
         "z": "0ebc9fe30e2af211",
-        "name": "Salvare i Dati (Scrittura)",
+        "name": "Save Data (Write)",
         "style": {
             "label": true
         },
@@ -99,7 +99,7 @@
         ],
         "x": 2274,
         "y": 1919,
-        "w": 2652,
+        "w": 2632,
         "h": 522
     },
     {
@@ -120,7 +120,7 @@
         ],
         "x": 794,
         "y": 2619,
-        "w": 712,
+        "w": 672,
         "h": 162
     },
     {
@@ -137,8 +137,29 @@
         ],
         "x": 794,
         "y": 2479,
-        "w": 452,
+        "w": 432,
         "h": 82
+    },
+    {
+        "id": "61f78308dbba9e1b",
+        "type": "group",
+        "z": "e196b19e598c60ff",
+        "name": "Tape simulation (to dispose of the queue when using debug nodes)",
+        "style": {
+            "label": true
+        },
+        "nodes": [
+            "SIM_INJECT_SENSOR",
+            "SIM_DELAY_10S",
+            "SIM_GET_INFO",
+            "SIM_CREATE_CLEARED_MSG",
+            "SIM_MQTT_OUT_CLEARED",
+            "81394f7a933b62b5"
+        ],
+        "x": 554,
+        "y": 1019,
+        "w": 1472,
+        "h": 182
     },
     {
         "id": "24c0b9e5da4bd92d",
@@ -214,8 +235,8 @@
         "id": "26b3815d27b3140c",
         "type": "telegrambot-config",
         "botname": "SmartBinBot",
-        "usernames": "Rocco Pagliarulo",
-        "chatIds": "219634800",
+        "usernames": "",
+        "chatIds": "",
         "pollInterval": 300
     },
     {
@@ -227,7 +248,7 @@
     {
         "id": "c858a3399cfe614c",
         "type": "ui-page",
-        "name": "Reportistica",
+        "name": "Dashboard",
         "ui": "b8f4a9791328f42c",
         "path": "/page1",
         "icon": "home",
@@ -277,7 +298,7 @@
     {
         "id": "813651c816117ad2",
         "type": "ui-group",
-        "name": "Storico",
+        "name": "Historical",
         "page": "c858a3399cfe614c",
         "width": "12",
         "height": 1,
@@ -381,16 +402,6 @@
         "broker": "24c0b9e5da4bd92d",
         "x": 2920,
         "y": 580,
-        "wires": []
-    },
-    {
-        "id": "3a61ea4f3cbd4c54",
-        "type": "comment",
-        "z": "0ebc9fe30e2af211",
-        "name": "Info su mqtt out",
-        "info": "Useremo questo mqtt out per tutti i command (verso esp32)",
-        "x": 2880,
-        "y": 500,
         "wires": []
     },
     {
@@ -574,9 +585,9 @@
         "id": "78ab28e72c844e14",
         "type": "comment",
         "z": "0ebc9fe30e2af211",
-        "name": "Corsia 2: Correzione Manuale",
+        "name": "Lane 2: Manual Correction",
         "info": "",
-        "x": 1000,
+        "x": 990,
         "y": 1540,
         "wires": []
     },
@@ -584,7 +595,7 @@
         "id": "20e175d851de9257",
         "type": "comment",
         "z": "0ebc9fe30e2af211",
-        "name": "Corsia 1: Innesco e Classificazione",
+        "name": "Lane 1: Triggering and Classification",
         "info": "",
         "x": 1740,
         "y": 460,
@@ -594,7 +605,7 @@
         "id": "ce79c4573f883019",
         "type": "change",
         "z": "0ebc9fe30e2af211",
-        "name": "Estrai Classe per UI",
+        "name": "Extract Class for UI",
         "rules": [
             {
                 "t": "set",
@@ -661,8 +672,8 @@
         "id": "af5e27da4267a0eb",
         "type": "function",
         "z": "0ebc9fe30e2af211",
-        "name": "Allega ID",
-        "func": "// Estraiamo l'ID della bocca (es. \"1\")\nvar mouth_id = msg.topic.split('/')[2];\nvar states = flow.get(\"mouth_states\") || {};\n\n// Controlla se questa specifica bocca è già occupata\nif (states[mouth_id] && states[mouth_id].status === \"busy\") {\n    node.warn(\"Bocca \" + mouth_id + \" è BUSY. Evento di prossimità ignorato.\");\n    return null; // Ferma il flusso qui\n}\n\n// Watchdog timer (invariato)\nvar watchdogTimer = setTimeout(function () {\n    var current_states = flow.get(\"mouth_states\") || {};\n    if (current_states[mouth_id] && current_states[mouth_id].status === \"busy\") {\n        current_states[mouth_id].status = \"ready\";\n        current_states[mouth_id].timer = null;\n        flow.set(\"mouth_states\", current_states);\n        node.warn(\"Watchdog: Timeout per bocca \" + mouth_id + \". Reset a READY.\");\n    }\n}, 30000); // 30 secondi \n\n// Genera un waste_id\n//var new_waste_id = \"waste_\" + Date.now();\n\n// SOLO PER TEST INJECT\nvar new_waste_id = msg.payload.waste_id || msg.waste_id || (\"waste_\" + Date.now());\n\n// Salva il nuovo stato\nstates[mouth_id] = {\n    status: \"busy\",\n    timer: watchdogTimer,\n    retries: 0,            // <<< NUOVO: Inizializza contatore tentativi\n    current_waste_id: new_waste_id // <<< NUOVO: Salva il waste_id\n};\nflow.set(\"mouth_states\", states);\nnode.log(\"Bocca \" + mouth_id + \" impostata su BUSY.\");\n// --- FINE MODIFICA ---\n\nmsg.mouth_id = mouth_id;\nmsg.waste_id = new_waste_id; // Passa il nuovo waste_id\n\nreturn msg;",
+        "name": "Attach ID",
+        "func": "// Extract mouth ID (e.g., \"1\")\nvar mouth_id = msg.topic.split('/')[2];\nvar states = flow.get(\"mouth_states\") || {};\n\n// Check if this specific mouth is already busy\nif (states[mouth_id] && states[mouth_id].status === \"busy\") {\n    node.warn(\"Mouth \" + mouth_id + \" is BUSY. Proximity event ignored.\");\n    return null; // Stop flow here\n}\n\n// Watchdog timer (unchanged)\nvar watchdogTimer = setTimeout(function () {\n    var current_states = flow.get(\"mouth_states\") || {};\n    if (current_states[mouth_id] && current_states[mouth_id].status === \"busy\") {\n        current_states[mouth_id].status = \"ready\";\n        current_states[mouth_id].timer = null;\n        flow.set(\"mouth_states\", current_states);\n        node.warn(\"Watchdog: Timeout for mouth \" + mouth_id + \". Reset to READY.\");\n    }\n}, 30000); // 30 seconds\n\n// Generate a waste_id\n// var new_waste_id = \"waste_\" + Date.now();\n\n// ONLY FOR TEST INJECTION\nvar new_waste_id = msg.payload.waste_id || msg.waste_id || (\"waste_\" + Date.now());\n\n// Save the new state\nstates[mouth_id] = {\n    status: \"busy\",\n    timer: watchdogTimer,\n    retries: 0,            \n    current_waste_id: new_waste_id\n};\nflow.set(\"mouth_states\", states);\nnode.log(\"Mouth \" + mouth_id + \" set to BUSY.\");\n\nmsg.mouth_id = mouth_id;\nmsg.waste_id = new_waste_id; // Pass the new waste_id\n\nreturn msg;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -682,8 +693,8 @@
         "id": "a0481e283d0645bc",
         "type": "function",
         "z": "0ebc9fe30e2af211",
-        "name": "Estrai ID",
-        "func": "// Estraiamo l'ID della bocca (es. \"1\")\nmsg.mouth_id = msg.topic.split('/')[2];\n\n// Prendiamo il waste_id che l'ESP32 ci ha rimandato\nif (msg.payload.waste_id) {\n    msg.waste_id = msg.payload.waste_id;\n}\n\nreturn msg;",
+        "name": "Extract ID",
+        "func": "// Extract mouth ID (e.g., \"1\")\nmsg.mouth_id = msg.topic.split('/')[2];\n\n// Get the waste_id that the ESP32 sent back to us\nif (msg.payload.waste_id) {\n    msg.waste_id = msg.payload.waste_id;\n}\n\nreturn msg;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -702,8 +713,8 @@
         "id": "c46993174b5d7697",
         "type": "function",
         "z": "0ebc9fe30e2af211",
-        "name": "Estrai ID",
-        "func": "var mouth_id = msg.topic.split('/')[2];\nvar waste_id = msg.payload.waste_id; // ID dal messaggio in arrivo\nvar states = flow.get(\"mouth_states\") || {};\n\n// --- MODIFICATO: Controllo di Sicurezza ---\n// Controlla se la bocca è busy E se il waste_id corrisponde\nif (!states[mouth_id] || states[mouth_id].status !== \"busy\" || states[mouth_id].current_waste_id !== waste_id) {\n    node.warn(\"Messaggio di classificazione vecchio o inatteso per bocca \" + mouth_id + \". Ignoro.\");\n    return null; // Blocca questo vecchio messaggio\n}\n\n// Se il controllo passa, è il messaggio che stavamo aspettando.\n// Cancella il Watchdog Timer\nif (states[mouth_id].timer) {\n    clearTimeout(states[mouth_id].timer);\n    states[mouth_id].timer = null;\n    flow.set(\"mouth_states\", states);\n    node.log(\"Watchdog per bocca \" + mouth_id + \" cancellato (ricevuta classificazione).\");\n}\n// --- FINE MODIFICA ---\n\nmsg.mouth_id = mouth_id; // Passa il mouth_id per i nodi successivi\n// msg.waste_id non serve più passarlo, ma non fa male\nmsg.waste_id = waste_id;\n\nreturn msg;",
+        "name": "Extract ID",
+        "func": "var mouth_id = msg.topic.split('/')[2];\nvar waste_id = msg.payload.waste_id; // ID from incoming message\nvar states = flow.get(\"mouth_states\") || {};\n\n// MODIFIED: Safety Check\n// Check if mouth is busy AND if waste_id matches\nif (!states[mouth_id] || states[mouth_id].status !== \"busy\" || states[mouth_id].current_waste_id !== waste_id) {\n    node.warn(\"Old or unexpected classification message for mouth \" + mouth_id + \". Ignoring.\");\n    return null; // Block this old message\n}\n\n// If check passes, this is the message we were waiting for\n// Clear the Watchdog Timer\nif (states[mouth_id].timer) {\n    clearTimeout(states[mouth_id].timer);\n    states[mouth_id].timer = null;\n    flow.set(\"mouth_states\", states);\n    node.log(\"Watchdog for mouth \" + mouth_id + \" cleared (received classification).\");\n}\n\nmsg.mouth_id = mouth_id; // Pass mouth_id for downstream nodes\n// waste_id no longer needs to be passed, but doesn't hurt\nmsg.waste_id = waste_id;\n\nreturn msg;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -722,8 +733,8 @@
         "id": "aa7bc76605df7819",
         "type": "function",
         "z": "0ebc9fe30e2af211",
-        "name": "Estrai ID",
-        "func": "// Estraiamo l'ID della bocca (es. \"1\")\nmsg.mouth_id = msg.topic.split('/')[2];\n\n// Prendiamo il waste_id che l'ESP32 ci ha rimandato\nif (msg.payload.waste_id) {\n    msg.waste_id = msg.payload.waste_id;\n}\n\nreturn msg;",
+        "name": "Extract ID",
+        "func": "// Extract mouth ID (e.g., \"1\")\nmsg.mouth_id = msg.topic.split('/')[2];\n\n// Get the waste_id that the ESP32 sent back to us\nif (msg.payload.waste_id) {\n    msg.waste_id = msg.payload.waste_id;\n}\n\nreturn msg;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -743,7 +754,7 @@
         "type": "function",
         "z": "0ebc9fe30e2af211",
         "name": "Avvia Timer 10s",
-        "func": "/*\nvar sessions = flow.get(\"sessions\") || {};\nvar mouth_id = msg.mouth_id;\n\n// Dobbiamo estrarre il materiale (es. \"plastic\") dal payload\n// Il payload in arrivo è {\"action\": \"open_gate\", \"target\": \"plastic\"}\nvar material = \"sconosciuto\";\nif (msg.payload && msg.payload.target) {\n    material = msg.payload.target;\n}\n\n// Controlliamo se la correzione è stata segnalata dai nodi precedenti\n// Se msg.ai_correct non esiste (flusso normale), assumiamo sia TRUE.\n// Se esiste (viene da Gestisci Correzione), usiamo quel valore (FALSE).\nvar is_ai_correct = true;\nif (msg.hasOwnProperty(\"ai_correct\")) {\n    is_ai_correct = msg.ai_correct;\n}\n// --------------------\n\n// Memorizza TUTTI i dati che ci servono, non solo il comando\nsessions[mouth_id] = {\n    command: msg.payload,\n    topic: \"smartbin/mouth/\" + mouth_id + \"/command\",\n    waste_id: msg.waste_id, // <-- ECCO I DATI AGGIUNTI\n    material: material,      // <-- ECCO I DATI AGGIUNTI\n    ai_correct: is_ai_correct\n};\n\n// Funzione che invierà il comando\nvar sendCommand = function () {\n    var session = flow.get(\"sessions\")[mouth_id];\n    if (session) {\n\n        // NON inviare. Costruisci un \"lavoro\" (job) completo\n        var job = {\n            mqtt_payload: session.command,\n            mqtt_topic: session.topic,\n            belt_payload: {\n                info: \"Richiesta rilascio rifiuto (da Timer)\",\n                mouth_id: mouth_id,\n                waste_id: session.waste_id,\n                material: session.material,\n                ai_correct: is_ai_correct\n            }\n        };\n\n        // Invia il \"job\" all'unica uscita\n        node.send(job);\n\n        // Pulisci la sessione\n        delete flow.get(\"sessions\")[mouth_id];\n    }\n};\n\n// Avvia il timer (questo non cambia)\nsessions[mouth_id].timerId = setTimeout(sendCommand, 10000);\n\nflow.set(\"sessions\", sessions);\n\n// Non inviare nulla ora, aspetta il timer\nreturn null;\n*/\n\n// NODO: Avvia Timer 10s (Fix waste_id)\n\nvar sessions = flow.get(\"sessions\") || {};\nvar mouth_id = msg.mouth_id;\n\n// Estraiamo il materiale dal payload\nvar material = \"sconosciuto\";\nif (msg.payload && msg.payload.target) {\n    material = msg.payload.target;\n}\n\n// Controlliamo se la correzione è stata segnalata\nvar is_ai_correct = true;\nif (msg.hasOwnProperty(\"ai_correct\")) {\n    is_ai_correct = msg.ai_correct;\n}\n\n// IMPORTANTE: Recupera waste_id dal messaggio\nvar waste_id = msg.waste_id;\n\n// Debug per verificare\nnode.warn(\"Avvia Timer - mouth_id: \" + mouth_id + \", waste_id: \" + waste_id + \", material: \" + material);\n\n// Memorizza TUTTI i dati necessari\nsessions[mouth_id] = {\n    command: msg.payload,\n    topic: \"smartbin/mouth/\" + mouth_id + \"/command\",\n    waste_id: waste_id,      // <<< SALVA waste_id\n    material: material,\n    ai_correct: is_ai_correct\n};\n\n// Funzione che invierà il comando\nvar sendCommand = function () {\n    var session = flow.get(\"sessions\")[mouth_id];\n    if (session) {\n        // Costruisci il \"job\" completo\n        var job = {\n            mqtt_payload: session.command,\n            mqtt_topic: session.topic,\n            belt_payload: {\n                info: \"Richiesta rilascio rifiuto (da Timer)\",\n                mouth_id: mouth_id,\n                waste_id: session.waste_id,  // <<< USA waste_id dalla sessione\n                material: session.material,\n                ai_correct: session.ai_correct\n            }\n        };\n\n        // Invia il \"job\"\n        node.send(job);\n\n        // Pulisci la sessione\n        delete flow.get(\"sessions\")[mouth_id];\n    }\n};\n\n// Avvia il timer\nsessions[mouth_id].timerId = setTimeout(sendCommand, 10000);\n\nflow.set(\"sessions\", sessions);\n\n// Non inviare nulla ora, aspetta il timer\nreturn null;",
+        "func": "// NODE: Start 10s Timer\n\nvar sessions = flow.get(\"sessions\") || {};\nvar mouth_id = msg.mouth_id;\n\n// Extract material from payload\nvar material = \"unknown\";\nif (msg.payload && msg.payload.target) {\n    material = msg.payload.target;\n}\n\n// Check whether a correction was reported\nvar is_ai_correct = true;\nif (msg.hasOwnProperty(\"ai_correct\")) {\n    is_ai_correct = msg.ai_correct;\n}\n\n// IMPORTANT: Retrieve waste_id from the message\nvar waste_id = msg.waste_id;\n\n// Debug to verify values\nnode.warn(\"Start Timer - mouth_id: \" + mouth_id + \", waste_id: \" + waste_id + \", material: \" + material);\n\n// Store ALL required data\nsessions[mouth_id] = {\n    command: msg.payload,\n    topic: \"smartbin/mouth/\" + mouth_id + \"/command\",\n    waste_id: waste_id,\n    material: material,\n    ai_correct: is_ai_correct\n};\n\n// Function that will send the command\nvar sendCommand = function () {\n    var session = flow.get(\"sessions\")[mouth_id];\n    if (session) {\n        // Build the complete \"job\"\n        var job = {\n            mqtt_payload: session.command,\n            mqtt_topic: session.topic,\n            belt_payload: {\n                info: \"Waste release request (from Timer)\",\n                mouth_id: mouth_id,\n                waste_id: session.waste_id,  \n                material: session.material,\n                ai_correct: session.ai_correct\n            }\n        };\n\n        // Send the \"job\"\n        node.send(job);\n\n        // Clear the session\n        delete flow.get(\"sessions\")[mouth_id];\n    }\n};\n\n// Start the timer\nsessions[mouth_id].timerId = setTimeout(sendCommand, 10000);\n\nflow.set(\"sessions\", sessions);\n\n// Do not send anything now, wait for the timer\nreturn null;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -763,15 +774,15 @@
         "id": "a4af529b2664c264",
         "type": "function",
         "z": "0ebc9fe30e2af211",
-        "name": "Gestisci Conferma",
-        "func": "/*\n\nvar mouth_id = msg.mouth_id;\nvar sessions = flow.get(\"sessions\") || {};\nvar session = sessions[mouth_id];\n\n// Scenario A: Conferma durante il timer di 10 secondi (logica originale)\nif (session && session.timerId) {\n    node.log(\"Gestisci Conferma (Scenario A): Conferma durante il timer.\");\n\n    clearTimeout(session.timerId);\n\n    // Costruisci il \"lavoro\" (job) completo\n    var job = {\n        mqtt_payload: session.command,\n        mqtt_topic: session.topic,\n        belt_payload: {\n            info: \"Richiesta rilascio rifiuto (Confermato)\",\n            mouth_id: mouth_id,\n            waste_id: session.waste_id,\n            material: session.material,\n            ai_correct: session.ai_correct !== undefined ? session.ai_correct : true\n        }\n    };\n\n    delete sessions[mouth_id];\n    flow.set(\"sessions\", sessions);\n    return job; // Invia direttamente al \"Set Mouth Ready\"\n}\n\n// Scenario B: Conferma DOPO i 5 tentativi falliti\nvar states = flow.get(\"mouth_states\") || {};\nif (states[mouth_id] && states[mouth_id].status === \"busy\") {\n    node.log(\"Gestisci Conferma (Scenario B): Conferma dopo 5 fallimenti (caso 'unknown').\");\n\n    var waste_id = states[mouth_id].current_waste_id;\n    if (!waste_id) {\n        node.error(\"Stato 'busy' senza 'current_waste_id' per bocca \" + mouth_id);\n        return null;\n    }\n\n    // Costruisci un \"lavoro\" (job) per il materiale \"unknown\"\n    var job = {\n        mqtt_payload: { action: \"open_gate\", target: \"unknown\" },\n        mqtt_topic: \"smartbin/mouth/\" + mouth_id + \"/command\",\n        belt_payload: {\n            info: \"Richiesta rilascio rifiuto (Confermato come Unknown)\",\n            mouth_id: mouth_id,\n            waste_id: waste_id,\n            material: \"unknown\", // Il materiale è \"sconosciuto\"\n            ai_correct: false\n        }\n    };\n\n    // Invia al \"Set Mouth Ready\" per sbloccare la bocca\n    return job;\n}\n\n// Scenario C: Conferma fantasma\nnode.warn(\"Ricevuta conferma per bocca \" + mouth_id + \" senza sessione attiva o stato busy. Ignoro.\");\nreturn null;\n\n\n*/\n// NODO: Gestisci Conferma (Fix waste_id)\n\nvar mouth_id = msg.mouth_id;\nvar sessions = flow.get(\"sessions\") || {};\nvar session = sessions[mouth_id];\n\n// Scenario A: Conferma durante il timer di 10 secondi\nif (session && session.timerId) {\n    node.log(\"Gestisci Conferma (Scenario A): Conferma durante il timer.\");\n\n    clearTimeout(session.timerId);\n\n    // RECUPERA waste_id: \n    // 1. Prova dal messaggio in arrivo (msg.waste_id)\n    // 2. Altrimenti dalla sessione (session.waste_id)\n    // 3. Fallback al payload (msg.payload.waste_id)\n    var waste_id = msg.waste_id || session.waste_id || msg.payload.waste_id;\n\n    // Debug per capire da dove viene\n    node.warn(\"waste_id recuperato: \" + waste_id + \" (da msg: \" + msg.waste_id + \", da session: \" + session.waste_id + \")\");\n\n    // Costruisci il \"lavoro\" (job) completo\n    var job = {\n        mqtt_payload: session.command,\n        mqtt_topic: session.topic,\n        belt_payload: {\n            info: \"Richiesta rilascio rifiuto (Confermato)\",\n            mouth_id: mouth_id,\n            waste_id: waste_id,\n            material: session.material,\n            ai_correct: session.ai_correct !== undefined ? session.ai_correct : true\n        }\n    };\n\n    delete sessions[mouth_id];\n    flow.set(\"sessions\", sessions);\n    return job;\n}\n\n// Scenario B: Conferma DOPO i 5 tentativi falliti\nvar states = flow.get(\"mouth_states\") || {};\nif (states[mouth_id] && states[mouth_id].status === \"busy\") {\n    node.log(\"Gestisci Conferma (Scenario B): Conferma dopo 5 fallimenti (caso 'unknown').\");\n\n    var waste_id = states[mouth_id].current_waste_id;\n    if (!waste_id) {\n        node.error(\"Stato 'busy' senza 'current_waste_id' per bocca \" + mouth_id);\n        return null;\n    }\n\n    // Costruisci un \"lavoro\" (job) per il materiale \"unknown\"\n    var job = {\n        mqtt_payload: { action: \"open_gate\", target: \"unknown\" },\n        mqtt_topic: \"smartbin/mouth/\" + mouth_id + \"/command\",\n        belt_payload: {\n            info: \"Richiesta rilascio rifiuto (Confermato come Unknown)\",\n            mouth_id: mouth_id,\n            waste_id: waste_id,\n            material: \"unknown\",\n            ai_correct: false\n        }\n    };\n\n    return job;\n}\n\n// Scenario C: Conferma fantasma\nnode.warn(\"Ricevuta conferma per bocca \" + mouth_id + \" senza sessione attiva o stato busy. Ignoro.\");\nreturn null;",
+        "name": "Manage Confirmation",
+        "func": "// NODE: Handle Confirmation (Fix waste_id)\n\nvar mouth_id = msg.mouth_id;\nvar sessions = flow.get(\"sessions\") || {};\nvar session = sessions[mouth_id];\nvar job = null;\n\n// Scenario A: Confirmation during 10-second timer\nif (session && session.timerId) {\n    node.log(\"Handle Confirmation (Scenario A): Confirmation during timer.\");\n\n    clearTimeout(session.timerId);\n\n    // RECOVER waste_id:\n    // 1. Try from incoming message (msg.waste_id)\n    // 2. Otherwise from session (session.waste_id)\n    // 3. Fallback to payload (msg.payload.waste_id)\n    var waste_id = msg.waste_id || session.waste_id || msg.payload.waste_id;\n\n    // Debug to understand source\n    node.warn(\"Recovered waste_id: \" + waste_id +\n        \" (from msg: \" + msg.waste_id +\n        \", from session: \" + session.waste_id + \")\");\n\n    // Build complete job\n    job = {\n        mqtt_payload: session.command,\n        mqtt_topic: session.topic,\n        belt_payload: {\n            info: \"Waste release request(Confirmed)\",\n            mouth_id: mouth_id,\n            waste_id: waste_id,\n            material: session.material,\n            ai_correct: session.ai_correct !== undefined ? session.ai_correct : true\n        }\n    };\n\n    delete sessions[mouth_id];\n    flow.set(\"sessions\", sessions);\n    return job;\n}\n\n// Scenario B: Confirmation AFTER 5 failed attempts\nvar states = flow.get(\"mouth_states\") || {};\nif (states[mouth_id] && states[mouth_id].status === \"busy\") {\n    node.log(\"Handle Confirmation (Scenario B): Confirmation after 5 failures ('unknown' case).\");\n\n    var waste_id = states[mouth_id].current_waste_id;\n    if (!waste_id) {\n        node.error(\"Busy state without 'current_waste_id' for mouth \" + mouth_id);\n        return null;\n    }\n\n    // Build job for \"unknown\" material\n    job = {\n        mqtt_payload: { action: \"open_gate\", target: \"unknown\" },\n        mqtt_topic: \"smartbin/mouth/\" + mouth_id + \"/command\",\n        belt_payload: {\n            info: \"Waste release request (Confirmed as Unknown)\",\n            mouth_id: mouth_id,\n            waste_id: waste_id,\n            material: \"unknown\",\n            ai_correct: false\n        }\n    };\n\n    return job;\n}\n\n// Scenario C: Ghost confirmation\nnode.warn(\"Received confirmation for mouth \" + mouth_id + \" with no active session or busy state. Ignoring.\");\nreturn null;",
         "outputs": 1,
         "timeout": 0,
-        "noerr": 1,
+        "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 2490,
+        "x": 2500,
         "y": 1020,
         "wires": [
             [
@@ -784,8 +795,8 @@
         "id": "07d8e0f248e992f7",
         "type": "function",
         "z": "0ebc9fe30e2af211",
-        "name": "Gestisci Correzione",
-        "func": "var mouth_id = msg.mouth_id;\nvar sessions = flow.get(\"sessions\") || {};\nvar session = sessions[mouth_id];\nvar states = flow.get(\"mouth_states\") || {};\nvar state = states[mouth_id];\n\n// Scenario A: Correzione durante il timer di 10 secondi\nif (session && session.timerId) {\n    node.log(\"Gestisci Correzione (Scenario A): Cancellazione timer precedente.\");\n    clearTimeout(session.timerId);\n    delete sessions[mouth_id];\n    flow.set(\"sessions\", sessions);\n}\n// Scenario B: Correzione DOPO i fallimenti (stato busy)\nelse if (state && state.status === \"busy\") {\n    node.log(\"Gestisci Correzione (Scenario B): Recupero waste_id.\");\n    msg.waste_id = state.current_waste_id;\n}\nelse {\n    node.warn(\"Ricevuta correzione senza stato valido. Ignoro.\");\n    return null;\n}\n\n// --- MAPPATURA INTELLIGENTE (Fix per lo Switch) ---\nvar input_class = msg.payload.corrected_class;\n\n\nmsg.payload.class = input_class;\n// --------------------------------------------------\n\n// Segnaliamo esplicitamente che è una correzione umana\nmsg.ai_correct = false;\n\nreturn msg;",
+        "name": "Manage Correction",
+        "func": "var mouth_id = msg.mouth_id;\nvar sessions = flow.get(\"sessions\") || {};\nvar session = sessions[mouth_id];\nvar states = flow.get(\"mouth_states\") || {};\nvar state = states[mouth_id];\n\n// Scenario A: Correction during the 10s Timer (Active Session)\nif (session && session.timerId) {\n    node.log(\"Handle Correction (Scenario A): Clearing previous timer.\");\n    clearTimeout(session.timerId);\n\n    // If the incoming message doesn't have waste_id, retrieve it from the session before destroying it\n    if (!msg.waste_id && session.waste_id) {\n        msg.waste_id = session.waste_id;\n        node.warn(\"Recovered waste_id from Session: \" + msg.waste_id);\n    }\n\n    delete sessions[mouth_id];\n    flow.set(\"sessions\", sessions);\n}\n    // Scenario B: Correction AFTER failures (Busy State, Timer expired)\nelse if (state && state.status === \"busy\") {\n    node.log(\"Handle Correction (Scenario B): Recovering waste_id form State.\");\n\n    // Retrieve the ID from the global state if not present in the message\n    if (!msg.waste_id && state.current_waste_id) {\n        msg.waste_id = state.current_waste_id;\n        node.warn(\"Recovered waste_id from State: \" + msg.waste_id);\n    }\n}\nelse {\n    node.warn(\"Received correction without valid state or session. Ignoring.\");\n    // If we don't find the ID anywhere, it could be a problem\n    if (!msg.waste_id) {\n        node.error(\"CRITICAL: waste_id is undefined during correction!\");\n        return null;\n    }\n}\n\nif (msg.payload && msg.payload.corrected_class) {\n    var input_class = msg.payload.corrected_class;\n    msg.payload.class = input_class;\n}\n\n// Explicitly mark as human correction\nmsg.ai_correct = false;\n\nreturn msg;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -873,7 +884,7 @@
         "id": "TEST_INJECT_1",
         "type": "inject",
         "z": "0ebc9fe30e2af211",
-        "name": "Simula: Proximity Bocca 1",
+        "name": "Simulate: Proximity (Mouth 1)",
         "props": [
             {
                 "p": "payload"
@@ -895,7 +906,7 @@
         "topic": "smartbin/mouth/1/event/proximity",
         "payload": "{\"user\":\"detected\"}",
         "payloadType": "json",
-        "x": 1770,
+        "x": 1780,
         "y": 640,
         "wires": [
             [
@@ -907,7 +918,7 @@
         "id": "TEST_INJECT_3",
         "type": "inject",
         "z": "0ebc9fe30e2af211",
-        "name": "Simula: Conferma (Bocca 1)",
+        "name": "Simulate: CONFIRM (Mouth 1)",
         "props": [
             {
                 "p": "payload"
@@ -936,7 +947,7 @@
         "id": "TEST_INJECT_4",
         "type": "inject",
         "z": "0ebc9fe30e2af211",
-        "name": "Simula: Correzione -> Carta (Bocca 1)",
+        "name": "Simulate: CORRECTION -> PAPER or CARDBOARD (Mouth 1)",
         "props": [
             {
                 "p": "payload"
@@ -951,9 +962,9 @@
         "once": false,
         "onceDelay": "",
         "topic": "smartbin/mouth/1/event/correction",
-        "payload": "{\"corrected_class\":\"paper\",\"waste_id\":\"test_waste_123\"}",
+        "payload": "{\"corrected_class\":\"paper_cardboard\",\"waste_id\":\"test_waste_123\"}",
         "payloadType": "json",
-        "x": 970,
+        "x": 1040,
         "y": 1720,
         "wires": [
             [
@@ -965,7 +976,7 @@
         "id": "TEST_M2_PROXIMITY",
         "type": "inject",
         "z": "0ebc9fe30e2af211",
-        "name": "Simula: Proximity (Bocca 2)",
+        "name": "Simulate: Proximity (Mouth 2)",
         "props": [
             {
                 "p": "payload"
@@ -994,7 +1005,7 @@
         "id": "TEST_M2_CLASSIFY",
         "type": "inject",
         "z": "0ebc9fe30e2af211",
-        "name": "Simula: Class. VETRO (Bocca 2)",
+        "name": "Simulate: Class. GLASS (Mouth 2)",
         "props": [
             {
                 "p": "payload"
@@ -1011,7 +1022,7 @@
         "topic": "smartbin/mouth/2/state/classification",
         "payload": "{\"class\":\"glass\",\"waste_id\":\"test_waste_123\"}",
         "payloadType": "json",
-        "x": 1010,
+        "x": 1020,
         "y": 1300,
         "wires": [
             [
@@ -1024,7 +1035,7 @@
         "id": "TEST_M2_CONFIRM",
         "type": "inject",
         "z": "0ebc9fe30e2af211",
-        "name": "Simula: Conferma (Bocca 2)",
+        "name": "Simulate: CONFIRM (Mouth 2)",
         "props": [
             {
                 "p": "payload"
@@ -1053,7 +1064,7 @@
         "id": "TEST_M2_CORRECT",
         "type": "inject",
         "z": "0ebc9fe30e2af211",
-        "name": "Simula: Correzione -> CARTA (Bocca 2)",
+        "name": "Simulate: Correction -> PAPER or CARDBOARD (Mouth 2)",
         "props": [
             {
                 "p": "payload"
@@ -1070,7 +1081,7 @@
         "topic": "smartbin/mouth/2/event/correction",
         "payload": "{\"corrected_class\":\"paper_cardboard\",\"waste_id\":\"test_waste_123\"}",
         "payloadType": "json",
-        "x": 970,
+        "x": 1030,
         "y": 1600,
         "wires": [
             [
@@ -1186,7 +1197,7 @@
         "type": "function",
         "z": "0ebc9fe30e2af211",
         "name": "Set Mouth Ready",
-        "func": "// Il payload in arrivo è il \"job\" per il Flusso 2\nvar mouth_id = msg.belt_payload.mouth_id;\n\nif (mouth_id) {\n    var states = flow.get(\"mouth_states\") || {};\n\n    // Reimposta lo stato della bocca\n    states[mouth_id] = {\n        status: \"ready\",\n        timer: null\n    };\n    flow.set(\"mouth_states\", states);\n    node.log(\"Bocca -\" + mouth_id + \" reimpostata su READY (lavoro inviato alla coda).\");\n\n} else {\n    node.error(\"Impossibile sbloccare la bocca: mouth_id non trovato!\", msg);\n}\n\n// Passa il messaggio originale al link out\nreturn msg;",
+        "func": "// The incoming payload is the \"job\" for Flow 2\nvar mouth_id = msg.belt_payload.mouth_id;\n\nif (mouth_id) {\n    var states = flow.get(\"mouth_states\") || {};\n\n    // Reset the mouth state\n    states[mouth_id] = {\n        status: \"ready\",\n        timer: null\n    };\n    flow.set(\"mouth_states\", states);\n    node.log(\"Mouth -\" + mouth_id + \" reset to READY (job sent to the queue).\");\n\n\n} else {\n    node.error(\"Unable to unlock the mouth: mouth_id not found!\", msg);\n}\n\n// Forward the original message to the link out\nreturn msg;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -1207,8 +1218,8 @@
         "id": "d0428c32df4daa9c",
         "type": "function",
         "z": "0ebc9fe30e2af211",
-        "name": "Gestisci Tentativo",
-        "func": "var mouth_id = msg.mouth_id;\nvar states = flow.get(\"mouth_states\") || {};\n\n// Lo stato è già stato verificato, ma un doppio controllo non fa male\nif (!states[mouth_id] || states[mouth_id].status !== \"busy\") {\n    return null;\n}\n\n// Incrementa il contatore dei tentativi\nstates[mouth_id].retries += 1;\nnode.log(\"Bocca \" + mouth_id + \": Tentativo \" + states[mouth_id].retries + \" di 5.\");\nflow.set(\"mouth_states\", states);\n\nif (states[mouth_id].retries >= 5) {\n    // --- 5 TENTATIVI FALLITI ---\n    node.warn(\"Bocca \" + mouth_id + \": 5 tentativi falliti. In attesa di correzione manuale.\");\n\n    // Prepara messaggio per UI\n    var ui_msg = {\n        payload: \"Sconosciuto\",\n        topic: \"smartbin/ui/classification\"\n    };\n\n    // Uscita 1 (Retry): null\n    // Uscita 2 (UI Fail): ui_msg\n    return [null, ui_msg];\n\n} else {\n    // --- PROVA ANCORA ---\n\n    // Prepara messaggio di retry (comando \"take_photo\")\n    var retry_msg = {\n        payload: {\n            action: \"take_photo\",\n            waste_id: states[mouth_id].current_waste_id // Usa lo STESSO waste_id\n        },\n        topic: \"smartbin/mouth/\" + mouth_id + \"/command\"\n    };\n\n    // Uscita 1 (Retry): retry_msg\n    // Uscita 2 (UI Fail): null\n    return [retry_msg, null];\n}",
+        "name": "Manage Attempt",
+        "func": "var mouth_id = msg.mouth_id;\nvar states = flow.get(\"mouth_states\") || {};\n\n// State has already been verified, but double-checking doesn't hurt\nif (!states[mouth_id] || states[mouth_id].status !== \"busy\") {\n    return null;\n}\n\n// Increment retry counter\nstates[mouth_id].retries += 1;\nnode.log(\"Mouth \" + mouth_id + \": Attempt \" + states[mouth_id].retries + \" of 5.\");\nflow.set(\"mouth_states\", states);\n\nif (states[mouth_id].retries >= 5) {\n    // 5 FAILED ATTEMPTS\n    node.warn(\"Mouth \" + mouth_id + \": 5 failed attempts. Waiting for manual correction.\");\n\n    // Prepare message for UI\n    var ui_msg = {\n        payload: \"Unknown\",\n        topic: \"smartbin/ui/classification\"\n    };\n\n    // Output 1 (Retry): null\n    // Output 2 (UI Fail): ui_msg\n    return [null, ui_msg];\n\n} else {\n    // TRY AGAIN\n\n    // Prepare retry message (\"take_photo\" command)\n    var retry_msg = {\n        payload: {\n            action: \"take_photo\",\n            waste_id: states[mouth_id].current_waste_id\n        },\n        topic: \"smartbin/mouth/\" + mouth_id + \"/command\"\n    };\n\n    // Output 1 (Retry): retry_msg\n    // Output 2 (UI Fail): null\n    return [retry_msg, null];\n}",
         "outputs": 2,
         "timeout": 0,
         "noerr": 0,
@@ -1255,7 +1266,7 @@
         "id": "a2ae74a404c55192",
         "type": "mqtt in",
         "z": "0ebc9fe30e2af211",
-        "name": "Ricevi Annulla",
+        "name": "Receive Cancel",
         "topic": "smartbin/mouth/+/event/cancel",
         "qos": "2",
         "datatype": "auto-detect",
@@ -1264,7 +1275,7 @@
         "rap": true,
         "rh": 0,
         "inputs": 0,
-        "x": 850,
+        "x": 860,
         "y": 960,
         "wires": [
             [
@@ -1276,16 +1287,16 @@
         "id": "8abe8a5b0f495dfd",
         "type": "function",
         "z": "0ebc9fe30e2af211",
-        "name": "Gestisci Annulla",
-        "func": "var mouth_id = msg.topic.split('/')[2];\nvar sessions = flow.get(\"sessions\") || {};\nvar states = flow.get(\"mouth_states\") || {};\n\n// 1. Gestione SESSIONE (Timer 10s)\nif (sessions[mouth_id]) {\n    if (sessions[mouth_id].timerId) {\n        clearTimeout(sessions[mouth_id].timerId);\n    }\n    delete sessions[mouth_id];\n    flow.set(\"sessions\", sessions);\n    node.log(\"Annulla: Sessione/Timer cancellati per bocca \" + mouth_id);\n}\n\n// 2. Gestione STATO (Busy -> Ready)\nif (states[mouth_id]) {\n    // Se c'è un watchdog timer (quello dello stato busy), cancellalo\n    if (states[mouth_id].timer) {\n        clearTimeout(states[mouth_id].timer);\n    }\n\n    // Forza lo stato a READY\n    states[mouth_id] = {\n        status: \"ready\",\n        timer: null\n    };\n    flow.set(\"mouth_states\", states);\n    node.log(\"Annulla: Stato forzato a READY per bocca \" + mouth_id);\n}\n\n// 3. Feedback per l'UI\nmsg.payload = \"Annullato\";\nreturn msg;",
+        "name": "Manage Cancel",
+        "func": "var mouth_id = msg.topic.split('/')[2];\nvar sessions = flow.get(\"sessions\") || {};\nvar states = flow.get(\"mouth_states\") || {};\n\n// 1. SESSION Management (10s Timer)\nif (sessions[mouth_id]) {\n    if (sessions[mouth_id].timerId) {\n        clearTimeout(sessions[mouth_id].timerId);\n    }\n    delete sessions[mouth_id];\n    flow.set(\"sessions\", sessions);\n    node.log(\"Cancel: Session/Timer cleared for mouth \" + mouth_id);\n}\n\n// 2. STATE Management (Busy -> Ready)\nif (states[mouth_id]) {\n    // If there's a watchdog timer (for busy state), clear it\n    if (states[mouth_id].timer) {\n        clearTimeout(states[mouth_id].timer);\n    }\n\n    // Force state to READY\n    states[mouth_id] = {\n        status: \"ready\",\n        timer: null\n    };\n    flow.set(\"mouth_states\", states);\n    node.log(\"Cancel: State forced to READY for mouth \" + mouth_id);\n}\n\n// 3. Feedback per l'UI\nmsg.payload = \"Cancelled\";\nreturn msg;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1040,
-        "y": 860,
+        "x": 1100,
+        "y": 960,
         "wires": [
             [
                 "516f611fd9bce57a"
@@ -1296,7 +1307,7 @@
         "id": "c5f0e46d7148096a",
         "type": "debug",
         "z": "0ebc9fe30e2af211",
-        "name": "annulla",
+        "name": "Cancel",
         "active": true,
         "tosidebar": true,
         "console": false,
@@ -1400,7 +1411,7 @@
         "z": "0ebc9fe30e2af211",
         "g": "d5b0e68c69f5dd85",
         "name": "Prepara INSERT",
-        "func": "// NODO SQL : msg.topic\n/*\nvar data = msg.belt_payload;\n\n// Escape delle stringhe per sicurezza\nfunction escapeSQL(str) {\n    return str.toString().replace(/'/g, \"''\");\n}\n\n// Query diretta con valori inseriti\nmsg.topic = \"INSERT INTO waste_history (mouth_id, waste_id, material, ai_correct) VALUES ('\"\n    + escapeSQL(data.mouth_id) + \"', '\"\n    + escapeSQL(data.waste_id) + \"', '\"\n    + escapeSQL(data.material) + \"', \"\n    + (data.ai_correct ? 1 : 0) + \")\";\n\nreturn msg;\n*/\n\n\n// NODO SQL : Prepared Statement ERRORE NON FUNZIONA\n/*var data = msg.belt_payload;\n\n// Usa i placeholder con ?\nmsg.topic = \"INSERT INTO waste_history (mouth_id, waste_id, material, ai_correct) VALUES (?, ?, ?, ?)\";\n\n// I parametri come array (non oggetto!)\nmsg.payload = [\n    data.mouth_id,\n    data.waste_id,\n    data.material,\n    data.ai_correct ? 1 : 0\n];\n\nreturn msg;*/\n\n\n\n// NODO: Prepara INSERT (Corretto)\n\nvar data = msg.belt_payload;\n\n// Escape delle stringhe per sicurezza\nfunction escapeSQL(str) {\n    // Gestisce valori null/undefined\n    if (str === null || str === undefined) {\n        return '';\n    }\n    return str.toString().replace(/'/g, \"''\");\n}\n\n// Query diretta con valori inseriti\nmsg.topic = \"INSERT INTO waste_history (mouth_id, waste_id, material, ai_correct) VALUES ('\"\n    + escapeSQL(data.mouth_id) + \"', '\"\n    + escapeSQL(data.waste_id) + \"', '\"\n    + escapeSQL(data.material) + \"', \"\n    + (data.ai_correct ? 1 : 0) + \")\";\n\nreturn msg;",
+        "func": "// NODE: Prepare INSERT (Corrected)\n\nvar data = msg.belt_payload;\n\n// Escape strings for safety\nfunction escapeSQL(str) {\n    // Handle null/undefined values\n    if (str === null || str === undefined) {\n        return '';\n    }\n    return str.toString().replace(/'/g, \"''\");\n}\n\n// Query diretta con valori inseriti\nmsg.topic = \"INSERT INTO waste_history (mouth_id, waste_id, material, ai_correct) VALUES ('\"\n    + escapeSQL(data.mouth_id) + \"', '\"\n    + escapeSQL(data.waste_id) + \"', '\"\n    + escapeSQL(data.material) + \"', \"\n    + (data.ai_correct ? 1 : 0) + \")\";\n\nreturn msg;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -1436,8 +1447,8 @@
         "z": "0ebc9fe30e2af211",
         "g": "8d50bf9a1e710b05",
         "group": "dd6fab847597a4f7",
-        "name": "Bocca 1",
-        "label": "Bocca 1 ",
+        "name": "Mouth 1",
+        "label": "Mouth 1 ",
         "order": 2,
         "width": 0,
         "height": 0,
@@ -1479,8 +1490,8 @@
         "z": "0ebc9fe30e2af211",
         "g": "8d50bf9a1e710b05",
         "group": "dd6fab847597a4f7",
-        "name": "Bocca 2",
-        "label": "Bocca 2",
+        "name": "Mouth 2",
+        "label": "Mouth 2",
         "order": 1,
         "width": 0,
         "height": 0,
@@ -1521,8 +1532,8 @@
         "type": "function",
         "z": "0ebc9fe30e2af211",
         "g": "8d50bf9a1e710b05",
-        "name": "Query Oggi",
-        "func": "/*var mouth_id = msg.payload; // L'ID arriva dal bottone (es. \"1\")\n\n// 1. La Query SQL\nmsg.topic = \"SELECT material as label, COUNT(*) as value FROM waste_history WHERE mouth_id = $mouth_id AND date(timestamp) = date('now') GROUP BY material\";\n\n// 2. I Parametri (IMPORTANTE: usa msg.params)\nmsg.params = {\n    $mouth_id: mouth_id\n};\n\nreturn msg;*/\n\nvar mouth_id = msg.payload; // \"1\" o \"2\"\n\n// Costruisci la query SQL\nmsg.topic = \"SELECT material as label, COUNT(*) as value FROM waste_history WHERE mouth_id = $mouth_id AND date(timestamp) = date('now') GROUP BY material\";\n\n// I parametri (IMPORTANTE: per query diretta, inserisci il valore direttamente)\nmsg.topic = \"SELECT material as label, COUNT(*) as value FROM waste_history WHERE mouth_id = '\" + mouth_id + \"' AND date(timestamp) = date('now') GROUP BY material\";\n\n// NON serve msg.params se usi query diretta\ndelete msg.params;\n\n// Debug\nnode.warn(\"Query Oggi per bocca \" + mouth_id + \": \" + msg.topic);\n\nreturn msg;",
+        "name": "Query Today",
+        "func": "var mouth_id = msg.payload; // \"1\" or \"2\"\n\n// Build the SQL query\nmsg.topic = \"SELECT material as label, COUNT(*) as value FROM waste_history WHERE mouth_id = $mouth_id AND date(timestamp) = date('now') GROUP BY material\";\n\n// Parameters (IMPORTANT: for a direct query, insert the value directly)\nmsg.topic = \"SELECT material as label, COUNT(*) as value FROM waste_history WHERE mouth_id = '\" + mouth_id + \"' AND date(timestamp) = date('now') GROUP BY material\";\n\n// msg.params is NOT needed when using a direct query\ndelete msg.params;\n\n// Debug\nnode.warn(\"Today's query for mouth \" + mouth_id + \": \" + msg.topic);\n\nreturn msg;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -1560,8 +1571,8 @@
         "z": "0ebc9fe30e2af211",
         "g": "8d50bf9a1e710b05",
         "group": "813651c816117ad2",
-        "name": "Rifiuti Oggi",
-        "label": "Rifiuti Giornalieri",
+        "name": "Waste Today",
+        "label": "Daily Waste",
         "order": 1,
         "chartType": "pie",
         "category": "topic",
@@ -1622,15 +1633,15 @@
         "type": "function",
         "z": "0ebc9fe30e2af211",
         "g": "8d50bf9a1e710b05",
-        "name": "Query Settimana",
-        "func": "/*var mouth_id = msg.payload;\n\n// 1. La Query SQL\nmsg.topic = \"SELECT date(timestamp) as x, COUNT(*) as y FROM waste_history WHERE mouth_id = $mouth_id AND timestamp >= date('now', '-6 days') GROUP BY date(timestamp) ORDER BY date(timestamp)\";\n\n// 2. I Parametri (IMPORTANTE: usa msg.params)\nmsg.params = {\n    $mouth_id: mouth_id\n};\n\nreturn msg;*/\n\nvar mouth_id = msg.payload; // \"1\" o \"2\"\n\n// Costruisci la query SQL con il valore diretto\nmsg.topic = \"SELECT date(timestamp) as x, COUNT(*) as y FROM waste_history WHERE mouth_id = '\" + mouth_id + \"' AND timestamp >= date('now', '-6 days') GROUP BY date(timestamp) ORDER BY date(timestamp)\";\n\n// NON serve msg.params\ndelete msg.params;\n\n// Debug\nnode.warn(\"Query Settimana per bocca \" + mouth_id + \": \" + msg.topic);\n\nreturn msg;",
+        "name": "Query Week",
+        "func": "\nvar mouth_id = msg.payload;// \"1\" or \"2\"\n\n// Build the SQL query with the direct value\nmsg.topic = \"SELECT date(timestamp) as x, COUNT(*) as y FROM waste_history WHERE mouth_id = '\" + mouth_id + \"' AND timestamp >= date('now', '-6 days') GROUP BY date(timestamp) ORDER BY date(timestamp)\";\n\n// msg.params is NOT needed\ndelete msg.params;\n\n// Debug\nnode.warn(\"Weekly query for mouth \" + mouth_id + \": \" + msg.topic);\n\nreturn msg;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 2890,
+        "x": 2870,
         "y": 2060,
         "wires": [
             [
@@ -1661,7 +1672,7 @@
         "type": "inject",
         "z": "0ebc9fe30e2af211",
         "g": "ecabd79993662d15",
-        "name": "ISPEZIONE DB",
+        "name": "DB INSPECTION",
         "props": [],
         "repeat": "",
         "crontab": "",
@@ -1698,7 +1709,7 @@
         "type": "debug",
         "z": "0ebc9fe30e2af211",
         "g": "ecabd79993662d15",
-        "name": "CONTENUTO DB",
+        "name": "DB CONTENT",
         "active": true,
         "tosidebar": true,
         "console": false,
@@ -1707,7 +1718,7 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1320,
+        "x": 1310,
         "y": 2740,
         "wires": []
     },
@@ -1716,13 +1727,13 @@
         "type": "catch",
         "z": "0ebc9fe30e2af211",
         "g": "7565126f5d2e9e7a",
-        "name": "Cattura Errori DB",
+        "name": "Capture DB Errors",
         "scope": [
-            "51c95b9a03b5c860",
-            "3ed309125e4d5c7d"
+            "3ed309125e4d5c7d",
+            "51c95b9a03b5c860"
         ],
         "uncaught": false,
-        "x": 900,
+        "x": 910,
         "y": 2520,
         "wires": [
             [
@@ -1735,7 +1746,7 @@
         "type": "debug",
         "z": "0ebc9fe30e2af211",
         "g": "7565126f5d2e9e7a",
-        "name": "ERRORE TROVATO",
+        "name": "ERROR FOUND",
         "active": true,
         "tosidebar": true,
         "console": false,
@@ -1744,7 +1755,7 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1110,
+        "x": 1100,
         "y": 2520,
         "wires": []
     },
@@ -1753,14 +1764,14 @@
         "type": "inject",
         "z": "0ebc9fe30e2af211",
         "g": "ecabd79993662d15",
-        "name": "SCRIVI FORZATO",
+        "name": "WRITE FORCED",
         "props": [],
         "repeat": "",
         "crontab": "",
         "once": false,
         "onceDelay": 0.1,
         "topic": "",
-        "x": 930,
+        "x": 920,
         "y": 2660,
         "wires": [
             [
@@ -1790,7 +1801,7 @@
         "type": "debug",
         "z": "0ebc9fe30e2af211",
         "g": "ecabd79993662d15",
-        "name": "RISULTATO SCRITTURA",
+        "name": "WRITING RESULT",
         "active": true,
         "tosidebar": true,
         "console": false,
@@ -1799,7 +1810,7 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1350,
+        "x": 1330,
         "y": 2660,
         "wires": []
     },
@@ -1809,7 +1820,7 @@
         "z": "0ebc9fe30e2af211",
         "g": "8d50bf9a1e710b05",
         "name": "handleDataChart",
-        "func": "/*if (!msg.payload || msg.payload.length === 0) {\n    node.warn(\"Nessun rifiuto trovato per oggi\");\n    return null;\n}\n\n// Trasforma i dati nel formato corretto per il chart\nvar chartData = msg.payload.map(function (row) {\n    return {\n        topic: row.label,\n        payload: row.value\n    };\n});\n\nnode.warn(\"Invio \" + chartData.length + \" categorie al pie chart\");\n\n// Invia tutto insieme\nreturn { payload: chartData };*/\n\n// Definizione dell'ordine fisso e dei nomi corretti\nvar materialsOrder = [\"plastic_metal\", \"glass\", \"paper\"];\nvar labels = {\n    \"plastic_metal\": \"Plastica e Metallo\",\n    \"glass\": \"Vetro\",\n    \"paper\": \"Carta\"\n};\n\n// Se il payload è null, creiamo un array vuoto\nvar dbRows = msg.payload || [];\n\n// Creiamo un oggetto temporaneo per cercare velocemente i valori dal DB\nvar dataMap = {};\ndbRows.forEach(function (row) {\n    dataMap[row.label] = row.value;\n});\n\n// Costruiamo l'array finale forzando l'ordine\nvar chartData = [];\n\nmaterialsOrder.forEach(function (matKey) {\n    chartData.push({\n        topic: labels[matKey],       // Nome leggibile (es. \"Vetro\")\n        payload: dataMap[matKey] || 0 // Se non c'è nel DB, metti 0\n    });\n});\n\nnode.warn(\"Dati ordinati per colori: \" + JSON.stringify(chartData));\n\n// Inviamo il nuovo array (che verrà poi splittato)\nreturn { payload: chartData };",
+        "func": "// Define the fixed order and the correct display names\nvar materialsOrder = [\"plastic_metal\", \"glass\", \"paper_cardboard\"];\nvar labels = {\n    \"plastic_metal\": \"Plastic and Metal\",\n    \"glass\": \"Glass\",\n    \"paper_cardboard\": \"Paper and Cardboard\"\n};\n\n// If the payload is null, create an empty array\nvar dbRows = msg.payload || [];\n\n// Create a temporary object for fast lookup of DB values\nvar dataMap = {};\ndbRows.forEach(function (row) {\n    dataMap[row.label] = row.value;\n});\n\n// Build the final array enforcing the fixed order\nvar chartData = [];\n\nmaterialsOrder.forEach(function (matKey) {\n    chartData.push({\n        topic: labels[matKey],          // Human-readable name (e.g. \"Glass\")\n        payload: dataMap[matKey] || 0   // If not present in DB, use 0\n    });\n});\n\nnode.warn(\"Data ordered for color mapping: \" + JSON.stringify(chartData));\n\n// Send the new array (it will be split later)\nreturn { payload: chartData };",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -1948,7 +1959,7 @@
         "z": "0ebc9fe30e2af211",
         "g": "8d50bf9a1e710b05",
         "name": "Formatta Dati Settimana",
-        "func": "/*\n\n// 1. Controllo se ci sono dati\nif (!msg.payload || msg.payload.length === 0) {\n    return { payload: [] };\n}\n\n// 2. Impostiamo il nome della serie (Legenda)\n// Questo è fondamentale per il Bar Chart\nmsg.topic = \"Rifiuti Totali\";\n\n// 3. Mappiamo i dati\n// Non serve 'series' dentro l'oggetto se impostiamo msg.topic\nmsg.payload = msg.payload.map(function (row) {\n    return {\n        x: row.x,\n        y: row.y\n    };\n});\n\nreturn msg;\n\n\n*/\n\n\n// 1. Recupera i dati dal database (o array vuoto se null)\nvar dbData = msg.payload || [];\n\n// 2. Crea una mappa (dizionario) per accesso rapido: \"2025-12-12\" -> 1\nvar dataMap = {};\ndbData.forEach(function (row) {\n    dataMap[row.x] = row.y;\n});\n\n// Funzione helper per formattare la data come YYYY-MM-DD\nfunction formatDate(dateObj) {\n    var d = new Date(dateObj),\n        month = '' + (d.getMonth() + 1),\n        day = '' + d.getDate(),\n        year = d.getFullYear();\n\n    if (month.length < 2) month = '0' + month;\n    if (day.length < 2) day = '0' + day;\n\n    return [year, month, day].join('-');\n}\n\nvar result = [];\nvar seriesName = \"Rifiuti Totali\"; // Nome per la legenda\n\n// 3. Generiamo gli ultimi 7 giorni (da oggi andando indietro di 6)\n// Nota: corrisponde alla query SQL \"date('now', '-6 days')\"\nfor (var i = 6; i >= 0; i--) {\n    var d = new Date();\n    d.setDate(d.getDate() - i); // Sottrai i giorni\n    var dateStr = formatDate(d);\n\n    // Se esiste nel DB usiamo il valore, altrimenti 0\n    var val = dataMap[dateStr] || 0;\n\n    result.push({\n        \"x\": dateStr,\n        \"y\": val\n    });\n}\n\n// 4. Impostiamo il topic per il chart (importante per il colore/legenda)\nmsg.topic = seriesName;\nmsg.payload = result;\n\nreturn msg;",
+        "func": "// 1. Retrieve data from the database (or an empty array if null)\nvar dbData = msg.payload || [];\n\n// 2. Create a map (dictionary) for fast access: \"2025-12-12\" -> 1\nvar dataMap = {};\ndbData.forEach(function (row) {\n    dataMap[row.x] = row.y;\n});\n\n// Helper function to format the date as YYYY-MM-DD\nfunction formatDate(dateObj) {\n    var d = new Date(dateObj),\n        month = '' + (d.getMonth() + 1),\n        day = '' + d.getDate(),\n        year = d.getFullYear();\n\n    if (month.length < 2) month = '0' + month;\n    if (day.length < 2) day = '0' + day;\n\n    return [year, month, day].join('-');\n}\n\nvar result = [];\nvar seriesName = \"Total Waste\"; // Nome per la legenda\n\n// 3. Generate the last 7 days (from today going back 6 days)\n// Note: this matches the SQL query \"date('now', '-6 days')\"\nfor (var i = 6; i >= 0; i--) {\n    var d = new Date();\n    d.setDate(d.getDate() - i); // Subtract days\n    var dateStr = formatDate(d);\n\n    // If present in the DB use the value, otherwise 0\n    var val = dataMap[dateStr] || 0;\n\n    result.push({\n        \"x\": dateStr,\n        \"y\": val\n    });\n}\n\n// 4. Set the topic for the chart (important for color/legend)\nmsg.topic = seriesName;\nmsg.payload = result;\n\nreturn msg;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -1970,7 +1981,7 @@
         "z": "0ebc9fe30e2af211",
         "g": "8d50bf9a1e710b05",
         "name": "Query AI Performance",
-        "func": "var mouth_id = msg.payload; // \"1\" o \"2\"\n\n// Seleziona i conteggi raggruppati per correttezza (0 o 1)\n// Ordiniamo DESC (decrescente) così 1 (Corretto) arriva prima di 0 (Sbagliato)\n// Questo ci aiuta a fissare i colori (Verde = primo, Rosso = secondo)\nmsg.topic = \"SELECT ai_correct, COUNT(*) as count FROM waste_history WHERE mouth_id = '\" + mouth_id + \"' AND date(timestamp) = date('now') GROUP BY ai_correct ORDER BY ai_correct DESC\";\n\nreturn msg;",
+        "func": "var mouth_id = msg.payload; // \"1\" or \"2\"\n\n// Select counts grouped by correctness (0 or 1)\n// Order DESC so that 1 (Correct) comes before 0 (Incorrect)\n// This helps keep colors consistent (Green = first, Red = second)\nmsg.topic = \"SELECT ai_correct, COUNT(*) as count FROM waste_history WHERE mouth_id = '\" + mouth_id + \"' AND date(timestamp) = date('now') GROUP BY ai_correct ORDER BY ai_correct DESC\";\n\nreturn msg;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -2008,7 +2019,7 @@
         "z": "0ebc9fe30e2af211",
         "g": "8d50bf9a1e710b05",
         "name": "Formatta AI Chart",
-        "func": "// msg.payload = [{ai_correct: 1, count: 5}, {ai_correct: 0, count: 2}]\n\nif (!msg.payload || msg.payload.length === 0) {\n    return null;\n}\n\nvar chartData = [];\n\nmsg.payload.forEach(function(row) {\n    var label = (row.ai_correct === 1) ? \"AI Corretta\" : \"Correzione Manuale\";\n    chartData.push({\n        topic: label,\n        payload: row.count\n    });\n});\n\n// Restituiamo l'array, che verrà poi splittato\nmsg.payload = chartData;\nreturn msg;",
+        "func": "// msg.payload = [{ai_correct: 1, count: 5}, {ai_correct: 0, count: 2}]\n\nif (!msg.payload || msg.payload.length === 0) {\n    return null;\n}\n\nvar chartData = [];\n\nmsg.payload.forEach(function(row) {\n    var label = (row.ai_correct === 1) ? \"AI Correct\" : \"Manual Correction\";\n    chartData.push({\n        topic: label,\n        payload: row.count\n    });\n});\n\n// Return the array, which will be split later\nmsg.payload = chartData;\nreturn msg;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -2085,8 +2096,8 @@
         "z": "0ebc9fe30e2af211",
         "g": "8d50bf9a1e710b05",
         "group": "group_ai_perf",
-        "name": "Accuratezza Oggi",
-        "label": "Accuratezza Oggi",
+        "name": "Accuracy Today",
+        "label": "Accuracy Today",
         "order": 1,
         "chartType": "pie",
         "category": "topic",
@@ -2136,7 +2147,7 @@
         "height": 8,
         "className": "",
         "interpolation": "linear",
-        "x": 4790,
+        "x": 4780,
         "y": 2340,
         "wires": [
             []
@@ -2147,7 +2158,7 @@
         "type": "delay",
         "z": "0ebc9fe30e2af211",
         "g": "8d50bf9a1e710b05",
-        "name": "Ritardo",
+        "name": "Delay for render the chart",
         "pauseType": "rate",
         "timeout": "1",
         "timeoutUnits": "seconds",
@@ -2160,7 +2171,7 @@
         "drop": false,
         "allowrate": false,
         "outputs": 1,
-        "x": 4480,
+        "x": 4530,
         "y": 1980,
         "wires": [
             [
@@ -2173,7 +2184,7 @@
         "type": "delay",
         "z": "0ebc9fe30e2af211",
         "g": "8d50bf9a1e710b05",
-        "name": "Ritardo",
+        "name": "Delay for render the chart",
         "pauseType": "rate",
         "timeout": "1",
         "timeoutUnits": "seconds",
@@ -2186,7 +2197,7 @@
         "drop": false,
         "allowrate": false,
         "outputs": 1,
-        "x": 4440,
+        "x": 4490,
         "y": 2380,
         "wires": [
             [
@@ -2200,9 +2211,9 @@
         "z": "0ebc9fe30e2af211",
         "g": "8d50bf9a1e710b05",
         "group": "813651c816117ad2",
-        "name": "Rifiuti della settimana",
-        "label": "Rifiuti della settimana",
-        "order": 9007199254740991,
+        "name": "Waste of the week",
+        "label": "Waste of the week",
+        "order": 2,
         "chartType": "bar",
         "category": "topic",
         "categoryType": "msg",
@@ -2251,7 +2262,7 @@
         "height": 8,
         "className": "",
         "interpolation": "linear",
-        "x": 4800,
+        "x": 4790,
         "y": 2080,
         "wires": [
             []
@@ -2261,7 +2272,7 @@
         "id": "fee5e28989a91341",
         "type": "inject",
         "z": "0ebc9fe30e2af211",
-        "name": "Simula: Class. Plastica (Bocca 1)",
+        "name": "Simulate: Class. Plastic Metal (Mouth 1)",
         "props": [
             {
                 "p": "payload"
@@ -2278,7 +2289,7 @@
         "topic": "smartbin/mouth/2/state/classification",
         "payload": "{\"class\":\"plastic_metal\",\"waste_id\":\"test_waste_123\"}",
         "payloadType": "json",
-        "x": 1010,
+        "x": 1030,
         "y": 1180,
         "wires": [
             []
@@ -2288,9 +2299,9 @@
         "id": "9e04fd4558b2de01",
         "type": "comment",
         "z": "e196b19e598c60ff",
-        "name": "Corsia 3: Allarme Cestino Pieno",
+        "name": "Lane 3: Full Trash Alarm",
         "info": "",
-        "x": 730,
+        "x": 700,
         "y": 200,
         "wires": []
     },
@@ -2408,14 +2419,14 @@
         "id": "FLOW2_INIT",
         "type": "inject",
         "z": "e196b19e598c60ff",
-        "name": "Inizializza Nastro (all'avvio)",
+        "name": "Initialize Tape (at startup)",
         "props": [],
         "repeat": "",
         "crontab": "",
         "once": true,
         "onceDelay": 0.1,
         "topic": "",
-        "x": 720,
+        "x": 710,
         "y": 540,
         "wires": [
             [
@@ -2427,7 +2438,7 @@
         "id": "FLOW2_SET_READY",
         "type": "change",
         "z": "e196b19e598c60ff",
-        "name": "Imposta Nastro = READY, Coda = []",
+        "name": "Set Tape = READY, Coda = []",
         "rules": [
             {
                 "t": "set",
@@ -2444,7 +2455,7 @@
                 "tot": "json"
             }
         ],
-        "x": 1060,
+        "x": 1040,
         "y": 540,
         "wires": [
             [
@@ -2472,8 +2483,8 @@
         "id": "FLOW2_QUEUE_MANAGER",
         "type": "function",
         "z": "e196b19e598c60ff",
-        "name": "Gestore Coda Nastro",
-        "func": "var belt_status = flow.get(\"belt_status\") || \"ready\";\nvar job = msg;\n\nif (belt_status === \"ready\") {\n    flow.set(\"belt_status\", \"busy\");\n\n    var mqttMsg = { payload: job.mqtt_payload, topic: job.mqtt_topic };\n    // Uscita 2 potrebbe essere per un log intermedio, o non usata\n    var logStartMsg = { payload: \"Avvio nastro per: \" + job.belt_payload.material };\n    var beltMsg = { payload: job.belt_payload }; // Info rifiuto per simulazione nastro\n\n    // mqttMsg su Uscita 1, logStartMsg su 2, beltMsg su 3\n    return [mqttMsg, null, beltMsg];\n} else {\n    var queue = flow.get(\"belt_queue\") || [];\n    queue.push(job);\n    flow.set(\"belt_queue\", queue);\n    node.warn(\"Nastro occupato, accodato: \" + job.belt_payload.material + \" da bocca \" + job.belt_payload.mouth_id);\n    return null;\n}",
+        "name": "Ribbon Tail Manager",
+        "func": "var belt_status = flow.get(\"belt_status\") || \"ready\";\nvar job = msg;\n\nif (belt_status === \"ready\") {\n    flow.set(\"belt_status\", \"busy\");\n\n    var mqttMsg = { payload: job.mqtt_payload, topic: job.mqtt_topic };\n    // Output 2 could be for intermediate logging, or unused\n    var logStartMsg = { payload: \"Starting belt for: \" + job.belt_payload.material };\n    var beltMsg = { payload: job.belt_payload }; // Waste info for belt simulation\n\n    // mqttMsg on Output 1, logStartMsg on 2, beltMsg on 3\n    return [mqttMsg, null, beltMsg];\n} else {\n    var queue = flow.get(\"belt_queue\") || [];\n    queue.push(job);\n    flow.set(\"belt_queue\", queue);\n    node.warn(\"Belt busy, queued: \" + job.belt_payload.material + \" from mouth \" + job.belt_payload.mouth_id);\n    return null;\n}",
         "outputs": 3,
         "timeout": 0,
         "noerr": 0,
@@ -2498,7 +2509,7 @@
         "id": "FLOW2_MQTT_IN_CLEAR",
         "type": "mqtt in",
         "z": "e196b19e598c60ff",
-        "name": "Nastro: Rifiuto Smaltito",
+        "name": "Tape: Waste Disposed",
         "topic": "smartbin/belt/event/cleared",
         "qos": "2",
         "datatype": "auto-detect",
@@ -2519,15 +2530,15 @@
         "id": "FLOW2_PROCESS_QUEUE",
         "type": "function",
         "z": "e196b19e598c60ff",
-        "name": "Processa Coda",
-        "func": "var queue = flow.get(\"belt_queue\") || [];\n\nif (queue.length > 0) {\n    var job = queue.shift();\n    flow.set(\"belt_queue\", queue);\n    // Nastro rimane \"busy\"\n\n    var mqttMsg = { payload: job.mqtt_payload, topic: job.mqtt_topic };\n    // Uscita 2 potrebbe essere per un log intermedio, o non usata\n    var logStartMsg = { payload: \"Avvio nastro (dalla coda) per: \" + job.belt_payload.material };\n    var beltMsg = { payload: job.belt_payload }; // Info rifiuto per simulazione nastro\n\n    // mqttMsg su Uscita 1, logStartMsg su 2, beltMsg su 3\n    return [mqttMsg, null, beltMsg];\n} else {\n    flow.set(\"belt_status\", \"ready\");\n    node.log(\"Coda vuota, Nastro impostato su READY.\");\n    return null;\n}",
+        "name": "Process Tail",
+        "func": "var queue = flow.get(\"belt_queue\") || [];\n\nif (queue.length > 0) {\n    var job = queue.shift();\n    flow.set(\"belt_queue\", queue);\n    // Belt remains \"busy\"\n\n    var mqttMsg = { payload: job.mqtt_payload, topic: job.mqtt_topic };\n    // Output 2 could be for intermediate logging, or unused\n    var logStartMsg = { payload: \"Starting belt (from queue) for: \" + job.belt_payload.material };\n    var beltMsg = { payload: job.belt_payload }; // Waste info for belt simulation\n\n    // mqttMsg su Uscita 1, logStartMsg su 2, beltMsg su 3\n    return [mqttMsg, null, beltMsg];\n} else {\n    flow.set(\"belt_status\", \"ready\");\n    node.log(\"Queue empty, Belt set to READY.\");\n    return null;\n}",
         "outputs": 3,
         "timeout": 0,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1000,
+        "x": 990,
         "y": 740,
         "wires": [
             [
@@ -2545,7 +2556,7 @@
         "id": "FLOW2_MQTT_OUT",
         "type": "mqtt out",
         "z": "e196b19e598c60ff",
-        "name": "Send 'open_gate' Command (da Nastro)",
+        "name": "Send 'open_gate' Command (Nastro)",
         "topic": "",
         "qos": "2",
         "retain": "false",
@@ -2555,7 +2566,7 @@
         "correl": "",
         "expiry": "",
         "broker": "24c0b9e5da4bd92d",
-        "x": 1460,
+        "x": 1450,
         "y": 720,
         "wires": []
     },
@@ -2563,7 +2574,7 @@
         "id": "FLOW2_LOG_BELT",
         "type": "debug",
         "z": "e196b19e598c60ff",
-        "name": "LOG NASTRO",
+        "name": "LOG TAPE",
         "active": true,
         "tosidebar": true,
         "console": false,
@@ -2572,7 +2583,7 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1380,
+        "x": 1370,
         "y": 620,
         "wires": []
     },
@@ -2580,7 +2591,7 @@
         "id": "26ca1cddcd442861",
         "type": "debug",
         "z": "e196b19e598c60ff",
-        "name": "debug_IMPOSTA_NASTRO",
+        "name": "debug_SET_TAPE",
         "active": true,
         "tosidebar": true,
         "console": false,
@@ -2589,7 +2600,7 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1420,
+        "x": 1390,
         "y": 540,
         "wires": []
     },
@@ -2626,7 +2637,7 @@
         "id": "SIM_SAVE_INFO",
         "type": "change",
         "z": "e196b19e598c60ff",
-        "name": "Salva Info Rifiuto Corrente",
+        "name": "Save Current Refusal Info",
         "rules": [
             {
                 "t": "set",
@@ -2641,7 +2652,7 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1800,
+        "x": 1790,
         "y": 820,
         "wires": [
             [
@@ -2653,7 +2664,8 @@
         "id": "SIM_INJECT_SENSOR",
         "type": "inject",
         "z": "e196b19e598c60ff",
-        "name": "Simula: Sensore Nastro Rileva Rifiuto",
+        "g": "61f78308dbba9e1b",
+        "name": "Simulates: Tape Sensor Detects Waste",
         "props": [
             {
                 "p": "payload"
@@ -2682,7 +2694,8 @@
         "id": "SIM_DELAY_10S",
         "type": "delay",
         "z": "e196b19e598c60ff",
-        "name": "Simula: Tempo Smaltimento (10s)",
+        "g": "61f78308dbba9e1b",
+        "name": "Simulate: Disposal Time (10s)",
         "pauseType": "delay",
         "timeout": "10",
         "timeoutUnits": "seconds",
@@ -2695,7 +2708,7 @@
         "drop": false,
         "allowrate": false,
         "outputs": 1,
-        "x": 1080,
+        "x": 1070,
         "y": 1060,
         "wires": [
             [
@@ -2707,8 +2720,9 @@
         "id": "SIM_GET_INFO",
         "type": "function",
         "z": "e196b19e598c60ff",
-        "name": "Allega Info Rifiuto Smaltito",
-        "func": "// Recupera le info del rifiuto che ha appena finito\nmsg.rifiuto_smaltito = flow.get(\"current_belt_job\");\n// Opcional: pulisci la variabile se vuoi\n// flow.set(\"current_belt_job\", null); \nreturn msg;",
+        "g": "61f78308dbba9e1b",
+        "name": "Attach Disposal Waste Info",
+        "func": "\nmsg.rifiuto_smaltito = flow.get(\"current_belt_job\");\n\nreturn msg;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -2727,7 +2741,8 @@
         "id": "SIM_CREATE_CLEARED_MSG",
         "type": "change",
         "z": "e196b19e598c60ff",
-        "name": "Crea Msg: Nastro Libero",
+        "g": "61f78308dbba9e1b",
+        "name": "Create Msg: FREE TAPE",
         "rules": [
             {
                 "t": "set",
@@ -2755,7 +2770,8 @@
         "id": "SIM_MQTT_OUT_CLEARED",
         "type": "mqtt out",
         "z": "e196b19e598c60ff",
-        "name": "Invia Evento: Nastro Libero",
+        "g": "61f78308dbba9e1b",
+        "name": "Send Event: Free Tape",
         "topic": "smartbin/belt/event/cleared",
         "qos": "2",
         "retain": "false",
@@ -2765,7 +2781,7 @@
         "correl": "",
         "expiry": "",
         "broker": "24c0b9e5da4bd92d",
-        "x": 1920,
+        "x": 1900,
         "y": 1060,
         "wires": []
     },
@@ -2773,6 +2789,7 @@
         "id": "81394f7a933b62b5",
         "type": "debug",
         "z": "e196b19e598c60ff",
+        "g": "61f78308dbba9e1b",
         "name": "debug_cleared",
         "active": true,
         "tosidebar": true,
@@ -2790,7 +2807,7 @@
         "id": "258343f5297c36ed",
         "type": "debug",
         "z": "e196b19e598c60ff",
-        "name": "debug_RIFIUTO_CORRENTE",
+        "name": "debug_CURRENT_WASTE",
         "active": true,
         "tosidebar": true,
         "console": false,
@@ -2809,7 +2826,7 @@
         "z": "e196b19e598c60ff",
         "name": "SmartBin-TG",
         "bot": "26b3815d27b3140c",
-        "chatId": "219634800",
+        "chatId": "",
         "message": "",
         "parseMode": "",
         "x": 1930,
@@ -2817,7 +2834,7 @@
         "wires": []
     },
     {
-        "id": "e0271354c6ad30fe",
+        "id": "7486c2caea9165e9",
         "type": "global-config",
         "env": [],
         "modules": {
