@@ -10,11 +10,9 @@ SmartBin is born from a simple yet revolutionary idea: eliminating the need to h
 
 ## 📹 Demo
 
-Simulates Cancel to reset the mouth session
+<!-- ![DEMO_CANCEL](/img/output_correction.gif) -->
 
-![DEMO_CANCEL](/img/output_cancel.gif)
-
-Simulates disposal by confirming the classification
+Simulates disposal by confirming the classification, if there is no human confirmation, the system automatically drops the garbage onto the conveyor belt after 10 seconds.
 
 ![DEMO_CONFIRM](/img/output_confirm.gif)
 
